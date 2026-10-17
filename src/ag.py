@@ -16,8 +16,12 @@ from common import LINES, load, to_pandas, align_categories, cap_target
 from run import FOLDS, line_trend
 
 P = 1.5
-tweedie = make_scorer("tweedie15", lambda y, p, sample_weight=None: mean_tweedie_deviance(
-    y, np.maximum(p, 1e-9), sample_weight=sample_weight, power=P), optimum=0, greater_is_better=False)
+def tweedie_dev(y, p, sample_weight=None):
+    return mean_tweedie_deviance(y, np.maximum(p, 1e-9), sample_weight=sample_weight, power=P)
+
+
+# named function, not a lambda: AutoGluon pickles the metric with the predictor
+tweedie = make_scorer("tweedie15", tweedie_dev, optimum=0, greater_is_better=False)
 HP = {
     "GBM": [{"objective": "tweedie", "tweedie_variance_power": P, "learning_rate": 0.03, "num_leaves": 15, "min_data_in_leaf": 2000, "ag_args": {"name_suffix": "Tw"}}],
     "CAT": [{"loss_function": f"Tweedie:variance_power={P}", "learning_rate": 0.05, "depth": 6, "ag_args": {"name_suffix": "Tw"}}],

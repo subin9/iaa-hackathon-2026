@@ -9,7 +9,9 @@ DROP = ["row_id", "policy_id", "customer_id", "address_id", "period_start", "per
         # in-period contacts track claims in training years but not in the 2025 test rows
         "customer_service_contacts",
         # data-quality flags, training-only or meaningless as risk factors
-        "exposure_bad", "si_bad"]
+        "exposure_bad", "si_bad",
+        # absolute calendar year of joining; tenure_years carries the same signal without new 2025 values
+        "customer_since_year"]
 
 
 def load(line):
