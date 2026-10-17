@@ -4,7 +4,7 @@ Folds: train <= 2023 score 2024, train <= 2022 score 2023. Validation
 predictions are multiplied by the row completion so they compare with the
 reported target. The full fit scores the 2025 test rows.
 
-usage: run.py MODEL [MODEL ...]   models: tw po fs
+usage: run.py MODEL [MODEL ...]   models: tw po twx fs fsN (fs averaged over N seeds)
 """
 import sys, os
 import numpy as np, polars as pl, lightgbm as lgb
@@ -15,10 +15,14 @@ from prep import load_claims
 
 FOLDS = {"v2024": (2023, 2024), "v2023": (2022, 2023), "test": (2024, 2025)}
 GBM = dict(learning_rate=0.05, num_leaves=15, min_data_in_leaf=2000, feature_fraction=0.7,
-           bagging_fraction=0.8, bagging_freq=1, lambda_l2=10.0, verbose=-1, num_threads=16)
+           bagging_fraction=0.8, bagging_freq=1, lambda_l2=10.0, verbose=-1,
+           num_threads=int(os.environ.get("NT", 6)))
 SPECS = {
     "tw": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.5}, rounds=150, cap=0.99),
     "po": dict(params={**GBM, "objective": "poisson"}, rounds=300, cap=0.995),
+    # extra_trees and power 1.4 won the exp2 grids; seed averaging removes most of their noise
+    "twx": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "extra_trees": True}, rounds=200, cap=0.99, seeds=5),
+    "pox": dict(params={**GBM, "objective": "poisson", "extra_trees": True}, rounds=450, cap=0.99, seeds=5),
 }
 
 
@@ -51,10 +55,12 @@ def main(models):
                 df = load(line)
                 tr = df.filter((pl.col("split") == "train") & (pl.col("year") <= last))
                 te = df.filter(pl.col("split") == "test") if fold == "test" else df.filter((pl.col("split") == "train") & (pl.col("year") == ty))
-                if name == "fs":
-                    p = fs.predict(fs.fit_line(line, tr, claims), te, ty)
+                if name.startswith("fs"):
+                    seeds = int(name[2:] or 1)
+                    p = sum(fs.predict(fs.fit_line(line, tr, claims, seed=s), te, ty) for s in range(seeds)) / seeds
                 else:
-                    p = fit_predict_gbm(SPECS[name], tr, te, ty)
+                    seeds = SPECS[name].get("seeds", 1)
+                    p = sum(fit_predict_gbm(SPECS[name], tr, te, ty, seed=s) for s in range(seeds)) / seeds
                 if fold != "test":
                     p = p * te["completion"].to_numpy()
                 parts.append(te.select("row_id", "y", "exposure").with_columns(line=pl.lit(line), pred=pl.Series(p)))

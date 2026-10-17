@@ -8,16 +8,17 @@ Each peril is then rebalanced so modelled cost matches reported cost after
 cost completion, which absorbs the cap, late-reported severity and the
 Poisson-Gamma product bias.
 """
+import os
 import numpy as np, polars as pl, lightgbm as lgb, pandas as pd
 from common import load, to_pandas, align_categories, d2
 from exp import codes
 
 FREQ = dict(objective="poisson", learning_rate=0.05, num_leaves=15, min_data_in_leaf=2000,
             feature_fraction=0.7, bagging_fraction=0.8, bagging_freq=1, lambda_l2=10.0,
-            verbose=-1, num_threads=16)
+            verbose=-1, num_threads=int(os.environ.get("NT", 6)))
 SEV = dict(objective="gamma", learning_rate=0.05, num_leaves=7, min_data_in_leaf=500,
            feature_fraction=0.7, bagging_fraction=0.8, bagging_freq=1, lambda_l2=10.0,
-           verbose=-1, num_threads=16)
+           verbose=-1, num_threads=int(os.environ.get("NT", 6)))
 SEV_CAP = 0.995
 
 
