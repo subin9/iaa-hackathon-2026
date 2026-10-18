@@ -3,10 +3,12 @@
 Each config is a JSON object:
   params   LightGBM overrides on exp.BASE (objective defaults to Tweedie 1.5)
   cap      target cap quantile (default 0.99)
-  feats    true to join work/feats_{line}.parquet
+  feats    true to join work/feats_{line}.parquet, or a list of file prefixes
   drop     extra columns to drop
   seeds    number of seeds to average (default 1)
   decay    per-year weight multiplier for older years (1 = flat)
+  distill  a in (0, 1): train on a*y + (1-a)*teacher, where the teacher is a
+           5-fold out-of-fold fit of the same model grouped by policy
 Prints pooled D2 per fold at each round count, and the mean of the two folds.
 
 usage: exp2.py CONFIG_JSONL
@@ -22,9 +24,20 @@ FOLDS = ((2023, 2024), (2022, 2023))
 
 def table(line, cfg):
     df = load(line).filter(pl.col("split") == "train")
-    if cfg.get("feats"):
-        df = df.join(pl.read_parquet(f"work/feats_{line}.parquet"), on="row_id", how="left")
+    feats = cfg.get("feats", [])
+    for name in (["feats"] if feats is True else feats):
+        df = df.join(pl.read_parquet(f"work/{name}_{line}.parquet"), on="row_id", how="left")
     return df
+
+
+def distill(P, X, y, w, base, sw, groups, a, rounds):
+    fold_of = np.array([hash(g) % 5 for g in groups])
+    oof = np.zeros_like(y)
+    for k in range(5):
+        t, v = fold_of != k, fold_of == k
+        m = lgb.train(P, lgb.Dataset(X[t], y[t], weight=sw[t], init_score=np.log(w[t]) + base), rounds)
+        oof[v] = np.exp(base + m.predict(X[v], raw_score=True)) * w[v]
+    return a * y + (1 - a) * oof
 
 
 def fold(cfg, last, vy, tables):
@@ -41,6 +54,8 @@ def fold(cfg, last, vy, tables):
         wv = va["exposure"].to_numpy() * va["completion"].to_numpy()
         base = np.log(y.sum() / w.sum())
         sw = cfg.get("decay", 1.0) ** (last - tr["year"].to_numpy())
+        if "distill" in cfg:
+            y = distill(P, X, y, w, base, sw, tr["policy_id"].to_numpy(), cfg["distill"], cfg.get("teacher_rounds", 150))
         acc = {r: 0 for r in ROUNDS}
         for s in range(cfg.get("seeds", 1)):
             m = lgb.train({**P, "seed": cfg.get("seed0", 0) + s}, lgb.Dataset(X, y, weight=sw, init_score=np.log(w) + base), max(ROUNDS))

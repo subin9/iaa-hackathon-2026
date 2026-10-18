@@ -14,7 +14,7 @@ from common import LINES, load, to_pandas, align_categories, cap_target, d2
 from run import FOLDS, line_trend
 
 MAX_IT = 1500
-PARAMS = dict(loss_function="Tweedie:variance_power=1.5", learning_rate=0.05, depth=6, l2_leaf_reg=10,
+PARAMS = dict(loss_function="Tweedie:variance_power=1.5", learning_rate=float(os.environ.get("CB_LR", 0.05)), depth=int(os.environ.get("CB_DEPTH", 6)), l2_leaf_reg=10,
               min_data_in_leaf=500, thread_count=int(os.environ.get("NT", 6)), verbose=0, allow_writing_files=False)
 
 
@@ -67,7 +67,7 @@ def main(iters, seeds=3):
                 acc = acc + np.exp(m.predict(pt, prediction_type="RawFormulaVal") + base) * scale / seeds
             parts.append(te.select("row_id", "y", "exposure").with_columns(line=pl.lit(line), pred=pl.Series(acc)))
         out = pl.concat(parts)
-        out.write_parquet(f"work/preds/cb_{fold}.parquet")
+        out.write_parquet(f"work/preds/{os.environ.get('CB_NAME', 'cb')}_{fold}.parquet")
         print("cb", fold, "sum pred", round(out["pred"].sum()), flush=True)
 
 
