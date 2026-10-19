@@ -65,7 +65,7 @@ def main(models):
                     p = p * te["completion"].to_numpy()
                 parts.append(te.select("row_id", "y", "exposure").with_columns(line=pl.lit(line), pred=pl.Series(p)))
             out = pl.concat(parts)
-            out.write_parquet(f"work/preds/{name}_{fold}.parquet")
+            out.write_parquet(f"work/preds/{name}{os.environ.get('TAG', '')}_{fold}.parquet")
             print(name, fold, "sum pred", round(out["pred"].sum()), flush=True)
 
 

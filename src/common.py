@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 import polars as pl
@@ -15,7 +16,12 @@ DROP = ["row_id", "policy_id", "customer_id", "address_id", "period_start", "per
 
 
 def load(line):
-    return pl.read_parquet(f"work/{line}.parquet")
+    df = pl.read_parquet(f"work/{line}.parquet")
+    if os.environ.get("IBNER"):  # open 2024 bodily injury claims scaled to trend, see ibner.py
+        add = pl.read_parquet("work/ibner_add.parquet")
+        df = df.join(add, on="row_id", how="left").with_columns(pl.col("add").fill_null(0))
+        df = df.with_columns(pl.col("y") + pl.col("add"), *([pl.col("y_bodily_injury") + pl.col("add")] if "y_bodily_injury" in df.columns else [])).drop("add")
+    return df
 
 
 def to_pandas(df, drop_extra=()):
