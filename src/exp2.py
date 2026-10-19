@@ -7,6 +7,9 @@ Each config is a JSON object:
   drop     extra columns to drop
   seeds    number of seeds to average (default 1)
   decay    per-year weight multiplier for older years (1 = flat)
+  dglm     exponent g: a first fit gives Tweedie unit deviances, a gamma GBM
+           models them as dispersion phi(x), and the final fit uses weight phi^-g
+           (double GLM idea of Smyth and Jorgensen, 2002)
   distill  a in (0, 1): train on a*y + (1-a)*teacher, where the teacher is a
            5-fold out-of-fold fit of the same model grouped by policy
 Prints pooled D2 per fold at each round count, and the mean of the two folds.
@@ -40,6 +43,19 @@ def distill(P, X, y, w, base, sw, groups, a, rounds):
     return a * y + (1 - a) * oof
 
 
+def dispersion_weight(P, X, y, w, base, sw, g, rounds):
+    p = P.get("tweedie_variance_power", 1.5)
+    m = lgb.train(P, lgb.Dataset(X, y, weight=sw, init_score=np.log(w) + base), rounds)
+    mu = np.exp(base + m.predict(X, raw_score=True)) * w
+    dev = 2 * (np.maximum(y, 0) ** (2 - p) / ((1 - p) * (2 - p)) - y * mu ** (1 - p) / (1 - p) + mu ** (2 - p) / (2 - p))
+    dev = dev / mu ** (2 - p) * w ** (1 - p)  # unit deviance scaled so that E[dev] is about phi / w^(p-1) free of mu
+    Q = {"objective": "gamma", "learning_rate": 0.05, "num_leaves": 15, "min_data_in_leaf": 2000,
+         "num_threads": P["num_threads"], "verbose": -1}
+    phi = lgb.train(Q, lgb.Dataset(X, dev + 1e-6, weight=sw), 100).predict(X)
+    wt = (phi / phi.mean()) ** -g
+    return np.clip(wt / wt.mean(), 0.2, 5)
+
+
 def fold(cfg, last, vy, tables):
     P = {**BASE, "num_threads": int(os.environ.get("NT", 6)), **cfg.get("params", {})}
     ys, ps = [], {r: [] for r in ROUNDS}
@@ -56,6 +72,8 @@ def fold(cfg, last, vy, tables):
         sw = cfg.get("decay", 1.0) ** (last - tr["year"].to_numpy())
         if "distill" in cfg:
             y = distill(P, X, y, w, base, sw, tr["policy_id"].to_numpy(), cfg["distill"], cfg.get("teacher_rounds", 150))
+        if "dglm" in cfg:
+            sw = sw * dispersion_weight(P, X, y, w, base, sw, cfg["dglm"], cfg.get("dglm_rounds", 200))
         acc = {r: 0 for r in ROUNDS}
         for s in range(cfg.get("seeds", 1)):
             m = lgb.train({**P, "seed": cfg.get("seed0", 0) + s}, lgb.Dataset(X, y, weight=sw, init_score=np.log(w) + base), max(ROUNDS))
