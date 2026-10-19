@@ -14,7 +14,10 @@ import rtdl_num_embeddings as rne
 from tabm import TabM
 from common import LINES, load, to_pandas, align_categories, cap_target, d2
 from run import FOLDS, line_trend
+import nn
 from nn import encode, tweedie_loss
+
+nn.P = float(os.environ.get("TABM_P", nn.P))  # loss power, read by tweedie_loss
 
 MAX_EP = 8
 K = 16
@@ -22,6 +25,8 @@ K = 16
 
 def train(line, last, ty, fold, epochs, seed):
     df = load(line)
+    for name in filter(None, os.environ.get("TABM_FEATS", "").split(",")):
+        df = df.join(pl.read_parquet(f"work/{name}_{line}.parquet"), on="row_id", how="left")
     tr = df.filter((pl.col("split") == "train") & (pl.col("year") <= last))
     te = df.filter(pl.col("split") == "test") if fold == "test" else df.filter((pl.col("split") == "train") & (pl.col("year") == ty))
     X = to_pandas(tr); Xt = align_categories(X, to_pandas(te))
@@ -81,7 +86,7 @@ def main(epochs, seeds=(int(os.environ.get("TABM_SEED", 0)),)):
                 acc = acc + preds[-1] / len(seeds)
             parts.append(te.select("row_id", "y", "exposure").with_columns(line=pl.lit(line), pred=pl.Series(acc)))
         out = pl.concat(parts)
-        out.write_parquet(f"work/preds/tabm{seeds[0]}_{fold}.parquet")
+        out.write_parquet(f"work/preds/{os.environ.get('TABM_NAME', 'tabm')}{seeds[0]}_{fold}.parquet")
         print("tabm", fold, "sum pred", round(out["pred"].sum()), flush=True)
 
 

@@ -26,7 +26,7 @@ def fit_line(line, last, ty, fold):
     base = np.log(y.sum() / w.sum())
     m = ExplainableBoostingRegressor(objective="tweedie_deviance:variance_power=1.5", outer_bags=int(os.environ.get("EBM_BAGS", 4)), inner_bags=0,
                                      interactions=int(os.environ.get("EBM_INT", 10)), learning_rate=0.02, min_samples_leaf=500, max_bins=64,
-                                     n_jobs=NT, random_state=0)
+                                     n_jobs=NT, random_state=int(os.environ.get("EBM_SEED", 0)))
     m.fit(X, y, init_score=np.log(w) + base)
     scale = te["exposure"].to_numpy() * load_f * np.exp(line_trend(tr) * (ty - last))
     if fold != "test":
