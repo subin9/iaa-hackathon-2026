@@ -26,6 +26,7 @@ nn.P = float(os.environ.get("TABM_P", nn.P))  # loss power, read by tweedie_loss
 
 MAX_EP = 8
 K = 16
+AUX = float(os.environ.get("AUX_N", 0))  # weight of the auxiliary Poisson claim-count heads, 0 turns them off
 
 
 def train(line, last, ty, fold, epochs, seed):
@@ -47,12 +48,17 @@ def train(line, last, ty, fold, epochs, seed):
     base = np.log(Y.sum(0) / W.sum(0))
     off = torch.tensor(np.log(W) + base, dtype=torch.float32)
     yt = torch.tensor(Y, dtype=torch.float32)
+    if AUX:
+        Nc = np.stack([tr[f"n_{p}"].to_numpy().astype(float) for p in perils], 1)
+        Wc = np.maximum(np.stack([tr["exposure"].to_numpy() * tr[f"compc_{p}"].to_numpy() for p in perils], 1), 1e-6)
+        offc = torch.tensor(np.log(Wc) + np.log(Nc.sum(0) / Wc.sum(0)), dtype=torch.float32)
+        nt = torch.tensor(Nc, dtype=torch.float32)
     C, Ct = torch.tensor(C, dtype=torch.long), torch.tensor(Ct, dtype=torch.long)
     N, Nt = torch.tensor(N), torch.tensor(Nt)
     torch.manual_seed(seed)
     sub = torch.randperm(len(N))[:200_000]
     bins = rne.compute_bins(N[sub], n_bins=16)
-    net = TabM.make(n_num_features=N.shape[1], cat_cardinalities=sizes, d_out=len(perils), k=K, d_block=256,
+    net = TabM.make(n_num_features=N.shape[1], cat_cardinalities=sizes, d_out=len(perils) * (2 if AUX else 1), k=K, d_block=256,
                     num_embeddings=rne.PiecewiseLinearEmbeddings(bins, 16, activation=False, version="B"))
     opt = torch.optim.AdamW(net.parameters(), lr=2e-3, weight_decay=3e-4)
     scale = te["exposure"].to_numpy()[:, None] * load_p * np.exp(base) * np.exp(line_trend(tr) * (ty - last))
@@ -63,12 +69,17 @@ def train(line, last, ty, fold, epochs, seed):
         net.train()
         for idx in torch.randperm(len(yt)).split(4096):
             opt.zero_grad()
-            eta = net(N[idx], C[idx]) + off[idx, None, :]
-            tweedie_loss(eta, yt[idx, None, :].expand_as(eta)).backward()
+            out = net(N[idx], C[idx])
+            eta = out[..., :len(perils)] + off[idx, None, :]
+            loss = tweedie_loss(eta, yt[idx, None, :].expand_as(eta))
+            if AUX:
+                etc = out[..., len(perils):] + offc[idx, None, :]
+                loss = loss + AUX * (etc.exp() - nt[idx, None, :] * etc).mean()
+            loss.backward()
             opt.step()
         net.eval()
         with torch.no_grad():
-            r = torch.cat([net(Nt[i], Ct[i]).exp().mean(1) for i in torch.arange(len(Nt)).split(16384)])
+            r = torch.cat([net(Nt[i], Ct[i])[..., :len(perils)].exp().mean(1) for i in torch.arange(len(Nt)).split(16384)])
         preds.append((r.numpy() * scale).sum(1))
     return te, preds
 
