@@ -22,6 +22,8 @@ SPECS = {
     "po": dict(params={**GBM, "objective": "poisson"}, rounds=300, cap=0.995),
     # extra_trees and power 1.4 won the exp2 grids; seed averaging removes most of their noise
     "twx": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "extra_trees": True}, rounds=200, cap=0.99, seeds=5),
+    # recent-years model: older years down-weighted by 0.6 per year, for time diversity in the blend
+    "twxr": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "extra_trees": True}, rounds=200, cap=0.99, seeds=5, decay=0.6),
     "pox": dict(params={**GBM, "objective": "poisson", "extra_trees": True}, rounds=450, cap=0.99, seeds=5),
 }
 
@@ -39,7 +41,8 @@ def fit_predict_gbm(spec, tr, te, target_year, seed=0):
     y, load_f = cap_target(tr["y"].to_numpy(), spec["cap"])
     w = tr["exposure"].to_numpy() * tr["completion"].to_numpy()
     base = np.log(y.sum() / w.sum())
-    m = lgb.train({**spec["params"], "seed": seed}, lgb.Dataset(X, y, init_score=np.log(w) + base), spec["rounds"])
+    sw = spec.get("decay", 1.0) ** (tr["year"].max() - tr["year"].to_numpy())
+    m = lgb.train({**spec["params"], "seed": seed}, lgb.Dataset(X, y, weight=sw, init_score=np.log(w) + base), spec["rounds"])
     last = int(tr["year"].max()); Xt["year"] = last
     g = line_trend(tr)
     return np.exp(base + m.predict(Xt, raw_score=True)) * te["exposure"].to_numpy() * load_f * np.exp(g * (target_year - last))
