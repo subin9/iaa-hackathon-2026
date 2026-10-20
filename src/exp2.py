@@ -14,6 +14,8 @@ Each config is a JSON object:
            (double GLM idea of Smyth and Jorgensen, 2002)
   te       [columns, K]: add log credibility-weighted cost rate per level,
            out-of-fold by policy for training rows (Buhlmann-Straub, weight K)
+  shift    exponent a: covariate shift weights (p / (1 - p))^a from a classifier that
+           tells training rows from the scored year's rows (features only, no target)
   distill  a in (0, 1): train on a*y + (1-a)*teacher, where the teacher is a
            5-fold out-of-fold fit of the same model grouped by policy
 Prints pooled D2 per fold at each round count, and the mean of the two folds.
@@ -60,6 +62,18 @@ def dispersion_weight(P, X, y, w, base, sw, g, rounds):
     return np.clip(wt / wt.mean(), 0.2, 5)
 
 
+def shift_weight(X, Xv, a):
+    """Importance weights toward the scored year's feature distribution, mean 1."""
+    Z = X.drop(columns="year"); Zv = Xv.drop(columns="year")
+    import pandas as pd
+    A = pd.concat([Z, Zv], ignore_index=True)
+    lab = np.r_[np.zeros(len(Z)), np.ones(len(Zv))]
+    Q = {**BASE, "objective": "binary", "num_threads": int(os.environ.get("NT", 6))}
+    p = lgb.train(Q, lgb.Dataset(A, lab), 200).predict(Z)
+    r = np.clip((p / (1 - p)) * len(Z) / len(Zv), 0.1, 10) ** a
+    return r / r.mean()
+
+
 def cred_encode(lv, lv_val, y, w, groups, K):
     prior = y.sum() / w.sum()
 
@@ -100,6 +114,8 @@ def fold(cfg, last, vy, tables):
         if line != "all":
             base = base_v = np.log(y.sum() / w.sum())
         sw = cfg.get("decay", 1.0) ** (last - tr["year"].to_numpy())
+        if "shift" in cfg:
+            sw = sw * shift_weight(X, Xv, cfg["shift"])
         if "distill" in cfg:
             y = distill(P, X, y, w, base, sw, tr["policy_id"].to_numpy(), cfg["distill"], cfg.get("teacher_rounds", 150))
         if "te" in cfg:

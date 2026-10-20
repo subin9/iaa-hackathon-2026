@@ -60,7 +60,7 @@ def train(line, last, ty, fold, epochs, seed):
     bins = rne.compute_bins(N[sub], n_bins=16)
     net = TabM.make(n_num_features=N.shape[1], cat_cardinalities=sizes, d_out=len(perils) * (2 if AUX else 1), k=K, d_block=256,
                     num_embeddings=rne.PiecewiseLinearEmbeddings(bins, 16, activation=False, version="B"))
-    opt = torch.optim.AdamW(net.parameters(), lr=2e-3, weight_decay=3e-4)
+    opt = torch.optim.AdamW(net.parameters(), lr=float(os.environ.get("TABM_LR", 2e-3)), weight_decay=3e-4)
     scale = te["exposure"].to_numpy()[:, None] * load_p * np.exp(base) * np.exp(line_trend(tr) * (ty - last))
     if fold != "test":
         scale = scale * np.stack([te[f"compk_{p}"].to_numpy() for p in perils], 1)
@@ -103,7 +103,8 @@ def main(epochs, seeds=(int(os.environ.get("TABM_SEED", 0)),)):
             acc = 0
             for s in seeds:
                 te, preds = train(line, last, ty, fold, epochs, s)
-                acc = acc + preds[-1] / len(seeds)
+                snap = int(os.environ.get("SNAP", 1))  # average the last SNAP epochs' predictions
+                acc = acc + sum(preds[-snap:]) / snap / len(seeds)
             parts.append(te.select("row_id", "y", "exposure").with_columns(line=pl.lit(line), pred=pl.Series(acc)))
         out = pl.concat(parts)
         out.write_parquet(f"work/preds/{os.environ.get('TABM_NAME', 'tabmp')}{seeds[0]}_{fold}.parquet")
