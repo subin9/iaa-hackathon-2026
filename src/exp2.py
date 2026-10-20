@@ -96,7 +96,7 @@ def fold(cfg, last, vy, tables):
         tr, va = df.filter(pl.col("year") <= last), df.filter(pl.col("year") == vy)
         drop = cfg.get("drop", [])
         X = codes(to_pandas(tr, drop)); Xv = codes(align_categories(to_pandas(tr, drop), to_pandas(va, drop)))
-        Xv["year"] = last
+        if "year" in Xv: Xv["year"] = last
         w = tr["exposure"].to_numpy() * tr["completion"].to_numpy()
         wv = va["exposure"].to_numpy() * va["completion"].to_numpy()
         if line == "all":  # pooled lines: cap, load and base level stay per line
