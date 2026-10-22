@@ -16,6 +16,8 @@ Each config is a JSON object:
            out-of-fold by policy for training rows (Buhlmann-Straub, weight K)
   shift    exponent a: covariate shift weights (p / (1 - p))^a from a classifier that
            tells training rows from the scored year's rows (features only, no target)
+  asof     "val": validation rows get the history a 2025 row would see (asof.py), as the test
+           rows do; "all": training rows too
   distill  a in (0, 1): train on a*y + (1-a)*teacher, where the teacher is a
            5-fold out-of-fold fit of the same model grouped by policy
 Prints pooled D2 per fold at each round count, and the mean of the two folds.
@@ -94,6 +96,11 @@ def fold(cfg, last, vy, tables):
     ys, ps = [], {r: [] for r in ROUNDS}
     for line, df in tables.items():
         tr, va = df.filter(pl.col("year") <= last), df.filter(pl.col("year") == vy)
+        if "asof" in cfg:
+            h = pl.concat([pl.read_parquet(f"work/hasof_{l}.parquet") for l in LINES])
+            va = va.update(h, on="row_id")
+            if cfg["asof"] == "all":
+                tr = tr.update(h, on="row_id")
         drop = cfg.get("drop", [])
         X = codes(to_pandas(tr, drop)); Xv = codes(align_categories(to_pandas(tr, drop), to_pandas(va, drop)))
         if "year" in Xv: Xv["year"] = last
