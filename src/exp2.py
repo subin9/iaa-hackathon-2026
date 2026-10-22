@@ -18,6 +18,7 @@ Each config is a JSON object:
            tells training rows from the scored year's rows (features only, no target)
   asof     "val": validation rows get the history a 2025 row would see (asof.py), as the test
            rows do; "all": training rows too
+  top      K: keep only each line's K highest-gain features listed in work/imp.json
   distill  a in (0, 1): train on a*y + (1-a)*teacher, where the teacher is a
            5-fold out-of-fold fit of the same model grouped by policy
 Prints pooled D2 per fold at each round count, and the mean of the two folds.
@@ -101,7 +102,10 @@ def fold(cfg, last, vy, tables):
             va = va.update(h, on="row_id")
             if cfg["asof"] == "all":
                 tr = tr.update(h, on="row_id")
-        drop = cfg.get("drop", [])
+        drop = list(cfg.get("drop", []))
+        if "top" in cfg:  # keep only the line's top features by gain in work/imp.json
+            imp = json.load(open("work/imp.json"))[line]
+            drop += [c for c, _ in imp[cfg["top"]:]]
         X = codes(to_pandas(tr, drop)); Xv = codes(align_categories(to_pandas(tr, drop), to_pandas(va, drop)))
         if "year" in Xv: Xv["year"] = last
         w = tr["exposure"].to_numpy() * tr["completion"].to_numpy()

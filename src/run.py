@@ -9,6 +9,7 @@ usage: run.py MODEL [MODEL ...]   models: tw po twx fs fsN (fs averaged over N s
 import sys, os
 import numpy as np, polars as pl, lightgbm as lgb
 from common import LINES, load, to_pandas, align_categories, cap_target
+import common
 from exp import codes
 import fs
 from prep import load_claims
@@ -17,6 +18,7 @@ FOLDS = {"v2024": (2023, 2024), "v2023": (2022, 2023), "test": (2024, 2025)}
 GBM = dict(learning_rate=0.05, num_leaves=15, min_data_in_leaf=2000, feature_fraction=0.7,
            bagging_fraction=0.8, bagging_freq=1, lambda_l2=10.0, verbose=-1,
            num_threads=int(os.environ.get("NT", 6)))
+LEAN = common.LEAN + ["year"]
 SPECS = {
     "tw": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.5}, rounds=150, cap=0.99),
     "po": dict(params={**GBM, "objective": "poisson"}, rounds=300, cap=0.995),
@@ -32,6 +34,11 @@ SPECS = {
     "tw3b": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "num_leaves": 3, "max_bin": 63}, rounds=600, cap=0.99, seeds=3),
     "po3b": dict(params={**GBM, "objective": "poisson", "num_leaves": 3, "max_bin": 63}, rounds=1100, cap=0.995, seeds=3),
     "twx3b": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "extra_trees": True, "num_leaves": 3, "max_bin": 63}, rounds=900, cap=0.99, seeds=5),
+    # lean versions without weather, sales, marketing noise and time columns: about 0.001
+    # better on v2023 with v2024 flat, so mainly a different view for the blend
+    "tw3l": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "num_leaves": 3}, rounds=800, cap=0.99, seeds=3, drop=LEAN),
+    "po3l": dict(params={**GBM, "objective": "poisson", "num_leaves": 3}, rounds=1400, cap=0.995, seeds=3, drop=LEAN),
+    "twx3l": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "extra_trees": True, "num_leaves": 3}, rounds=1200, cap=0.99, seeds=5, drop=LEAN),
     "pox": dict(params={**GBM, "objective": "poisson", "extra_trees": True}, rounds=450, cap=0.99, seeds=5),
 }
 
@@ -45,13 +52,15 @@ def line_trend(tr):
 
 
 def fit_predict_gbm(spec, tr, te, target_year, seed=0):
-    X = codes(to_pandas(tr)); Xt = codes(align_categories(to_pandas(tr), to_pandas(te)))
+    drop = spec.get("drop", ())
+    X = codes(to_pandas(tr, drop)); Xt = codes(align_categories(to_pandas(tr, drop), to_pandas(te, drop)))
     y, load_f = cap_target(tr["y"].to_numpy(), spec["cap"])
     w = tr["exposure"].to_numpy() * tr["completion"].to_numpy()
     base = np.log(y.sum() / w.sum())
     sw = spec.get("decay", 1.0) ** (tr["year"].max() - tr["year"].to_numpy())
     m = lgb.train({**spec["params"], "seed": seed}, lgb.Dataset(X, y, weight=sw, init_score=np.log(w) + base), spec["rounds"])
-    last = int(tr["year"].max()); Xt["year"] = last
+    last = int(tr["year"].max())
+    if "year" in Xt: Xt["year"] = last
     g = line_trend(tr)
     return np.exp(base + m.predict(Xt, raw_score=True)) * te["exposure"].to_numpy() * load_f * np.exp(g * (target_year - last))
 

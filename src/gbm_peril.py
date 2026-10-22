@@ -12,7 +12,8 @@ from common import LINES, load, to_pandas, align_categories, cap_target
 from exp import codes
 from run import FOLDS, GBM, line_trend
 
-PARAMS = {**GBM, "objective": "tweedie", "tweedie_variance_power": float(os.environ.get("GP_P", 1.4)), "extra_trees": True}
+PARAMS = {**GBM, "objective": "tweedie", "tweedie_variance_power": float(os.environ.get("GP_P", 1.4)), "extra_trees": True,
+          "num_leaves": int(os.environ.get("GP_LEAVES", GBM["num_leaves"]))}
 
 
 def predict(tr, te, ty, fold, rounds, seeds):

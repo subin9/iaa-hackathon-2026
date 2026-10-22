@@ -13,6 +13,12 @@ DROP = ["row_id", "policy_id", "customer_id", "address_id", "period_start", "per
         "exposure_bad", "si_bad",
         # absolute calendar year of joining; tenure_years carries the same signal without new 2025 values
         "customer_since_year"]
+# weather, sales, marketing-noise and time columns; LEAN=1 drops them (year stays, the
+# runners overwrite it) for lean model variants
+LEAN = ["hail_days", "wind_exposure_index", "freezing_days", "dry_summer_index", "wildfire_index", "rainfall_mm",
+        "mean_temperature_c", "channel", "payment_method", "days_quote_to_inception", "discount_applied",
+        "previous_insurer", "new_business", "renewal_count", "vehicle_colour", "email_domain", "marketing_consent",
+        "document_preference", "campaign_code", "branch_id", "marketing_segment", "start_month"]
 
 
 def load(line):
@@ -26,7 +32,8 @@ def load(line):
 
 def to_pandas(df, drop_extra=()):
     per_peril = [c for c in df.columns if c.split("_")[0] in ("y", "n", "compc", "compk") and c not in ("y", "n", "n_lines")]
-    X = df.drop([c for c in DROP + per_peril + list(drop_extra) if c in df.columns]).to_pandas()
+    lean = LEAN if os.environ.get("LEAN") else []
+    X = df.drop([c for c in DROP + per_peril + lean + list(drop_extra) if c in df.columns]).to_pandas()
     for c in X.columns:
         if X[c].dtype == object or str(X[c].dtype) in ("string", "str") or X[c].dtype == bool:
             X[c] = X[c].astype("category")
