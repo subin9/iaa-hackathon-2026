@@ -28,6 +28,10 @@ SPECS = {
     "tw3": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "num_leaves": 3}, rounds=600, cap=0.99, seeds=3),
     "po3": dict(params={**GBM, "objective": "poisson", "num_leaves": 3}, rounds=1100, cap=0.995, seeds=3),
     "twx3": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "extra_trees": True, "num_leaves": 3}, rounds=900, cap=0.99, seeds=5),
+    # the same with 63 histogram bins, about 0.0005 better on two seed sets (all of it in v2023)
+    "tw3b": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "num_leaves": 3, "max_bin": 63}, rounds=600, cap=0.99, seeds=3),
+    "po3b": dict(params={**GBM, "objective": "poisson", "num_leaves": 3, "max_bin": 63}, rounds=1100, cap=0.995, seeds=3),
+    "twx3b": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "extra_trees": True, "num_leaves": 3, "max_bin": 63}, rounds=900, cap=0.99, seeds=5),
     "pox": dict(params={**GBM, "objective": "poisson", "extra_trees": True}, rounds=450, cap=0.99, seeds=5),
 }
 
