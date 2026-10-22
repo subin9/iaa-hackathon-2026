@@ -26,7 +26,32 @@ nn.P = float(os.environ.get("TABM_P", nn.P))  # loss power, read by tweedie_loss
 
 MAX_EP = 8
 K = 16
+PRE = int(os.environ.get("PRE", 0))  # self-supervised pretraining epochs over training and scored rows
 AUX = float(os.environ.get("AUX_N", 0))  # weight of the auxiliary Poisson claim-count heads, 0 turns them off
+
+
+def pretrain(net, N, C, epochs, rate=0.3):
+    """Corruption detection (VIME/SCARF style): swap a random 30% of each row's features
+    with values from other rows and train the backbone to tell which ones were swapped."""
+    head, out = torch.nn.Linear(net.output.weight.shape[-2] if net.output.weight.dim() == 3 else net.output.weight.shape[0], N.shape[1] + C.shape[1]), net.output
+    net.output = None
+    opt = torch.optim.AdamW(list(net.parameters()) + list(head.parameters()), lr=1e-3, weight_decay=3e-4)
+    net.train()
+    for ep in range(epochs):
+        tot = 0
+        for idx in torch.randperm(len(N)).split(4096):
+            mn = torch.rand(len(idx), N.shape[1]) < rate
+            mc = torch.rand(len(idx), C.shape[1]) < rate
+            xn = torch.where(mn, N[torch.randint(len(N), (len(idx),))], N[idx])
+            src = torch.randint(len(C), (len(idx),))
+            xc = torch.where(mc, C[src], C[idx])
+            # a swapped value equal to the original is not a corruption
+            mn = mn & (xn != N[idx]); mc = mc & (xc != C[idx])
+            logit = head(net(xn, xc))
+            loss = torch.nn.functional.binary_cross_entropy_with_logits(logit, torch.cat([mn, mc], 1).float()[:, None, :].expand_as(logit))
+            opt.zero_grad(); loss.backward(); opt.step(); tot += loss.item() * len(idx)
+        print("pretrain epoch", ep, "loss", round(tot / len(N), 4), flush=True)
+    net.output = out
 
 
 def train(line, last, ty, fold, epochs, seed):
@@ -60,6 +85,8 @@ def train(line, last, ty, fold, epochs, seed):
     bins = rne.compute_bins(N[sub], n_bins=16)
     net = TabM.make(n_num_features=N.shape[1], cat_cardinalities=sizes, d_out=len(perils) * (2 if AUX else 1), k=K, d_block=256,
                     num_embeddings=rne.PiecewiseLinearEmbeddings(bins, 16, activation=False, version="B"))
+    if PRE:
+        pretrain(net, torch.cat([N, Nt]), torch.cat([C, Ct]), PRE)
     opt = torch.optim.AdamW(net.parameters(), lr=float(os.environ.get("TABM_LR", 2e-3)), weight_decay=3e-4)
     scale = te["exposure"].to_numpy()[:, None] * load_p * np.exp(base) * np.exp(line_trend(tr) * (ty - last))
     if fold != "test":
