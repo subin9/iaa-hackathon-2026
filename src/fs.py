@@ -20,6 +20,10 @@ SEV = dict(objective="gamma", learning_rate=0.05, num_leaves=7, min_data_in_leaf
            feature_fraction=0.7, bagging_fraction=0.8, bagging_freq=1, lambda_l2=10.0,
            verbose=-1, num_threads=int(os.environ.get("NT", 6)))
 SEV_CAP = 0.995
+# FS_SHALLOW: three-leaf trees with more rounds, which won for the pure-premium GBMs
+SHALLOW = bool(os.environ.get("FS_SHALLOW"))
+if SHALLOW:
+    FREQ["num_leaves"] = SEV["num_leaves"] = 3
 
 
 def perils_of(df):
@@ -39,7 +43,9 @@ def sev_trend(claims_rows, p, cap, tr):
     return np.polyfit(g["year"].to_numpy(), np.log(g["s"].to_numpy()), 1)[0] if g.height > 1 else 0.0
 
 
-def fit_line(line, tr, claims, f_rounds=300, s_rounds=200, seed=0):
+def fit_line(line, tr, claims, f_rounds=None, s_rounds=None, seed=0):
+    f_rounds = f_rounds or (1100 if SHALLOW else 300)
+    s_rounds = s_rounds or (450 if SHALLOW else 200)
     X = codes(to_pandas(tr))
     perils = perils_of(tr)
     freq = {}

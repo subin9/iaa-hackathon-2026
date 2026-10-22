@@ -13,7 +13,7 @@ from catboost import CatBoostRegressor, Pool
 from common import LINES, load, to_pandas, align_categories, cap_target, d2
 from run import FOLDS, line_trend
 
-MAX_IT = 1500
+MAX_IT = int(os.environ.get("CB_MAX", 1500))
 PARAMS = dict(loss_function="Tweedie:variance_power=1.5", learning_rate=float(os.environ.get("CB_LR", 0.05)), depth=int(os.environ.get("CB_DEPTH", 6)), l2_leaf_reg=10,
               min_data_in_leaf=500, thread_count=int(os.environ.get("NT", 6)), verbose=0, allow_writing_files=False)
 

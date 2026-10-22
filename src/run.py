@@ -24,6 +24,10 @@ SPECS = {
     "twx": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "extra_trees": True}, rounds=200, cap=0.99, seeds=5),
     # recent-years model: older years down-weighted by 0.6 per year, for time diversity in the blend
     "twxr": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "extra_trees": True}, rounds=200, cap=0.99, seeds=5, decay=0.6),
+    # three-leaf trees (at most pairwise interactions) beat 15 leaves by about 0.0016 on both folds
+    "tw3": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "num_leaves": 3}, rounds=600, cap=0.99, seeds=3),
+    "po3": dict(params={**GBM, "objective": "poisson", "num_leaves": 3}, rounds=1100, cap=0.995, seeds=3),
+    "twx3": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "extra_trees": True, "num_leaves": 3}, rounds=900, cap=0.99, seeds=5),
     "pox": dict(params={**GBM, "objective": "poisson", "extra_trees": True}, rounds=450, cap=0.99, seeds=5),
 }
 
