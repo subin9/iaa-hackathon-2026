@@ -16,10 +16,19 @@ PARAMS = {**GBM, "objective": "tweedie", "tweedie_variance_power": float(os.envi
           "num_leaves": int(os.environ.get("GP_LEAVES", GBM["num_leaves"]))}
 
 
+def peril_trend(tr, p):
+    """Log-linear trend of one peril's completion-adjusted cost rate over its mature years."""
+    g = tr.group_by("year").agg(
+        c=(pl.col(f"compk_{p}") * pl.col("exposure")).sum() / pl.col("exposure").sum(),
+        r=pl.col(f"y_{p}").sum() / (pl.col("exposure") * pl.col(f"compk_{p}")).sum()).filter(pl.col("c") > 0.97).sort("year")
+    return np.polyfit(g["year"].to_numpy(), np.log(g["r"].to_numpy()), 1)[0]
+
+
 def predict(tr, te, ty, fold, rounds, seeds):
     X = codes(to_pandas(tr)); Xt = codes(align_categories(to_pandas(tr), to_pandas(te)))
     last = int(tr["year"].max()); Xt["year"] = last
-    scale = te["exposure"].to_numpy() * np.exp(line_trend(tr) * (ty - last))
+    own = os.environ.get("GP_PT") == "1"
+    scale = te["exposure"].to_numpy() * (1.0 if own else np.exp(line_trend(tr) * (ty - last)))
     total = 0
     for p in sorted(c[2:] for c in tr.columns if c.startswith("y_")):
         y, load_f = cap_target(tr[f"y_{p}"].to_numpy(), 0.995)
@@ -28,7 +37,7 @@ def predict(tr, te, ty, fold, rounds, seeds):
         ds = lgb.Dataset(X, y, init_score=np.log(w) + base)
         raw = sum(lgb.train({**PARAMS, "seed": s}, ds, rounds).predict(Xt, raw_score=True) for s in range(seeds)) / seeds
         comp = 1.0 if fold == "test" else te[f"compk_{p}"].to_numpy()
-        total = total + np.exp(base + raw) * load_f * comp
+        total = total + np.exp(base + raw) * load_f * comp * (np.exp(peril_trend(tr, p) * (ty - last)) if own else 1.0)
     return total * scale
 
 
