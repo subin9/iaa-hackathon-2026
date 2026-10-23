@@ -39,6 +39,11 @@ SPECS = {
     "tw3l": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "num_leaves": 3}, rounds=800, cap=0.99, seeds=3, drop=LEAN),
     "po3l": dict(params={**GBM, "objective": "poisson", "num_leaves": 3}, rounds=1400, cap=0.995, seeds=3, drop=LEAN),
     "twx3l": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "extra_trees": True, "num_leaves": 3}, rounds=1200, cap=0.99, seeds=5, drop=LEAN),
+    "tw3v": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "num_leaves": 3}, rounds=800, cap=0.99, seeds=3, drop=LEAN + common.VEH),
+    "po3v": dict(params={**GBM, "objective": "poisson", "num_leaves": 3}, rounds=1400, cap=0.995, seeds=3, drop=LEAN + common.VEH),
+    "twx3v": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "extra_trees": True, "num_leaves": 3}, rounds=1200, cap=0.99, seeds=5, drop=LEAN + common.VEH),
+    # stumps: a purely additive model, lean features; better on v2023, worse on v2024
+    "tw2l": dict(params={**GBM, "objective": "tweedie", "tweedie_variance_power": 1.4, "num_leaves": 2}, rounds=1800, cap=0.99, seeds=3, drop=LEAN),
     "pox": dict(params={**GBM, "objective": "poisson", "extra_trees": True}, rounds=450, cap=0.99, seeds=5),
 }
 

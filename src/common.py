@@ -19,6 +19,8 @@ LEAN = ["hail_days", "wind_exposure_index", "freezing_days", "dry_summer_index",
         "mean_temperature_c", "channel", "payment_method", "days_quote_to_inception", "discount_applied",
         "previous_insurer", "new_business", "renewal_count", "vehicle_colour", "email_domain", "marketing_consent",
         "document_preference", "campaign_code", "branch_id", "marketing_segment", "start_month"]
+# secondary vehicle details, also dropped with LEAN=2 (better on both folds on two seed sets)
+VEH = ["seats", "fuel_type", "transmission", "body_type", "driver_assist", "engine_size_cc", "telematics_opt_in", "make_model"]
 
 
 def load(line):
@@ -32,7 +34,7 @@ def load(line):
 
 def to_pandas(df, drop_extra=()):
     per_peril = [c for c in df.columns if c.split("_")[0] in ("y", "n", "compc", "compk") and c not in ("y", "n", "n_lines")]
-    lean = LEAN if os.environ.get("LEAN") else []
+    lean = {"1": LEAN, "2": LEAN + VEH}.get(os.environ.get("LEAN"), [])
     X = df.drop([c for c in DROP + per_peril + lean + list(drop_extra) if c in df.columns]).to_pandas()
     for c in X.columns:
         if X[c].dtype == object or str(X[c].dtype) in ("string", "str") or X[c].dtype == bool:
