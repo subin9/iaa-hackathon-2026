@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "blockReadsOutsideWorkingDirectories": true,
+    "deny": [
+      "Read(//c/Users/Guest1337/Documents/044_IAA_AI_Hackathon_week2/eval/**)",
+      "Read(//c/Users/Guest1337/Documents/044_IAA_AI_Hackathon_week2/runs/**)",
+      "Read(//c/Users/Guest1337/Documents/044_IAA_AI_Hackathon_week2/week1_output/**)",
+      "Read(//c/Users/Guest1337/Documents/044_IAA_AI_Hackathon_week2/week2_data/**)",
+      "Edit(//c/Users/Guest1337/Documents/044_IAA_AI_Hackathon_week2/eval/**)",
+      "Edit(//c/Users/Guest1337/Documents/044_IAA_AI_Hackathon_week2/runs/**)",
+      "Edit(./data/**)",
+      "Edit(./playbooks/**)",
+      "Edit(./memory/**)",
+      "Edit(./CLAUDE.md)",
+      "WebFetch",
+      "WebSearch",
+      "Bash(kaggle:*)",
+      "Bash(git push:*)"
+    ]
+  }
+}

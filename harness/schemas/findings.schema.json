@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "findings.schema.json",
+  "title": "Data-readiness findings contract (emerging market)",
+  "description": "Array of data-quality findings on the emerging-market tables. Each finding identifies its affected records either by an explicit id sample (capped at 1,000) or by a structured selector evaluable against the as-delivered tables.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["finding_id", "category", "description", "tables", "row_count_estimate", "applies_to_test", "action_taken", "action_detail", "rationale"],
+    "anyOf": [
+      { "required": ["affected_ids"] },
+      { "required": ["affected_selector"] }
+    ],
+    "properties": {
+      "finding_id": { "type": "string", "minLength": 1 },
+      "category": { "type": "string", "description": "Free-text category label of your choosing (e.g. unit_scale, exposure, linkage, leakage, free_text, missingness)." },
+      "description": { "type": "string", "minLength": 1 },
+      "tables": {
+        "type": "array", "minItems": 1,
+        "items": { "type": "string", "enum": ["customers", "addresses", "weather", "policies_motor", "policies_buildings", "policies_contents", "claims", "test_motor", "test_buildings", "test_contents", "expenses", "reference_policies", "sample_submission"] }
+      },
+      "affected_ids": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id_type", "ids"],
+        "properties": {
+          "id_type": { "type": "string", "enum": ["row_id", "policy_id", "claim_id", "customer_id", "address_id"] },
+          "ids": { "type": "array", "items": { "type": "string" }, "maxItems": 1000 }
+        },
+        "description": "Sample of affected identifiers (up to 1,000). If the affected set is larger, prefer affected_selector."
+      },
+      "affected_selector": {
+        "type": "object", "additionalProperties": false,
+        "required": ["table", "where"],
+        "description": "Structured filter identifying the affected records; conditions are ANDed; evaluable against the as-delivered table (column names and values as received, before cleaning).",
+        "properties": {
+          "table": { "type": "string", "enum": ["customers", "addresses", "weather", "policies_motor", "policies_buildings", "policies_contents", "claims", "test_motor", "test_buildings", "test_contents", "expenses", "reference_policies"] },
+          "where": {
+            "type": "array", "minItems": 1,
+            "items": {
+              "type": "object", "additionalProperties": false,
+              "required": ["column", "op"],
+              "properties": {
+                "column": { "type": "string" },
+                "op": { "type": "string", "enum": ["eq", "ne", "in", "not_in", "between", "gt", "gte", "lt", "lte", "is_null", "not_null", "regex"] },
+                "value": { "description": "Scalar for eq/ne/gt/gte/lt/lte/regex; array for in/not_in; [low, high] inclusive for between; omitted for is_null/not_null." }
+              }
+            }
+          }
+        }
+      },
+      "row_count_estimate": { "type": "integer", "minimum": 0, "description": "Total affected records (rows, claims, customers…) across the listed tables." },
+      "applies_to_test": { "type": "boolean", "description": "True if the same issue is present in, or the same treatment was applied to, the test files." },
+      "action_taken": {
+        "type": "string",
+        "enum": ["EXCLUDE", "REPAIR", "RECONSTRUCT", "CONSOLIDATE", "RECLASSIFY", "NO_ACTION_FLAG_ONLY"],
+        "description": "EXCLUDE: records removed. REPAIR: values corrected in place. RECONSTRUCT: values rebuilt from other information. CONSOLIDATE: records collapsed. RECLASSIFY: kept but reinterpreted/relabelled (e.g. normalised categories). NO_ACTION_FLAG_ONLY: left as-is and flagged."
+      },
+      "action_detail": { "type": "string", "minLength": 1, "description": "What was actually done: which records, corrected from what to what, what justified it." },
+      "rationale": { "type": "string", "minLength": 1 },
+      "triggered_by_rules": {
+        "type": "array", "items": { "type": "string", "pattern": "^R-[0-9]{4}$" },
+        "description": "Playbook rule ids that led you to this finding. Empty array if you found it without a rule."
+      },
+      "team_query": { "type": "boolean", "description": "True if a human decision or confirmation is needed." }
+    }
+  }
+}
