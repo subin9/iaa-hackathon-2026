@@ -5,12 +5,13 @@ from sklearn.model_selection import GroupKFold
 from lib import *
 import model2
 TAGP = sys.argv[1] if len(sys.argv) > 1 else "_nb"
+C = model2.COLLISION
 VARS = {"levels only": {l: [] for l in LINES},
-        "gender(motor)": {"motor": ["gender"], "buildings": [], "contents": []},
-        "gender+NB (motor)": {"motor": ["gender", "new_business"], "buildings": [], "contents": []},
-        "gender+NB motor, age buildings": {"motor": ["gender", "new_business"], "buildings": ["policyholder_age_band"], "contents": []},
-        "above + NB everywhere": {"motor": ["gender", "new_business"], "buildings": ["policyholder_age_band", "new_business"], "contents": ["new_business"]},
-        "gender all + age all + NB all": {l: ["gender", "new_business", "driver_age_band" if l == "motor" else "policyholder_age_band"] for l in LINES}}
+        "gender line-level (motor)": {"motor": ["gender"], "buildings": [], "contents": []},
+        "gender collision perils (motor)": {"motor": [{"cols": ["gender"], "perils": C}], "buildings": [], "contents": []},
+        "final: gender collision + age buildings": {"motor": [{"cols": ["gender"], "perils": C}], "buildings": [{"cols": ["policyholder_age_band"]}], "contents": []},
+        "final + NB (motor)": {"motor": [{"cols": ["gender"], "perils": C}, {"cols": ["new_business"]}], "buildings": [{"cols": ["policyholder_age_band"]}], "contents": []},
+        "final + age everywhere": {"motor": [{"cols": ["gender"], "perils": C}, {"cols": ["driver_age_band"]}], "buildings": [{"cols": ["policyholder_age_band"]}], "contents": [{"cols": ["policyholder_age_band"]}]}}
 out = {v: [] for v in VARS}; ys = []; per = {v: {} for v in VARS}
 for line in LINES:
     em = load(line, "em").filter(pl.col("split") == "train").join(pl.read_parquet(f"work/p2/devperil{TAGP}_{line}.parquet"), on="row_id")
@@ -21,4 +22,4 @@ for line in LINES:
             o[vai] = model2.pipeline(em[tri], em[vai], short=sh[line], score_is_train=True)
         out[v].append(o); per[v][line] = round(d2(ye, o), 4)
 Y = np.concatenate(ys)
-for v in VARS: print(f"{v:34s}", per[v], "pooled", round(d2(Y, np.concatenate(out[v])), 4))
+for v in VARS: print(f"{v:42s}", per[v], "pooled", round(d2(Y, np.concatenate(out[v])), 4))

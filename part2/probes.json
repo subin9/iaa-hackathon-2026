@@ -1,0 +1,20 @@
+{
+  "note": "Public leaderboard scores of the Part 2 submissions, copied from `kaggle competitions submissions` (public D2, power 1.5). Segment probes multiply one segment of a base submission; part2/probe_solve.py turns them into the best multiplier per segment.",
+  "versions": [
+    {"name": "v0", "public": 0.14872, "what": "developed prior x one level per line"},
+    {"name": "v1", "public": 0.15483, "what": "v0 with new_business as a prior feature"},
+    {"name": "v2", "public": 0.15938, "what": "per-peril prior, shrunk peril levels (N0=400), motor gender and buildings age band corrections"},
+    {"name": "v3_half", "public": 0.16446, "what": "v2 x halfway (log) to the solved multipliers; the solver predicted 0.16433"}
+  ],
+  "probes_on_v1": [
+    {"seg": ["motor NB", "contents NB"], "m": 1.10, "public": 0.15801},
+    {"seg": ["buildings NB"], "m": 0.90, "public": 0.15366}
+  ],
+  "probes_on_v2": [
+    {"seg": "motor_nb", "m": 1.2, "public": 0.16370},
+    {"seg": "buildings_nb", "m": 1.2, "public": 0.16037},
+    {"seg": "contents_nb", "m": 1.2, "public": 0.15945},
+    {"seg": "renewal", "m": 1.2, "public": 0.15880}
+  ],
+  "solved_on_v2": {"motor_nb": 1.397, "buildings_nb": 1.232, "contents_nb": 1.112, "renewal": 1.013}
+}
