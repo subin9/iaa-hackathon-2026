@@ -58,3 +58,27 @@ Chronological notes of what was tried in Part 2, what each step showed and what 
   all renewals 0.15880. The public deviance is separable by segment, so the probes give the best multiplier per segment
   (`probe_solve.py`): motor NB 1.40, buildings NB 1.23, contents NB 1.11, renewals 1.01. The model predicted 0.16433 for the halfway point and
   the leaderboard returned 0.16446, which validates the method.
+
+## 2026-10-24, later: data repair, peril-specific correction, tests, report
+
+- Construction type: the developed `construction_type` has 11 spellings (Brick, brick, BRICK, stone, STONE, non_standard, NON_STANDARD, W, w, T, t). Case variants are the
+  same category; T was used in 2021-22 and W from 2023 on (cross-tab by year in the log of this step), so both letters are timber. A first mapping assumed the
+  documented spellings and turned 90% of the rows into missing values; the counts after mapping caught it. With the 4 codes the buildings CV D2 rose from 0.105 to 0.110
+  (levels only) and the pooled final from 0.1385 to 0.1409. In Part 1 this column was left as it came, so a model could read T/W as a year flag for buildings.
+- Prior variants: Tweedie 1.4, Poisson and extra-trees, averaged in log space (`average_priors.py`): pooled CV 0.1385, 0.1370, 0.1396 and 0.1391 for the average, which is
+  what the final model uses (an ensemble of three is a safer choice than the single best of three at this noise level).
+- Gender acts on the at-fault perils (male/female frequency ratio 1.66 bodily injury, 1.30 own damage, 1.43 third-party property; glass 1.04, theft 1.17), so the correction
+  is fitted on those three perils only: motor CV D2 0.0720 against 0.0714 for a line-level factor. Final CV pooled 0.1414 (`e10_pipeline_cv.py`).
+- Rejected on the emerging data: experience rating on renewals (D2 falls monotonically as credibility rises, `e12_experience.py`), written premium relative to the model
+  (A/E flat across quintiles), exposure-length effects, weather in the prior (`e9`, `eda_06`; per-peril deviance +1.8% for glass and +1.1% for storm, but the line D2 falls in CV).
+- Campaign codes: 83% of the test rows carry one (19% of training rows). The code identity is noise (year-to-year correlation of the A/E per code 0.12 to 0.35); what matters is
+  that coded rows are recent customers, who show the new-business uplift.
+- New business by channel in training: broker new business A/E 1.25 (555 claims, motor and contents), direct 0.94 (206 claims); not significant, so no channel split in the model.
+- Tests: `part2/tests/test_part2.py`, 22 checks. Bugs caught on the way: the column order (zero-shot pooled D2 0.036 against 0.134), a double level correction (motor mean
+  prediction 619 against 553 per exposure year), the construction recode, and a feature leak into the emerging-only comparison model (0.1244 against 0.1176).
+- Total matching: the ridge GLM with the Tweedie score equation left the training total up to 3.6% off in motor; the pipeline now rescales to the training total.
+
+## Public leaderboard budget
+
+Ten submissions a day, counted in UTC days. On 2026-10-24 the ten went to v0, v1, two probes on v1, v2, four probes on v2 and the half-way check v3_half. The full-step
+version of the solved multipliers (v3_full) and the probes on channels follow after the reset at 00:00 UTC.

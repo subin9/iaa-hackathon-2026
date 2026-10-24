@@ -35,7 +35,9 @@ def fig_transfer():
                 if a[lv][1] >= 300 and b[lv][1] >= 80:
                     ax[0].scatter(a[lv][0], b[lv][0], s=10 + b[lv][1] / 40, color=LC[line], alpha=0.65, lw=0); allx.append(np.log(a[lv][0])); ally.append(np.log(b[lv][0]))
     lim = [0.35, 2.6]; ax[0].plot(lim, lim, color="grey", lw=0.8, ls="--"); ax[0].set_xscale("log"); ax[0].set_yscale("log"); ax[0].set_xlim(lim); ax[0].set_ylim(lim)
-    ax[0].set_xlabel("developed market, relative cost per exposure"); ax[0].set_ylabel("emerging market"); ax[0].set_title(f"Rating-factor effects carry over (log corr {np.corrcoef(allx, ally)[0, 1]:.2f})")
+    from matplotlib.ticker import FixedLocator, FixedFormatter, NullLocator
+    for a in (ax[0].xaxis, ax[0].yaxis): a.set_major_locator(FixedLocator([0.5, 1, 2])); a.set_major_formatter(FixedFormatter(["0.5", "1", "2"])); a.set_minor_locator(NullLocator())
+    ax[0].set_xlabel("developed market, relative cost per exposure"); ax[0].set_ylabel("emerging market"); ax[0].set_title(f"Factor effects carry over (log corr {np.corrcoef(allx, ally)[0, 1]:.2f})")
     for line in LINES: ax[0].scatter([], [], color=LC[line], label=line, s=14)
     ax[0].legend(frameon=False, loc="upper left", fontsize=7)
     # peril level: actual / developed prior on the emerging rows (per-peril prior without any emerging data)
@@ -47,7 +49,7 @@ def fig_transfer():
     ypos = np.arange(len(rows))[::-1]
     ax[1].barh(ypos, [r[2] for r in rows], color=[LC[r[0]] for r in rows], height=0.7); ax[1].axvline(1, color="k", lw=0.8)
     ax[1].set_yticks(ypos); ax[1].set_yticklabels([f"{r[1].replace('_', ' ')} ({r[3]})" for r in rows], fontsize=6.5)
-    ax[1].set_xlabel("actual / developed prior (peril cost, claims in brackets)"); ax[1].set_title("Levels do not: peril multipliers range from 0.5 to 2.3")
+    ax[1].set_xlabel("actual cost / developed prior, by peril (claims)"); ax[1].set_title("Levels do not carry over")
     fig.tight_layout(); fig.savefig(OUT + "transfer.png", dpi=220); plt.close(fig)
 
 
@@ -74,7 +76,7 @@ def fig_leaderboard():
     m = p["solved_on_v2"]; k = list(m); ax[1].barh(range(len(k))[::-1], [m[x] for x in k], color="#d9822b", height=0.6); ax[1].axvline(1, color="k", lw=0.8)
     ax[1].set_yticks(range(len(k))[::-1]); ax[1].set_yticklabels([x.replace("_nb", " new business").replace("renewal", "renewals") for x in k]); ax[1].set_xlabel("best multiplier on v2 (from segment probes)")
     for i, x in enumerate(k): ax[1].text(m[x] + 0.01, len(k) - 1 - i, f"{m[x]:.2f}", va="center", fontsize=7)
-    ax[1].set_xlim(0.8, 1.6); ax[1].set_title("New business is under-priced by the transferred prior")
+    ax[1].set_xlim(0.8, 1.6); ax[1].set_title("New business is under-priced by v2")
     fig.tight_layout(); fig.savefig(OUT + "leaderboard.png", dpi=220); plt.close(fig)
 
 
