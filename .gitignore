@@ -1,0 +1,33 @@
+# --- data: CC BY-NC, never redistribute ---
+week2_data/
+week1_data/
+harness/data/
+**/*.parquet
+**/*.csv
+!submissions/log.csv
+!submissions/week1_public_scores.csv
+!eval/**/*.csv
+!runs/**/*.csv
+
+# --- agent scratch (promoted copies live in runs/cycle_N) ---
+harness/work/
+harness/outputs/
+
+# --- secrets ---
+.env
+kaggle.json
+*.token
+
+# --- reference material (not ours to redistribute) ---
+Reference/
+
+# --- python / editors ---
+__pycache__/
+*.pyc
+.venv*/
+.pytest_cache/
+.ipynb_checkpoints/
+~$*
+
+# week1 record (not data)
+!week1_output/public_scores.csv
