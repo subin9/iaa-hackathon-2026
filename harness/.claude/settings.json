@@ -1,6 +1,16 @@
 {
   "permissions": {
+    "defaultMode": "acceptEdits",
     "blockReadsOutsideWorkingDirectories": true,
+    "allow": [
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(py:*)",
+      "Bash(pip:*)",
+      "Bash(dir:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)"
+    ],
     "deny": [
       "Read(//c/Users/Guest1337/Documents/044_IAA_AI_Hackathon_week2/eval/**)",
       "Read(//c/Users/Guest1337/Documents/044_IAA_AI_Hackathon_week2/runs/**)",
@@ -11,11 +21,16 @@
       "Edit(./data/**)",
       "Edit(./playbooks/**)",
       "Edit(./memory/**)",
+      "Edit(./schemas/**)",
+      "Edit(./templates/**)",
+      "Edit(./tools/**)",
       "Edit(./CLAUDE.md)",
       "WebFetch",
       "WebSearch",
       "Bash(kaggle:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)"
     ]
   }
 }
