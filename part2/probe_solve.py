@@ -5,7 +5,7 @@ U_s = sum over public rows of y mu^-1/2 (unknown), T_s = sum over all test rows 
 D2 = 1 - Dev / Dev0, and Dev0 follows from the base score. The best multiplier is m*_s = U_s / (f T_s); f cancels out of it.
 Each probe multiplies one or more segments; probes + the base score must outnumber the segments.
 
-usage: probe_solve.py BASE.parquet SEGS_JSON PROBES_JSON   (the base parquet has prediction, line, new_business)
+usage: probe_solve.py BASE.parquet SEGS_JSON PROBES_JSON   (SEGS_JSON maps a segment name to a spec of part2/segments.py; the segments must partition the rows)
 """
 import sys, json
 import numpy as np
@@ -34,14 +34,9 @@ def solve(T, probes, f=1.0 / 3.0):
 
 
 if __name__ == "__main__":
-    import polars as pl
-    d = pl.read_parquet(sys.argv[1]); mu = d["prediction"].to_numpy(); line = d["line"].to_numpy(); nb = d["new_business"].to_numpy()
-    segs = json.loads(sys.argv[2]); probes = json.loads(sys.argv[3]); masks = {}
-    for n, (l, b) in segs.items():
-        m = np.ones(len(d), bool)
-        if l != "all": m &= line == l
-        if b is not None: m &= nb == bool(b)
-        masks[n] = m
+    import polars as pl, segments
+    d = segments.test_frame(pl.read_parquet(sys.argv[1]).select("row_id", "prediction")); mu = d["prediction"].to_numpy()
+    segs = json.loads(sys.argv[2]); probes = json.loads(sys.argv[3]); masks = {n: segments.mask(d, spec) for n, spec in segs.items()}
     T = segment_T(mu, masks); mstar, predict, err = solve(T, probes)
     print("max |residual|", f"{err:.1e}")
     for n in T: print(f"  {n:22s} m* = {mstar[n]:.3f}   (share of sum mu^1/2 {T[n] / sum(T.values()):.2f})")
