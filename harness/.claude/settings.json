@@ -3,19 +3,14 @@
     "defaultMode": "acceptEdits",
     "blockReadsOutsideWorkingDirectories": true,
     "allow": [
-      "Bash(python:*)",
-      "Bash(python3:*)",
-      "Bash(py:*)",
-      "Bash(pip:*)",
-      "Bash(dir:*)",
-      "Bash(ls:*)",
-      "Bash(mkdir:*)"
+      "Bash"
     ],
     "deny": [
       "Read(//c/Users/Guest1337/Documents/044_IAA_AI_Hackathon_week2/eval/**)",
       "Read(//c/Users/Guest1337/Documents/044_IAA_AI_Hackathon_week2/runs/**)",
       "Read(//c/Users/Guest1337/Documents/044_IAA_AI_Hackathon_week2/week1_output/**)",
       "Read(//c/Users/Guest1337/Documents/044_IAA_AI_Hackathon_week2/week2_data/**)",
+      "Read(//c/Users/Guest1337/Documents/044_IAA_AI_Hackathon_week2/pipeline/**)",
       "Edit(//c/Users/Guest1337/Documents/044_IAA_AI_Hackathon_week2/eval/**)",
       "Edit(//c/Users/Guest1337/Documents/044_IAA_AI_Hackathon_week2/runs/**)",
       "Edit(./data/**)",
@@ -25,12 +20,16 @@
       "Edit(./templates/**)",
       "Edit(./tools/**)",
       "Edit(./CLAUDE.md)",
+      "Edit(./.claude/**)",
       "WebFetch",
       "WebSearch",
       "Bash(kaggle:*)",
-      "Bash(git push:*)",
+      "Bash(git:*)",
       "Bash(curl:*)",
-      "Bash(wget:*)"
+      "Bash(wget:*)",
+      "Bash(rm -r:*)",
+      "Bash(rm -rf:*)",
+      "Bash(cd ..:*)"
     ]
   }
 }
