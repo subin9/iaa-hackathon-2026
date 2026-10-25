@@ -163,6 +163,28 @@ def check_baseline() -> None:
             notes.append("check_sub output:\n" + r.stdout.strip())
     if not (d / "validation.md").is_file():
         problem("baseline/validation.md: missing")
+    hold = d / "holdout_2024.csv"
+    if not hold.is_file():
+        problem("baseline/holdout_2024.csv: missing (2023-only training -> every 2024 training row)")
+    else:
+        try:
+            import polars as pl
+            h = pl.read_csv(hold, schema_overrides={"row_id": pl.String, "prediction": pl.Float64})
+            if set(h.columns) != {"row_id", "prediction"}:
+                problem(f"holdout_2024.csv: columns must be row_id, prediction (got {h.columns})")
+            elif h["prediction"].null_count() or not (h["prediction"] >= 0).all():
+                problem("holdout_2024.csv: null or negative predictions")
+            else:
+                n2024 = 0
+                for line in ("motor", "buildings", "contents"):
+                    t = pl.read_parquet(ROOT / "data/emerging" / f"policies_{line}.parquet", columns=["row_id", "period_start"])
+                    n2024 += t.filter(pl.col("period_start").cast(pl.Date).dt.year() == 2024).height
+                if h["row_id"].n_unique() != h.height:
+                    problem("holdout_2024.csv: duplicate row_ids")
+                notes.append(f"holdout_2024.csv: {h.height:,} rows predicted; {n2024:,} 2024 training rows exist "
+                             f"({h.height / max(n2024, 1):.1%} coverage)")
+        except ImportError:
+            notes.append("polars not installed - holdout file not checked")
 
 
 def main() -> int:

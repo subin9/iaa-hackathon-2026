@@ -76,6 +76,15 @@ Work through the phases in order; each phase has a playbook.
    - `./outputs/baseline/validation.md` — the validation design you used
      (and why, if a playbook rule could not be applied as written), the
      scores, and the predicted level by line against history.
+   - `./outputs/baseline/holdout_2024.csv` — columns `row_id, prediction`,
+     one row for every 2024 emerging training row of all three lines, from
+     models trained **without any 2024 emerging rows** (2023 rows, and the
+     developed data if you choose). Predict on the same basis as the
+     observed target `y` at the valuation date — the expected cost
+     reported by 31 December 2024, i.e. ultimate × completion — so the
+     file can be scored against what was actually observed. This is the
+     team's common out-of-time test; produce it with the same code path as
+     the submission.
 
 6. **Retrospective** — written last, following
    `./templates/retrospective_template.md`, to `./outputs/retrospective.md`.

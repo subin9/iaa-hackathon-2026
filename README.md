@@ -20,12 +20,15 @@ the evidence for each.
   (`CLAUDE.md`), method-only playbooks distilled from Week 1, templates,
   self-check tools. `harness/memory/registry.yaml` records the origin,
   evidence and approver of every rule.
-- `eval/` — architect-side loop: answer key, scorecards, promotion log.
-  Never visible to the agent.
+- `eval/` — architect-side loop (`LOOP.md`: operating model and
+  measurement design), answer key, scorecards, control-arm charter
+  (`cycle0_bare/`), code-graded holdout (`grade_holdout.py`). Never
+  visible to the agent.
 
 ## 3. Trust, validation & guardrails (20%)
-- `GUARDRAILS.md` — validation checks, automated tests, review and
-  escalation protocol, submission controls.
+- `GUARDRAILS.md` — roles and four review gates (actuary signs judgments,
+  data scientist reviews implementation and releases), validation rules,
+  automated tests, agent containment, submission controls.
 - `harness/tools/` — `validate_outputs.py`, `check_sub.py`.
 - `tools/check_repo.py` — pre-commit guard: no data, no tokens.
 

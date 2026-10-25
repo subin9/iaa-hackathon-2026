@@ -1,5 +1,24 @@
 # Trust, validation and guardrails
 
+## Roles and review gates (operating model)
+
+Two people, roles by expertise. The actuary (15 years) builds and runs the
+harness and signs the actuarial judgments; the data scientist (2 years, no
+actuarial background) owns the pipeline and reviews the agent's technical
+output. No peer actuary is on the team, so an AI second reader — a session
+that did not do the work — reviews the actuarial judgments; the report
+states this limitation. Preparer and reviewer are never the same person at
+any gate.
+
+| Gate | When | Reviewer | Question |
+|---|---|---|---|
+| ① Ingest | Agent output (cleaned tables, modelling tables) before it enters `pipeline/` | Data scientist | Implementation correct? Fold design leak-free? Columns, types, joins, offsets as documented? |
+| ② Promote | A rule enters a playbook (PR) | Data scientist and actuary, different questions | DS: general, implementable, no conflict with existing rules. Actuary: actuarially right. |
+| ③ Release | Before any Kaggle submission | Data scientist (preparer ≠ releaser) | `check_sub` read, level by line reconciled to history, logged with commit hash. |
+| ④ Sign | Adaptation decisions, target notes, report | Actuary, with AI second reader's notes | Judgments stated, justified, uncertainty quantified. |
+
+Full procedure: `eval/LOOP.md` Part A.
+
 ## Validation
 - Local validation is time-ordered (train ≤ Y−1 → predict Y). Random
   K-fold across policy-years is prohibited (same policy spans years).
@@ -9,26 +28,38 @@
 - When a validation rule cannot be applied as written (e.g. one fold only
   in the emerging market), the agent must say so, propose the closest
   substitute, and escalate it in the retrospective.
+- Common out-of-time test for every model: `holdout_2024.csv` (trained
+  without 2024 emerging rows, predicting every 2024 training row), graded
+  by `eval/grade_holdout.py` against one fixed truth. Public-leaderboard
+  differences are read against the estimated noise floor (≈0.0015–0.002
+  on the Part 2 public set); differences inside it are reported as not
+  measurable.
 
 ## Automated checks
 - `harness/tools/validate_outputs.py` — all deliverables present, findings
-  conform to `harness/schemas/findings.schema.json`.
+  conform to `harness/schemas/findings.schema.json`, holdout file shape and
+  coverage.
 - `harness/tools/check_sub.py` — row coverage, uniqueness, non-negativity,
   predicted rate per exposure vs history by line, max prediction.
-- `tools/check_repo.py` — blocks commits containing data files or tokens.
+- `harness/tools/lint_harness.py` — every playbook rule has a registry
+  entry and vice versa.
+- `tools/check_repo.py` — pre-commit: blocks commits containing data files
+  or tokens.
 
-## Human review and escalation
-- The agent never submits to Kaggle. A human reads `check_sub` output and
-  submits; every submission is logged (`submissions/log.csv`) with the
-  commit hash.
-- The agent lists its weakest judgment calls in `retrospective.md`; human
-  review starts there.
-- Rules are promoted into the harness only by the actuary, with provenance
-  recorded in `harness/memory/registry.yaml`. Rules teach method, never
-  market-specific answers.
+## Agent containment
+- The agent works only inside `harness/`: reads outside the folder are
+  blocked, `eval/`, `runs/`, `week1_output/`, `week2_data/` are denied
+  explicitly, harness files (charter, playbooks, registry, schema,
+  templates, tools) are read-only to it, and web, Kaggle, `curl`, `wget`
+  and `git push` are denied (`harness/.claude/settings.json`).
+- The agent never submits to Kaggle and never promotes a rule. It
+  proposes; humans decide and record provenance in
+  `harness/memory/registry.yaml`.
+- Rules teach method, never market-specific answers (R-0408).
 
 ## Submission controls
 - ≤ 5 submissions per UTC day, regardless of what the platform accepts.
+- Every submission logged in `submissions/log.csv` with the commit hash.
 - Two final candidates covering the main level hypothesis split.
 
 ## Data and secrets

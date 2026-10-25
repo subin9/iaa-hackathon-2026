@@ -31,3 +31,6 @@ __pycache__/
 
 # week1 record (not data)
 !week1_output/public_scores.csv
+
+# generated control-arm workspace (eval/make_cycle0.py)
+harness_bare/
