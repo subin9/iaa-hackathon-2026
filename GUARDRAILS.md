@@ -60,9 +60,15 @@ Full procedure: `eval/LOOP.md` Part A.
 - Rules teach method, never market-specific answers (R-0408).
 
 ## Submission controls
-- ≤ 5 submissions per UTC day, regardless of what the platform accepts.
-- Every submission logged in `submissions/log.csv` with the commit hash.
-- Two final candidates covering the main level hypothesis split.
+- Rules §2.2a allow 10 submissions per UTC day (UTC day starts 08:00 SGT);
+  the team plans each day's slots in advance and never spends them on
+  differences inside the public-score noise.
+- Every submission logged in `submissions/log.csv` with the commit hash,
+  data version and model version.
+- Two final candidates covering the main level hypothesis split; **one**
+  is selected as the Final Submission (Rules §2.2b) with the reasoning
+  recorded. Part 1's Final Submission counts equally with Part 2's in the
+  40% pricing score (Rules §2.4c) — confirm which Part 1 file is selected.
 
 ## Data and secrets
 - Data (CC BY-NC 4.0) is never committed or redistributed.

@@ -13,14 +13,21 @@ the file checks and the humans apply the rest.
   printout; a passing file with an implausible level is not ready.
 
 <!-- rule: R-0505 -->
-- **Keep two final candidates across the main level hypothesis.** When the
-  predicted level rests on an assumption that cannot be validated locally
-  (completion tail, trend, acquired-book behaviour), prepare two candidate
-  files that differ in that assumption, both validated, and let the human
-  choose with the reasoning written down.
+- **Prepare two candidates across the main level hypothesis; only one can
+  be selected.** When the predicted level rests on an assumption that cannot
+  be validated locally (completion tail, trend, acquired-book behaviour),
+  prepare two candidate files that differ in that assumption, both
+  validated. The competition allows exactly one Final Submission per team
+  (Rules §2.2b; unselected = best public score is used), so the human
+  chooses one and writes the reasoning down, including why the other was
+  not chosen.
 
 <!-- rule: R-0502 -->
-- **At most five submissions per UTC day**, whatever the platform accepts.
+- **Respect the stated submission limit and keep a team budget below it.**
+  The Rules allow ten submissions per UTC day (§2.2a). The team plans its
+  day's submissions in advance (probes, data-version checks, candidates)
+  and never spends slots on differences the public score cannot resolve
+  (R-0204).
 
 <!-- rule: R-0503 -->
 - **Every submission is logged**: UTC time, file name, commit hash of the

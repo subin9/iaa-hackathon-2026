@@ -483,10 +483,10 @@
   location: playbooks/submission_guardrails.md
 
 - id: R-0502
-  statement: At most five submissions per UTC day regardless of platform limits.
+  statement: Respect the stated submission limit (Rules §2.2a, ten per UTC day) and plan a team budget below it; never spend slots on differences the public score cannot resolve.
   applies_to: submission
   origin: WEEK1_TEAM
-  evidence: Week 1 README §2 note 1 (7 submissions on day 1 may have breached the 5/day rule; limited thereafter).
+  evidence: Week 1 README §2 note 1 raised the limit as a concern (believed 5/day); Part 2 Rules page read 2026-10-25 states ten per day. Statement corrected by actuary.
   source_cycle: 0
   approved_by: actuary (HyunSu Kim)
   status: ACTIVE
@@ -513,10 +513,10 @@
   location: playbooks/submission_guardrails.md
 
 - id: R-0505
-  statement: Keep two final candidates that differ in the main unvalidatable level assumption.
+  statement: Prepare two candidates that differ in the main unvalidatable level assumption; select one (Rules §2.2b allow one Final Submission) and record why.
   applies_to: submission
   origin: WEEK1_TEAM
-  evidence: Week 1 README §1/§2 (eq20 vs eq20_lv split by level hypothesis).
+  evidence: Week 1 README §1/§2 (eq20 vs eq20_lv split by level hypothesis); one-final-submission clause from Part 2 Rules §2.2b, read 2026-10-25.
   source_cycle: 0
   approved_by: actuary (HyunSu Kim)
   status: ACTIVE
