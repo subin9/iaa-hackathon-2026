@@ -1,4 +1,4 @@
-# Scorecard — cycle N (arm …, harness-vN)
+# Scorecard — cycle N (harness-vN → data version D_N)
 
 Run: start … end … | operator: … | interventions: … | cost/tokens: …
 Graders: sections A, D → data scientist · sections B, C, E → actuary + AI second reader (notes attached)
@@ -19,6 +19,7 @@ Graders: sections A, D → data scientist · sections B, C, E → actuary + AI s
 | — | False alarms (issues reported that are not issues) | | | | list |
 
 Detection rate: …/10 · correct treatment: …/found · false alarms: …
+Rule-caught (triggered_by_rules non-empty): … · novel (empty): … · missed: … · time to first novel finding: …
 
 ## B. Adaptation decisions — actuarial
 - Schema mapping table delivered and correct? (age bands, construction codes, missing columns)
@@ -35,7 +36,7 @@ Detection rate: …/10 · correct treatment: …/found · false alarms: …
 - validate_outputs.py pass? Reconciliations present (row counts, totals before/after)?
 - Modelling tables usable by the pipeline (columns, completion, offsets)?
 - Baseline (stretch): fold score, check_sub output, plausibility of line levels.
-- Holdout: `python eval/grade_holdout.py runs/cycle_N/baseline/holdout_2024.csv --label <arm> --append eval/holdout_results.csv` → D² all / by line, coverage, level ratio. Floor: naive_2023_rate 0.068.
+- Holdout: `python eval/grade_holdout.py runs/cycle_N/baseline/holdout_2024.csv --label D_N_M0 --append eval/holdout_results.csv` → D² all / by line, coverage, level ratio. Floor: naive_2023_rate 0.068.
 
 ## E. Retrospective quality — actuarial
 - Weakest judgment calls named? Proposed rules general (method, not location)?

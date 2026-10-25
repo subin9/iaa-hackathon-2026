@@ -1,1 +1,1 @@
-date_utc,part,file,commit,local_scores,public_score,description
+date_utc,part,file,commit,data_version,model_version,holdout_d2,local_scores,public_score,submitted_by,description

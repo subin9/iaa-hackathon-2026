@@ -10,32 +10,39 @@ principles that emerged: time-ordered folds, same-direction adoption rule,
 3-seed averaging, noise floors, equal-weight blends. Full narrative:
 `week1_output/README.md`.
 
-## Week 2 (emerging market) — three arms
+## Week 2 (emerging market) — data-version track
 
-| Arm | What | Operated by | AI's role | Verification |
+Thesis: data quality drives model quality; a harness that catches the easy
+defects frees the agent for the hard ones. The unit of measurement is a data
+version, trained with one frozen model.
+
+| Version | What | Produced by | AI's role | Verification |
 |---|---|---|---|---|
-| A | Part 1 blend ported, levels re-estimated | Data scientist | Pair programming and analysis, as in Week 1 | Fold scores, `check_sub`, holdout grading, gate ③ |
-| B | Fresh agent under the harness (`harness/`, tag `harness-vN`) | Actuary | Autonomous end-to-end: profiling, cleaning, shift report, targets, adaptation decisions, baseline | Self-checks (`validate_outputs`), reconciliations, gate ① technical review, gate ④ actuarial sign-off, scorecard vs answer key, holdout grading |
-| 0 | Same agent, same charter and templates, **no playbooks** (`eval/cycle0_bare/`) | Data scientist | Control: what the agent does without Week 1 knowledge | Same scorecard and holdout grading as B |
+| D0 | Week 1 preparation ported to the emerging market, unaided | Data scientist | Pair programming, as in Week 1 | Fold scores, `check_sub`, holdout grading |
+| D1, D2 … | Modelling tables from harness cycle k (`harness-vk`), fresh agent each time | Actuary (operator) | Autonomous end-to-end: profiling, cleaning, shift report, targets, adaptation decisions | `validate_outputs`, reconciliations, gate ① technical review, gate ④ actuarial sign-off, scorecard vs answer key, holdout grading |
+| M0 | Frozen lean 3-leaf GBM blend, fixed seeds — the measuring instrument | Data scientist | — | Unchanged across D_k |
+| M1 … | Model-track changes on the latest converged D_k | Data scientist | Pair programming | R-0202, holdout, leaderboard with noise floor |
 
 The harness is the actuary's judgment written down so that a fresh agent —
 and a colleague — can execute it. Its real-world reader is the
 data scientist, who reads every playbook once and marks sentences that are
 unclear or not implementable; the count and the fixes are reported.
 
-Each arm's operator documents their own AI use: the actuary in `runs/` and
-this file; the data scientist in `pipeline/README.md` (which prompts, which
+Each operator documents their own AI use: the actuary in `runs/` and this
+file; the data scientist in `pipeline/README.md` (which prompts, which
 checks, what was rejected and why).
 
 ## Cycle log
 
-| Cycle | Arm | Harness | Kickoff | Output | Scorecard | Holdout D² | Promoted |
+| Cycle | Harness | Kickoff | Output | Scorecard | Rule-caught / novel / missed | Holdout D² (D_k×M0) | Promoted |
 |---|---|---|---|---|---|---|---|
-| 0 | 0 | charter only | `harness/kickoff_prompt.txt` | `runs/cycle_0/` | `eval/scorecards/cycle_0.md` | `eval/holdout_results.csv` | — |
-| 1 | B | v1 (50 rules) | same | `runs/cycle_1/` | `eval/scorecards/cycle_1.md` | same | → v2 |
+| — (D0) | none | — | `pipeline/` | — | — | | — |
+| 1 (D1) | v1 (50 rules) | `harness/kickoff_prompt.txt` | `runs/cycle_1/` | `eval/scorecards/cycle_1.md` | | | → v2 |
+| 2 (D2) | v2 | same | `runs/cycle_2/` | `eval/scorecards/cycle_2.md` | | | → v3 |
 
 Floor for the holdout: a constant 2023 burning cost by line scores D² 0.068
-(`eval/holdout_results.csv`, `naive_2023_rate`).
+(`eval/holdout_results.csv`, `naive_2023_rate`). Data track stops when a
+cycle finds nothing novel and the holdout gain is inside the noise floor.
 
 ## Verification of AI output
 - Every data-quality finding is reconciled (row counts, totals before/after).

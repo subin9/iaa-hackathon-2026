@@ -71,7 +71,7 @@ actuary's judgment to its real reader; the marked sentences are rewritten
 
 4. **Review** (gates ① and ④)
    - Evan: gate ① on the cleaned tables and modelling tables before they
-     go to `pipeline/`.
+     go to `pipeline/` as data version **D_k** (see Part B).
    - HS: read `adaptation_decisions.md`, `target_notes.md` and the
      `team_query` items; decide each; record decisions in
      `runs/cycle_N/decisions.md`. Attach the AI second reader's notes.
@@ -96,35 +96,67 @@ actuary's judgment to its real reader; the marked sentences are rewritten
 
 ## Part B — Measurement design (this competition only)
 
-Purpose: say with evidence whether Week 1 knowledge, delivered as a
-harness, changed what the agent did on the new market. Three arms:
+Thesis under test: **data quality drives model quality, and a harness that
+catches the easy defects frees the agent to find the hard ones.** So the
+unit of measurement is a *data version*, not a model.
 
-| Arm | What | Operated by | Exists in practice? |
+### Data-version track
+
+| Version | What it is | Produced by | Role |
 |---|---|---|---|
-| **A** | Human DS + AI pair port of the Part 1 blend, level re-estimated | Evan | yes — this is ordinary modelling work |
-| **B** | Agent under harness-vN (Cycle N), including its stretch baseline | HS | yes — the operating model above |
-| **0** | Agent under the same charter, templates, schema and tools, **no playbooks, no registry** (`eval/cycle0_bare/`) | Evan (near-idle: paste kickoff, do not intervene, collect) | **no** — control arm |
+| **D0** | The data scientist's own port of the Week 1 preparation to the emerging market, unaided by the harness | Evan | Control: what a competent DS does without the harness |
+| **D1** | Modelling tables from Cycle 1 (harness-v1), after gate ① | HS (agent) | First harness version |
+| **D2, D3 …** | Modelling tables from Cycle k (harness-vk), each from a fresh agent on the raw data, after gate ① | HS (agent) | Accumulated promotions |
 
-Arm 0 vs B measures the playbooks' contribution (the charter, templates and
-deliverable structure are held constant, so this is a lower bound on the
-whole harness's effect). A vs B decides the final blend and is reported as
-"human-led vs agent-led under harness".
+A data version is the set `modelling_tables/{motor,buildings,contents}.parquet`
+(cleaned rows **and** target, completion, exclusions, mapped features) plus
+`adaptation_decisions.md`. Row-level repairs alone barely move the score;
+target construction and leakage exclusions do (Part 1: host GLM without IBNR
+treatment 0.109 vs first submission 0.127). The agent retains nothing between
+cycles; the harness retains what was approved, so D_k improves only through
+promoted rules.
 
-Integrity: Evan operates Arm 0 **before** reading `answer_key.md`; neither
-operator intervenes in a run; the kickoff prompt is identical.
+### Measuring instrument: a frozen model
+
+- **M0** is fixed after D0 (lean 3-leaf GBM blend, fixed seeds, fixed config).
+  Every data version is trained with M0 unchanged; the difference between
+  D_k×M0 and D_{k−1}×M0 is the data effect.
+- Model improvements run on a separate **model track** on a fixed data
+  version (M1, M2 … on the latest converged D_k), adopted under R-0202.
+- Every submission is logged with both coordinates (`data_version`,
+  `model_version`) in `submissions/log.csv`; the report shows the matrix.
 
 ### Three layers of grading
 
 | Layer | What | Who | Catches |
 |---|---|---|---|
-| ① Scorecard vs answer key | Detection, treatment, false alarms, decision table, uncertainty, deliverable completeness (`scorecard_template.md`) | **Split by expertise**: items A, D (technical, objective) → Evan; items B, C, E (actuarial judgment) → HS + AI second reader. Each grades both arms on their items. | The 60% of judging the leaderboard cannot see |
-| ② Code-graded holdout | Each arm's `outputs/baseline/holdout_2024.csv` (2023-only training → 2024 rows) scored by `eval/grade_holdout.py` against the architect's 2024 target | code | Noise-controlled accuracy, same truth for every arm, zero submission slots |
-| ③ Public leaderboard | One submission per arm | Evan releases (gate ③) | External confirmation. Report with the noise floor: Part 1 pairwise noise was ≈0.0009 on ≈207k public rows; Part 2 public set is ≈69k rows → expect ≈0.0015–0.002. A difference inside that band is reported as "not measurable". |
+| ① Scorecard vs answer key | Per cycle: detection, treatment, false alarms, decision table, uncertainty (`scorecard_template.md`), **and** for every finding whether a rule led to it (`triggered_by_rules` non-empty = rule-caught; empty = novel) | Sections A, D (technical) → Evan; B, C, E (actuarial) → HS + AI second reader | What the leaderboard cannot see; the resource thesis |
+| ② Code-graded holdout | `holdout_2024.csv` for each (D_k, M) — trained without 2024 emerging rows — scored by `eval/grade_holdout.py` against one fixed truth | code | Noise-controlled data effect; zero submission slots |
+| ③ Public leaderboard | D_k×M0 once per data version; model-track candidates | Evan releases (gate ③) | External confirmation, read against the noise floor (≈0.0015–0.002 on ≈69k public rows; Part 1: 0.0009 on ≈207k). Inside the band = "not measurable" |
 
-The answer key is the architect's independent profile, written before any
-agent run. In practice there is no answer key; the reviewer's spot checks
-and the reconciliation rules (R-0012, R-0208) stand in its place — say so
-in the report.
+### The headline figure
+
+One chart per cycle: stacked bars of findings **rule-caught / novel / missed
+(vs answer key)**, with the holdout D² of D_k×M0 as a line. The thesis
+predicts: rule-caught rises as novel findings of cycle k become rules of
+cycle k+1; novel findings appear earlier in the run (time to first novel
+finding from the session log); D² rises then flattens.
+
+### Convergence and stopping
+
+Stop the data track when a cycle produces no novel finding **and** the
+holdout ΔD² of D_k×M0 vs D_{k−1}×M0 is inside the noise floor. Expect this
+after two or three cycles — the defect list is finite. Record it as a result
+("data quality converged at D_k"); later cycles are justified only by
+sharper adaptation decisions and uncertainty statements, which the scorecard
+sections B and E measure.
+
+### Optional control: Arm 0
+`eval/cycle0_bare/` + `eval/make_cycle0.py` build a workspace with the same
+charter, templates, schema and tools but no playbooks. It isolates the
+playbooks' contribution from the charter's. Run it only if time allows
+(operator must not have read `answer_key.md`); D0 already serves as the
+practical control.
 
 ### Integrity rules for the architect
 - Harness v1 contains ONLY rules traceable to the Week 1 README plus the
@@ -136,4 +168,8 @@ in the report.
 - The holdout truth (`grade_holdout.py`) is built from raw data with the
   minimum treatment that does not depend on any judgment call (claim–row
   linkage by loss date, net incurred, repudiated = 0). It is not the
-  cleaned data of any arm.
+  cleaned data of any version.
+- The answer key is the architect's independent profile, written before any
+  agent run. In practice there is no answer key; the reviewer's spot checks
+  and the reconciliation rules (R-0012, R-0208) stand in its place — say so
+  in the report.

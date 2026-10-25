@@ -8,10 +8,12 @@ the evidence for each.
 ## 1. Pricing performance & adaptation (40%)
 - Part 1 (developed market): see `week1_output/README.md` — the full
   experiment log, what worked, what did not, final blend (eq20).
-- Part 2 (emerging market): see `runs/` (agent cycles) and `pipeline/`
-  (ported model). The per-component carry-over decisions are in
+- Part 2 (emerging market): data versions D0 (data scientist's own port)
+  and D1, D2 … (harness cycles, `runs/cycle_N/`) trained with one frozen
+  model M0, then a model track on the converged data (`pipeline/`). The
+  per-component carry-over decisions are in
   `runs/cycle_N/adaptation_decisions.md`; remaining uncertainties are
-  stated there and in `report/`.
+  stated there and in `report/`. Design: `eval/LOOP.md`.
 
 ## 2. Effective use of AI (25%)
 - `AI_USAGE.md` — where AI was used, how its outputs were verified, and the

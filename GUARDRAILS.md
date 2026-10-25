@@ -28,9 +28,11 @@ Full procedure: `eval/LOOP.md` Part A.
 - When a validation rule cannot be applied as written (e.g. one fold only
   in the emerging market), the agent must say so, propose the closest
   substitute, and escalate it in the retrospective.
-- Common out-of-time test for every model: `holdout_2024.csv` (trained
-  without 2024 emerging rows, predicting every 2024 training row), graded
-  by `eval/grade_holdout.py` against one fixed truth. Public-leaderboard
+- Common out-of-time test for every (data version, model) pair:
+  `holdout_2024.csv` (trained without 2024 emerging rows, predicting every
+  2024 training row), graded by `eval/grade_holdout.py` against one fixed
+  truth. Data effects are measured with the model frozen (M0); model
+  changes are measured on a fixed data version. Public-leaderboard
   differences are read against the estimated noise floor (≈0.0015–0.002
   on the Part 2 public set); differences inside it are reported as not
   measurable.
