@@ -82,3 +82,20 @@ Chronological notes of what was tried in Part 2, what each step showed and what 
 
 Ten submissions a day, counted in UTC days. On 2026-10-24 the ten went to v0, v1, two probes on v1, v2, four probes on v2 and the half-way check v3_half. The full-step
 version of the solved multipliers (v3_full) and the probes on channels follow after the reset at 00:00 UTC.
+
+## 2026-10-25, probes on v5 and the limit of leaderboard fitting
+
+- The 00:03 UTC job ran: v4 0.16135, v5_full 0.16797 (v4 times the transferred multipliers), and seven probes on v5.
+- Structure-free solution on v5 (`probe_solve.py`, the four base segments): motor NB 0.892, buildings NB 0.940, contents NB 0.972, renewals 0.996, so the transferred
+  levels were nearly right and the best case of level changes alone is 0.16869. Overlay probes, each solved alone with the null deviance from the four-segment solution:
+  motor new business through the direct channel 0.708 (training data agrees: direct new business A/E 0.94 against broker 1.25), buildings age 35-49 1.185, all motor males 1.191.
+- A seven-parameter multiplicative structure (`probe_solve_struct.py`, probe rounding propagated) predicted 0.17512 for v6 (the shrunk solution); the leaderboard gave 0.17182.
+  The nine scores are not consistent with the separable formula to better than about 3e-4 of D2 (the equations use one third of the sum of mu^1/2 per cell in place of the
+  unknown public sum), and with that tolerance the data no longer pin down a structure (`probe_solve_ridge.py`: leave-one-probe-out errors of 0.003 and absurd factors in
+  free structures). Lesson: fit the gain to the tolerance, not to the rounding.
+- Sampling noise of a public-fitted factor (`e13_cell_noise.py`, bootstrap of out-of-fold training rows, as many rows as the public part of each segment): sd of log m* 0.05
+  (motor NB) to 0.32 (buildings age 35-49). Factors are shrunk by tau^2 / (tau^2 + se^2) before they are used.
+- `probe_solve_cells.py`: twelve cells, ridge prior and an equation noise of 2e-4 give a mild solution (motor NB female 0.69, male 1.19, direct 0.76-0.82, renewals 0.93-1.19 by
+  gender, buildings and contents renewals 0.95). Predicted public D2 0.1715 for the shrunk file (v7) and 0.1729 at the unshrunk cell optimum, against 0.17182 for v6: further
+  leaderboard fitting is worth at most 0.001 on the public rows and less on the private rows.
+- Submissions used for this round: v6 (one of the five the user allowed); v7 is queued for 00:03 UTC on 2026-10-26.
