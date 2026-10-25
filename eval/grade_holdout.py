@@ -52,7 +52,10 @@ def build_truth() -> pl.DataFrame:
     for line in LINES:
         pol = pl.read_parquet(RAW / f"policies_{line}.parquet", columns=["row_id", "policy_id", "period_start", "period_end", "exposure"])
         pol = pol.with_columns(pl.col("row_id").cast(pl.String), pl.col("period_start").cast(pl.Date), pl.col("period_end").cast(pl.Date))
-        pol = pol.with_columns(pl.col("period_start").dt.year().alias("year"))
+        # exposure re-derived from the dates: the stored column carries day-count rows (a known defect),
+        # and the grader must not depend on any arm's repair of it
+        pol = pol.with_columns(pl.col("period_start").dt.year().alias("year"),
+                               (((pl.col("period_end") - pl.col("period_start")).dt.total_days() + 1) / 365).round(4).alias("exposure"))
         c = claims.filter(pl.col("line") == line).select("policy_id", "loss_date", "net")
         j = pol.join(c, on="policy_id", how="inner").filter(
             (pl.col("loss_date") >= pl.col("period_start")) & (pl.col("loss_date") <= pl.col("period_end")))

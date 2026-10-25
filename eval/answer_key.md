@@ -50,3 +50,9 @@ contents: theft 418 (2.9k), accidental_damage 340 (0.6k), escape_of_water
 fixed 85 vs 45 CU; variable 15% vs 12%; commission broker 20% vs 15%,
 direct 0, comparison_site blank vs 10%; premium tax 8% vs 12%; cat
 reinsurance 12% vs 6% of property risk premium; profit 8% vs 5%.
+
+## Corrections after cycle 1 (2026-10-26)
+- Burning-cost table above used the RAW exposure column, which carries the day-count rows; on repaired exposure the raw-at-valuation rates are motor 432.7 / 382.7, buildings 514.3 / 306.7, contents 91.1 / 86.8 (2023 / 2024). The grader now derives exposure from dates.
+- Item 1 missed a second exposure convention: 493 rows on a 360-day basis (+1.39%); the key's |Δ| > 0.02 tolerance hid it. Found by the agent (F-02).
+- Item 8 ("block-missing, broker feed") was a guess; the agent's MCAR evidence (independent ~12% draws across 15 columns, no link to channel or year) is better supported.
+- Not in the key, verified after the run: campaign_code null ⇔ joined before 2023 (perfect cohort stamp); ncb_years > years_licensed on 16.4% / 22.2% of motor rows; 2024 full-year rows end 30 Dec; 10.0% of DEVELOPED motor rows reference customers absent from developed customers.parquet (Part 1 issue).

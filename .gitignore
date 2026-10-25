@@ -34,3 +34,9 @@ __pycache__/
 
 # generated control-arm workspace (eval/make_cycle0.py)
 harness_bare/
+
+# agent run artefacts that are large or may contain data rows
+runs/**/baseline/*.csv
+runs/**/*.jsonl
+runs/**/transcript*.txt
+runs/**/affected_ids.json

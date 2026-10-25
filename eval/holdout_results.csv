@@ -1,2 +1,4 @@
 label,graded_utc,rows_2024,covered,coverage,extra_rows,d2_all,d2_motor,level_motor,d2_buildings,level_buildings,d2_contents,level_contents
 naive_2023_rate,2026-10-25 05:10,59202,59202,1.0,0,0.06847,0.03714,1.1153,-0.0058,1.265,0.02988,1.1065
+D1_agent_baseline,2026-10-25 17:08,59202,59202,1.0,0,0.11248,0.07538,0.9478,0.07596,1.2739,0.04158,0.9345
+naive_2023_rate,2026-10-25 17:09,59202,59202,1.0,0,0.07008,0.0491,1.1308,-0.02888,1.6766,0.04444,1.0499
