@@ -133,8 +133,9 @@ version of the solved multipliers (v3_full) and the probes on channels follow af
 
 ## 2026-10-26, new directions tried (all rejected)
 
-Baseline: the final pipeline on the `_v_avg` prior, pooled CV D2 0.1414 (`_v_tw` alone 0.1407). Fold noise: the same model on folds by customer hash gives 0.1386,
-so differences under about 0.003 do not rank two variants.
+Baseline: the final pipeline on the `_v_avg` prior, pooled CV D2 0.1414 (`_v_tw` alone 0.1407). The same model on folds by customer hash gives 0.1386, so
+scores from different fold assignments are not comparable; on the same folds the paired difference is much tighter (`e20_paired_bootstrap.py`, bootstrap by
+customer): power 1.6 in the average +0.00018 (sd 0.00023, better in 78% of resamples), deeper trees -0.00056 (sd 0.00047).
 - Developed rows reweighted to look like the emerging rows (classifier density ratio, clipped at 20; effective sample 13 to 16% of the rows), `P2_CSW=1` in
   `devprior_peril.py`: 0.1261 alone, 0.1392 in the average. Deeper trees (`P2_LEAVES=7`): 0.1379 and 0.1408. Tweedie power 1.6 (`P2_POWER=1.6`): 0.1409 alone,
   0.1416 in the average (+0.0002, inside the noise). Scored with `e17_prior_cv.py`.
