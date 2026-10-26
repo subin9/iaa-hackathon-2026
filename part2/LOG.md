@@ -116,3 +116,17 @@ version of the solved multipliers (v3_full) and the probes on channels follow af
   sklearn's d2_tweedie_score and checks the public optimum to 1%.
 - The percentages quoted for weather in the prior (+1.8% glass, +1.1% storm) came from scripts with the same truncated deviance, so they are relative to a smaller
   denominator and overstate the change; the model ranking does not change.
+
+## 2026-10-26, other directions checked
+
+- Rules (competition pages, read with `kaggle competitions pages list --content`): nothing requires Part 2 to follow the Part 1 method. The task text asks the team to
+  find what changed and decide what to carry over. Prizes are CAD 500 / 100 / 50, set by the panel after Part 2; the pricing category combines the Part 1 and Part 2
+  private scores equally with the panel's view. If no final submission is selected, the best public one is used (v7 now).
+- Emerging-only model blended into the pipeline (`e14_blend_em_only.py`, same folds): pooled D2 0.1414 at weight 0, 0.1406 at 0.1, 0.1335 at 0.5. Rejected.
+- The 2025 weather is in `weather.parquet` (both markets), so a weather prior would use the realised 2025 weather, which is colder and has fewer hail days than 2023-24
+  (freezing days 28.9 against 21.0 and 17.5, hail days 11.4 against 14.0 and 17.1). Out-of-time test (`e15_weather_out_of_time.py`, fit on 2023, score 2024): pooled
+  D2 0.1317 without weather, 0.1308 and 0.1318 with the two weather priors. No gain; the year level is set on the leaderboard anyway.
+- The 2023 to 2024 test also shows how volatile the buildings level is: fire A/E 3.34 in 2023 and 1.10 in 2024 (49 and 21 claims), so a 2023-only fit
+  overpredicts 2024 buildings by 1 / 0.62.
+- Carry-over of the leaderboard fitting (`e16_private_gain.py`): expected private gain of v7 over v5 +0.0038 (sd 0.0022, 4% chance of a loss), against +0.0050 on the
+  public rows. v8 +0.0041, within noise and favoured by construction, so v7 stays.
