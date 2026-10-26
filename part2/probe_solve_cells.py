@@ -10,7 +10,7 @@ and the same tau serves the ridge and the shrinkage, so the prior acts twice (de
 
 usage: probe_solve_cells.py PROBES_JSON OUT.csv [tau]   (PROBES_JSON: list of {"file", "public"}; first item is the base)
 """
-import sys, json
+import sys, json, os
 import numpy as np, polars as pl
 from scipy.optimize import least_squares
 sys.path.insert(0, "part2")
@@ -44,6 +44,7 @@ def main():
     # null deviance, which is (Dev(base) - S) / (1 - base score). S is estimated from the out-of-fold training rows (sum of sqrt(y) scaled by the share of sqrt(mu)
     # of the public part of the test rows) and enters as one more unknown, log s, with a wide prior.
     S0 = sum(8 * np.sqrt(pool[f"{l}_a"] * pool[f"{l}_b"]).sum() * F * float(T[d["line"].to_numpy() == l].sum()) / pool[f"{l}_b"].sum() for l in ("motor", "buildings", "contents"))
+    if os.environ.get("P2_NO_CONSTANT"): S0 = 0.0   # reproduces the submitted v7, solved before the constant was found
 
     def dev(ms, c): return float((4 * F * Tk * (ms / np.sqrt(c) + np.sqrt(c))).sum())
 

@@ -32,5 +32,6 @@ $PY part2/probe.py work/p2/sub_v4.csv work/p2/v5_full.csv "${V5[@]}"
 # 6. v7: leaderboard probes on v5 (q5a..q5h.csv were built with part2/probe.py; their scores are in part2/v5_probes.json and part2/probes.json),
 #    sampling noise of the segment factors from the out-of-fold training rows, then twelve cell factors with a ridge prior, shrunk by that noise
 $PY part2/e13_cell_noise.py
-$PY part2/probe_solve_cells.py part2/v5_probes.json work/p2/v7.csv
+P2_NO_CONSTANT=1 $PY part2/probe_solve_cells.py part2/v5_probes.json work/p2/v7.csv   # the submitted v7
+$PY part2/probe_solve_cells.py part2/v5_probes.json work/p2/v8.csv                    # same with the deviance constant (scores the same, not submitted)
 echo "work/p2/v7.csv is the Part 2 file; the final choice is made in the Kaggle UI"
