@@ -130,3 +130,16 @@ version of the solved multipliers (v3_full) and the probes on channels follow af
   overpredicts 2024 buildings by 1 / 0.62.
 - Carry-over of the leaderboard fitting (`e16_private_gain.py`): expected private gain of v7 over v5 +0.0038 (sd 0.0022, 4% chance of a loss), against +0.0050 on the
   public rows. v8 +0.0041, within noise and favoured by construction, so v7 stays.
+
+## 2026-10-26, new directions tried (all rejected)
+
+Baseline: the final pipeline on the `_v_avg` prior, pooled CV D2 0.1414 (`_v_tw` alone 0.1407). Fold noise: the same model on folds by customer hash gives 0.1386,
+so differences under about 0.003 do not rank two variants.
+- Developed rows reweighted to look like the emerging rows (classifier density ratio, clipped at 20; effective sample 13 to 16% of the rows), `P2_CSW=1` in
+  `devprior_peril.py`: 0.1261 alone, 0.1392 in the average. Deeper trees (`P2_LEAVES=7`): 0.1379 and 0.1408. Tweedie power 1.6 (`P2_POWER=1.6`): 0.1409 alone,
+  0.1416 in the average (+0.0002, inside the noise). Scored with `e17_prior_cv.py`.
+- Peril levels split into frequency and severity, shrunk separately (`e18_peril_levels.py`): 0.1382 to 0.1386 against 0.1386 on the same folds. Shared perils
+  pooled across lines (escape of water, flood, accidental damage, theft): 0.1381 to 0.1385. No gain.
+- The per-peril cap in `model2.pipeline` returns its load to the same peril, so it never changes a level (the capped total times the load is the raw total).
+  Spreading the load over the line instead (`e19_cap_and_excess.py`, caps 0.98 to 0.999): 0.1414 throughout.
+- Voluntary excess as a correction: 0.1413; a broad candidate list (excess, channel, payment, cover or occupancy or tenure, urban density, marital status): 0.1397.

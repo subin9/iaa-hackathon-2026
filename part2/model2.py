@@ -24,7 +24,7 @@ def _specs(short):
     return list(short)
 
 
-def pipeline(train, score, n0_level=400, short=None, alpha=0.1, n0_ridge=100.0, score_is_train=False, return_parts=False):
+def pipeline(train, score, n0_level=400, short=None, alpha=0.1, n0_ridge=100.0, score_is_train=False, return_parts=False, level_fn=None):
     perils = peril_cols(train); specs = _specs(short)
     expo_t, expo_s = train["exposure"].to_numpy(), score["exposure"].to_numpy()
     base_t = {p: np.exp(train[f"lrp_{p}"].to_numpy()) * expo_t * train[f"compk_{p}"].to_numpy() for p in perils}      # prior mean on the reported basis (cap load included)
@@ -35,6 +35,7 @@ def pipeline(train, score, n0_level=400, short=None, alpha=0.1, n0_ridge=100.0, 
     for p in perils:
         yc, lf = cap_target(train[f"y_{p}"].to_numpy(), 0.995); kp = (yc.sum() * lf) / base_t[p].sum(); n = train[f"n_{p}"].to_numpy().sum()
         c = n / (n + n0_level); mult[p] = np.exp(np.log(kline) + c * (np.log(kp) - np.log(kline)))
+    if level_fn: mult = level_fn(train, perils, base_t, kline, mult)   # experiments (e18) replace the peril levels
     part_t = {p: mult[p] * base_t[p] for p in perils}; part_s = {p: mult[p] * ult_s[p] * comp_s[p] for p in perils}
     info = dict(mult=mult, kline=kline, adapters=[])
     for spec in specs:
