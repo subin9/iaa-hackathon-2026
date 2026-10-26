@@ -35,6 +35,16 @@
    "name": "v6",
    "public": 0.17182,
    "what": "v5 x seven-parameter structured multipliers shrunk by sampling noise; the structure predicted 0.17512, so it over-extrapolated"
+  },
+  {
+   "name": "v7",
+   "public": 0.173,
+   "what": "v5 x twelve cell factors (ridge prior, equation noise 2e-4, solved without the deviance constant) shrunk by sampling noise"
+  },
+  {
+   "name": "v9",
+   "public": 0.17303,
+   "what": "v7 cell totals on the prior average with the Tweedie 1.6 variant in place of 1.4 (transplant_cells.py)"
   }
  ],
  "probes_on_v1": [

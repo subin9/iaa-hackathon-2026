@@ -34,4 +34,11 @@ $PY part2/probe.py work/p2/sub_v4.csv work/p2/v5_full.csv "${V5[@]}"
 $PY part2/e13_cell_noise.py
 P2_NO_CONSTANT=1 $PY part2/probe_solve_cells.py part2/v5_probes.json work/p2/v7.csv   # the submitted v7
 $PY part2/probe_solve_cells.py part2/v5_probes.json work/p2/v8.csv                    # same with the deviance constant (scores the same, not submitted)
-echo "work/p2/v7.csv is the Part 2 file; the final choice is made in the Kaggle UI"
+
+
+# 7. v9 (submitted 2026-10-26, public 0.17303): the prior average with the Tweedie 1.6 variant in place of 1.4 (e17, e20), carried to v7's twelve cell totals
+P2_TAG=_x_p16 P2_POWER=1.6 $PY part2/devprior_peril.py
+$PY part2/average_priors.py _x_p16 _v_po _v_ex _x_avg16
+$PY part2/fit_final.py work/p2/sub_v4_p16.csv --tag _x_avg16
+$PY part2/transplant_cells.py work/p2/v7.csv work/p2/sub_v4_p16.csv work/p2/v9.csv
+echo "work/p2/v9.csv is the Part 2 final candidate; the choice is made in the Kaggle UI"

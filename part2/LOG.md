@@ -144,3 +144,7 @@ customer): power 1.6 in the average +0.00018 (sd 0.00023, better in 78% of resam
 - The per-peril cap in `model2.pipeline` returns its load to the same peril, so it never changes a level (the capped total times the load is the raw total).
   Spreading the load over the line instead (`e19_cap_and_excess.py`, caps 0.98 to 0.999): 0.1414 throughout.
 - Voluntary excess as a correction: 0.1413; a broad candidate list (excess, channel, payment, cover or occupancy or tenure, urban density, marital status): 0.1397.
+- v9 (`transplant_cells.py`): the final pipeline on the average with the power 1.6 prior, rescaled inside each of the twelve cells to v7's totals, so the
+  leaderboard-calibrated levels stay and only the relativities inside the cells change (row ratio to v7: 1st and 99th percentiles 0.947 and 1.051). Decision
+  rule fixed before the score came back: keep v9 unless its public score is more than about 0.0003 below v7's (precision-weighted CV and public paired
+  differences, public sd taken as 0.00023 x sqrt(109k / 70k)). Public 0.17303 against 0.17300, so v9 is the final candidate.

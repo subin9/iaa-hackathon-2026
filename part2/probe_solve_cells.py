@@ -17,7 +17,7 @@ sys.path.insert(0, "part2")
 import segments, submission
 
 F = 1.0 / 3.0
-TAU = float(sys.argv[3]) if len(sys.argv) > 3 else 0.25
+TAU = float(sys.argv[3]) if __name__ == "__main__" and len(sys.argv) > 3 else 0.25
 SIGMA = 2e-4   # the equations use f x (all test rows) in place of the unknown public sum of mu^1/2 per cell: about 1e-4 of D2 error per probe
 
 
