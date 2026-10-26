@@ -1,0 +1,6 @@
+line=motor,nb=1:1.4373
+line=motor,nb=0:1.0447
+line=buildings,nb=1:1.2183
+line=buildings,nb=0:1.0066
+line=contents,nb=1:1.1055
+line=contents,nb=0:1.0053

@@ -99,3 +99,20 @@ version of the solved multipliers (v3_full) and the probes on channels follow af
   gender, buildings and contents renewals 0.95). Predicted public D2 0.1715 for the shrunk file (v7) and 0.1729 at the unshrunk cell optimum, against 0.17182 for v6: further
   leaderboard fitting is worth at most 0.001 on the public rows and less on the private rows.
 - Submissions used for this round: v6 (one of the five the user allowed); v7 is queued for 00:03 UTC on 2026-10-26.
+
+## 2026-10-26, v7 result and an independent code review
+
+- v7 (queued job, 00:03 UTC): public 0.17300, the best so far; v6 0.17182.
+- An independent review (a fresh agent reading the code, not my conclusions) found that every probe solver leaves out the constant of the Tweedie deviance,
+  -8 sum(sqrt(y)). It cancels between submissions but not in the null deviance, so the solved factors were pushed away from 1. On a synthetic leaderboard the fixed
+  solver recovers the public optimum exactly (1.336, 0.943, 1.106) and the old one gives 1.441, 0.877, 1.111. This explains most of the "inconsistent to 3e-4" note above:
+  with S as one more unknown (`probe_solve_cells.py`, prior centred on an estimate from the out-of-fold rows; fitted at 1.15 times it) the nine scores fit to 6e-5.
+- It also explains why the v2 solution (motor NB 1.40) overshot: the structure-free solution on v5 brought motor NB back to 0.89.
+- Effect on the submitted file: the corrected solution (v8, total 88.1M against 85.98M) and v7 score the same under the corrected model (0.17336 both); under the old
+  model v8 is 3e-4 worse. Neither model predicts v7 well out of sample (0.17336 and 0.17269 against 0.17300). v7 stays; v8 is not submitted.
+- Also fixed: the "predicted public D2 applied" line of probe_solve_cells.py scored the applied factors as if they were the truth (it printed 0.1715 for v7; the right
+  figure under that model was 0.17269, and the v7 submission description on Kaggle carries the wrong number). Two tests that could not fail now can: the calibration test
+  checks the rescale factor (the rescale made the total exact by construction; an adapter doubled by mistake gives 0.53 and fails), and the probe-solver test scores with
+  sklearn's d2_tweedie_score and checks the public optimum to 1%.
+- The percentages quoted for weather in the prior (+1.8% glass, +1.1% storm) came from scripts with the same truncated deviance, so they are relative to a smaller
+  denominator and overstate the change; the model ranking does not change.

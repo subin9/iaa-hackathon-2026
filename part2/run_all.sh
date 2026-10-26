@@ -23,4 +23,14 @@ $PY part2/average_priors.py _v_tw _v_po _v_ex _v_avg
 $PY -m pytest part2/tests -q
 $PY part2/report_numbers.py
 $PY part2/fit_final.py work/p2/sub_final_base.csv
-echo "next: apply the new-business multipliers with part2/probe.py (see part2/probes.json and README) and submit"
+cp work/p2/sub_final_base.csv work/p2/sub_v4.csv
+
+# 5. v5: the transferred new-business and renewal multipliers (part2/v5_args.txt, one segment spec and factor per line)
+mapfile -t V5 < part2/v5_args.txt
+$PY part2/probe.py work/p2/sub_v4.csv work/p2/v5_full.csv "${V5[@]}"
+
+# 6. v7: leaderboard probes on v5 (q5a..q5h.csv were built with part2/probe.py; their scores are in part2/v5_probes.json and part2/probes.json),
+#    sampling noise of the segment factors from the out-of-fold training rows, then twelve cell factors with a ridge prior, shrunk by that noise
+$PY part2/e13_cell_noise.py
+$PY part2/probe_solve_cells.py part2/v5_probes.json work/p2/v7.csv
+echo "work/p2/v7.csv is the Part 2 file; the final choice is made in the Kaggle UI"

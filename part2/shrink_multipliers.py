@@ -2,7 +2,8 @@
 
 The solved factors are best for the public third of the test rows. Their sampling noise (e13_cell_noise.py) does not carry over to the private rows, so
 each log factor is multiplied by tau^2 / (tau^2 + se^2) (an empirical-Bayes weight; tau is the size of miss we think a segment can have, se the noise).
-Contrasts (direct vs other channels, male vs female, age band 35-49 vs the rest) have the noise of two segments and a smaller tau than the levels.
+Contrasts (direct vs other channels, male vs female, age band 35-49 vs the rest) have the noise of two segments; direct and age band get tau 0.20, male 0.25 like
+the levels. Superseded by probe_solve_cells.py (this structure over-extrapolated, and it leaves out the deviance constant, see there).
 usage: shrink_multipliers.py PROBES_JSON OUT.csv
 """
 import sys, json

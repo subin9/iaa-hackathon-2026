@@ -16,12 +16,14 @@ def segment_T(mu, masks):
     return {n: float((mu[m] ** 0.5).sum()) for n, m in masks.items()}
 
 
-def solve(T, probes, f=1.0 / 3.0):
-    """probes[0] = {"d2": base score}; the others {"seg": name or list of names, "m": multiplier, "d2": score}. Returns (m*, predict)."""
+def solve(T, probes, f=1.0 / 3.0, S=0.0):
+    """probes[0] = {"d2": base score}; the others {"seg": name or list of names, "m": multiplier, "d2": score}. Returns (m*, predict).
+    S = 8 sum(sqrt(y)) over the public rows, the constant of the Tweedie deviance. It cancels between probes but not in the null deviance; S = 0 (unknown)
+    pushes every m* away from 1. probe_solve_cells.py estimates it; here it is an argument."""
     names = list(T); base_d2 = probes[0]["d2"]
 
     def dev(U, mult):
-        return sum(4 * (U[n] * mult.get(n, 1.0) ** -0.5 + f * T[n] * mult.get(n, 1.0) ** 0.5) for n in names)
+        return sum(4 * (U[n] * mult.get(n, 1.0) ** -0.5 + f * T[n] * mult.get(n, 1.0) ** 0.5) for n in names) - S
 
     def resid(x):
         U = {n: xi * f * T[n] for n, xi in zip(names, x)}; dev0 = dev(U, {}) / (1 - base_d2)

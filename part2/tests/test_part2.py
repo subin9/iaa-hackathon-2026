@@ -5,6 +5,7 @@ data tables, the correction stage and the probe solver on synthetic data with a 
 """
 import os, sys
 import numpy as np, polars as pl, pytest
+from sklearn.metrics import d2_tweedie_score
 
 sys.path.insert(0, "part2"); sys.path.insert(0, "src")
 import lib, model2, submission, probe_solve
@@ -85,8 +86,11 @@ def _joined(line, tag=None):
 @pytest.mark.parametrize("line", LINES)
 def test_pipeline_is_calibrated_on_its_training_rows(line):
     d = _joined(line); tr = d.filter(pl.col("split") == "train")
-    p = model2.pipeline(tr, tr, short=model2.SHORT.get(line, []), score_is_train=True)
-    assert abs(p.sum() / tr["y"].sum() - 1) < 0.03     # the correction stage must not move the level (the bug divided the intercept out)
+    p, info = model2.pipeline(tr, tr, short=model2.SHORT.get(line, []), score_is_train=True, return_parts=True)
+    assert abs(p.sum() / tr["y"].sum() - 1) < 1e-9
+    # the final rescale makes the total exact by construction, so the guard is on the factor it needed: the correction stage must not move the level
+    # (the bug divided the intercept out); measured 0.985, 1.019 and 1.008 per line
+    assert abs(info["scale"] - 1) < 0.03
 
 
 @needs_tables
@@ -135,15 +139,18 @@ def test_probe_solver_recovers_the_true_segment_multipliers():
     true = np.array([1.4, 0.9, 1.1])
     y = np.where(rng.random(n) < 0.1, rng.gamma(2.0, true[seg] * mu / 0.1 / 2.0, n), 0.0)
     pub = rng.random(n) < 1 / 3; names = ["a", "b", "c"]
-    def d2(mult):   # public D2 of mu x multiplier per segment, against the constant-rate baseline
-        p = mu * np.array([mult.get(k, 1.0) for k in names])[seg]; p0 = np.full(n, y[pub].sum() / mu[pub].sum()) * mu
-        dev = lambda q: np.sum(4 * y[pub] * q[pub] ** -0.5 + 4 * q[pub] ** 0.5)
-        return 1 - dev(p) / dev(p0)
+    def d2(mult):   # the leaderboard metric on the public rows: full Tweedie deviance, against a constant baseline
+        p = mu * np.array([mult.get(k, 1.0) for k in names])[seg]
+        return d2_tweedie_score(y[pub], p[pub], power=1.5)
     masks = {k: seg == i for i, k in enumerate(names)}; T = probe_solve.segment_T(mu, masks)
     probes = [{"d2": d2({})}] + [{"seg": k, "m": 1.2, "d2": d2({k: 1.2})} for k in names]
-    mstar, predict, err = probe_solve.solve(T, probes, f=1 / 3)
+    best = {k: (y[pub & m] / np.sqrt(mu[pub & m])).sum() / np.sqrt(mu[pub & m]).sum() for k, m in masks.items()}   # optimum on the public rows
+    S = 8 * np.sqrt(y[pub]).sum()
+    mstar, predict, err = probe_solve.solve(T, probes, f=1 / 3, S=S)
     assert err < 1e-8
-    for k, t in zip(names, true): assert abs(mstar[k] - t) / t < 0.05     # tolerance: the public subset is a random third of the rows
+    for k in names: assert abs(mstar[k] / best[k] - 1) < 0.01     # left: f T_s in place of the public sum of mu^1/2
+    biased, _, _ = probe_solve.solve(T, probes, f=1 / 3)          # the constant left out: the multipliers move away from 1
+    for k in names: assert abs(np.log(biased[k])) > abs(np.log(mstar[k]))
 
 
 # ---------- submission file ----------
