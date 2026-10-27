@@ -15,6 +15,13 @@ copy.
   like a multiplicative (GLM-like) structure. Begin there and add
   complexity only when R-0202 passes.
 
+<!-- rule: R-0312 -->
+- **Re-choose capacity when volume changes by an order of magnitude.**
+  Pre-register a small grid of round counts (half, default, double) and an
+  adoption rule before scoring; a round count tuned on hundreds of
+  thousands of rows over-fits lines with a few hundred claims. Record the
+  rule and the result even when the default wins. *(cycle 1, agent)*
+
 <!-- rule: R-0302 -->
 - **Lean feature set.** Removing weather, sales-channel, marketing and
   calendar variables improved out-of-year performance; keeping only the
@@ -30,6 +37,14 @@ copy.
 - **Offset-free learners.** For models without an offset hook, train on
   `y / e` with sample weight `e^(2−p)` (e = exposure × completion). This is
   exactly equivalent for Tweedie losses.
+
+<!-- rule: R-0311 -->
+- **Put the intercept in the init score of offset-boosted models.** Add
+  log(Σ target ÷ Σ exposure basis) to the offset so the trees learn
+  relativities and the level reconciles to the training years by
+  construction; check Σ prediction = Σ target on the training rows before
+  reading any score. Without it the level drifts with the round count.
+  *(cycle 1, agent)*
 
 <!-- rule: R-0305 -->
 - **Blend diverse families with equal weights, seed-average each.** Part 1's

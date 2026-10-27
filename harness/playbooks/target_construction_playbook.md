@@ -24,6 +24,16 @@ cannot be fitted — say so, borrow explicitly, and quantify.
   ages of the curve are observed in this market and which are assumed or
   borrowed, and the resulting completion by line for the latest year.
 
+<!-- rule: R-0108 -->
+- **Truncation-corrected lag curve as the default for short histories.**
+  With fewer than three accident years, estimate the report-lag curve with a
+  reverse-time product-limit estimator (each step uses only claims old
+  enough to have been observed at that age), anchor it at the oldest
+  well-populated age, and borrow only the share beyond the anchor from the
+  reference market. Carry both the spliced curve and the no-tail variant in
+  the modelling tables so the borrowed share is visible and testable.
+  *(cycle 1, agent)*
+
 <!-- rule: R-0103 -->
 - **Trend from mature years only.** Fit a log-linear trend of cost per
   exposure-year by line on accident years whose completion is close to

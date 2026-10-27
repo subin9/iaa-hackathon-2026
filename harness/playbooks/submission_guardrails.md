@@ -12,6 +12,13 @@ the file checks and the humans apply the rest.
   against the training-year history with the maximum prediction. Read the
   printout; a passing file with an implausible level is not ready.
 
+<!-- rule: R-0507 -->
+- **Print the level check on raw and cleaned history.** Run the guardrail
+  once against the as-delivered tables and once against the cleaned tables;
+  the difference between the two printouts is a one-line proof of how much
+  the data repairs (exposure above all) moved the history, and belongs in
+  the validation note. *(cycle 1, agent)*
+
 <!-- rule: R-0505 -->
 - **Prepare two candidates across the main level hypothesis; only one can
   be selected.** When the predicted level rests on an assumption that cannot

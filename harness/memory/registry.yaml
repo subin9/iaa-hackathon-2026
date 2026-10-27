@@ -531,3 +531,135 @@
   approved_by: actuary (HyunSu Kim)
   status: ACTIVE
   location: playbooks/submission_guardrails.md
+
+# ---------------------------------------------------------------- harness v2 (cycle 1 promotions)
+
+- id: R-0013
+  statement: Decide unit errors per row on a proportionality ratio between paired amount columns, never on a value threshold alone; same rule for train, test and reference tables.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 1; scorecard A2 (sum-insured ×1000 in train and test decided by premium/sum-insured ratio).
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0014
+  statement: Classify stored÷derived exposure ratios into clusters (day count, 360-day basis, exclusive end, rounding) and report each before repairing all rows from dates.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 2; F-02 (a second exposure convention the answer key missed).
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0015
+  statement: For claims outside every policy period, compare report lags with the matched distribution; extreme lags mark a date defect — exclude with a query, state the share of incurred.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 3; F-07.
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0016
+  statement: Cross-tabulate every attribute's value and nullness against join year; deterministic functions of join year are time stamps — confirm with single-feature AUC and exclude before the multivariate adversarial check.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 4; campaign_code null ⇔ pre-launch cohort (verified).
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0017
+  statement: Write the reconciliation chain (exposure, claims, Σ target, model level) as one ladder table and refuse to proceed while any link is open.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 10; the ladder caught a level drift from a missing intercept.
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0018
+  statement: Before treating nulls, test whether the null group differs on other covariates; if it does, keep null as its own level, if not treat as MCAR without indicator features.
+  applies_to: data_readiness
+  origin: ACTUARY
+  evidence: Actuary, from cycle 1 F-13 (flood_zone missing not at random) and F-12 (MCAR block).
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0108
+  statement: With fewer than three accident years, build the lag curve with a reverse-time product-limit (truncation-corrected) estimator, anchor at the oldest well-populated age, borrow only beyond the anchor, carry both variants.
+  applies_to: target
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 5; target_notes §3 (borrowed share 2.1% / 0.2% / 0.03%).
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/target_construction_playbook.md
+
+- id: R-0311
+  statement: Put log(Σ target ÷ Σ exposure basis) in the init score of offset-boosted models and check Σ prediction = Σ target on training rows before reading any score.
+  applies_to: modelling
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 6; first baseline level drifted with round count.
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/modeling_playbook.md
+
+- id: R-0312
+  statement: When volume changes by an order of magnitude, pre-register a small grid of round counts and an adoption rule before scoring; record the result even when the default wins.
+  applies_to: modelling
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 7; 600 rounds over-fit the small lines (motor/contents chose 300).
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/modeling_playbook.md
+
+- id: R-0410
+  statement: Before modelling a new-business-dominated year, compute the age-standardised new-business excess and first-year persistence in training; compare with the model's new-business relativity afterwards.
+  applies_to: adaptation
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 8; contents new business +30% in data, +3% in model.
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/adaptation_playbook.md
+
+- id: R-0411
+  statement: Compare line levels across markets with every claim capped at the same fixed amount; percentile exclusions are not comparable across volumes.
+  applies_to: adaptation
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 9; three cut-offs gave three buildings stories.
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/adaptation_playbook.md
+
+- id: R-0412
+  statement: Every channel, segment or product in the book must have an entry in the expense/commission/loading tables; a gap is a premium-build finding and a team query.
+  applies_to: adaptation
+  origin: ACTUARY
+  evidence: Actuary, from cycle 1 F-19 (comparison-site commission undefined).
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/adaptation_playbook.md
+
+- id: R-0507
+  statement: Run the submission level check against raw and cleaned history; the difference documents how much the repairs moved the history.
+  applies_to: submission
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 11.
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/submission_guardrails.md

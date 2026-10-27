@@ -31,6 +31,13 @@ what carries over — and to say plainly what remains uncertain.
   severity level with similar frequency points to cost or regulatory
   differences. Thin perils must be labelled thin.
 
+<!-- rule: R-0411 -->
+- **Like-for-like large-loss basis across markets.** Compare line levels
+  between markets with every claim capped at the same fixed amount.
+  "Excluding the top x%" means different things in a market with a thousand
+  claims and one with a hundred thousand, and the three obvious cut-offs can
+  tell three different stories about the same line. *(cycle 1, agent)*
+
 <!-- rule: R-0407 -->
 - **Acquired-portfolio check.** When the prediction year is dominated by a
   transferred or new-business book, compare that segment inside the
@@ -39,6 +46,23 @@ what carries over — and to say plainly what remains uncertain.
   (prior claims, no-claims years). State whether the training segment is
   large enough to represent the test book and what the model will be
   extrapolating.
+
+<!-- rule: R-0410 -->
+- **New-business pre-model check.** When the prediction year is dominated
+  by new business, compute before modelling: the new-business frequency and
+  cost excess inside the training data, age-standardised; and the
+  persistence of first-year policies into their second year. After
+  modelling, compare the model's new-business relativity with that
+  pre-model figure and explain any gap — a model can price new business
+  flat against a clear data signal when the segment is thin.
+  *(cycle 1, agent)*
+
+<!-- rule: R-0412 -->
+- **Reference tables must cover the portfolio.** Every channel, segment or
+  product present in the book must have an entry in the expense, commission
+  and loading tables used for the premium build. A missing entry is a
+  finding for the premium build and a team query (missing loading or wrong
+  label), not something to fill in silently. *(cycle 1, actuary)*
 
 ## 2. Decide what carries over
 
