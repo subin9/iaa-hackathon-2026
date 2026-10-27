@@ -42,8 +42,14 @@ actuary's judgment to its real reader; the marked sentences are rewritten
 ### Per cycle
 
 1. **Prepare** (HS)
-   - `harness/data/emerging/` and `harness/data/developed/` hold a copy of
-     the competition data (read-only to the agent; gitignored).
+   - Run from an isolated copy outside the repository
+     (`C:\Users\Guest1337\harness_run`): copy `harness/` minus `memory/`,
+     `outputs/`, `work/`; the copy has no git context above it and no
+     `../eval` to reach. Isolation is physical, so the settings file runs
+     with `bypassPermissions` and without the read block (the read block
+     prompts on every stdin-code command and stalls an unattended run).
+   - `data/emerging/` and `data/developed/` hold a copy of the competition
+     data (read-only to the agent; gitignored).
    - Empty `harness/outputs/` and `harness/work/`. Keep `CLAUDE.md`,
      `playbooks/`, `templates/`, `schemas/`, `tools/`, `memory/`.
    - Confirm no `CLAUDE.md` / `AGENTS.md` exists in any parent folder of

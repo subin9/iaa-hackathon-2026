@@ -1,7 +1,7 @@
 {
   "permissions": {
     "defaultMode": "bypassPermissions",
-    "blockReadsOutsideWorkingDirectories": true,
+    "blockReadsOutsideWorkingDirectories": false,
     "allow": [
       "Bash"
     ],
