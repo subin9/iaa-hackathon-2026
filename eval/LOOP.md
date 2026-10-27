@@ -168,6 +168,15 @@ predicts: rule-caught rises as novel findings of cycle k become rules of
 cycle k+1; novel findings appear earlier in the run (time to first novel
 finding from the session log); D² rises then flattens.
 
+### Outcome (2026-10-27)
+Four cycles on the emerging market: rule-caught / novel / missed 15/8/0 →
+17/6/0 → 23/2/0 → 23/2/0 at constant effort (API 45 / 53 / 41 / 42 min,
+≈$20 each). Targets identical from cycle 1; cycle 4 improved feature
+completeness (sibling reconstruction). Stopping criterion met at cycle 4;
+**harness-v4 (68 rules) is the final executed state** (`harness-final`).
+Cycle-4 proposals are an approved backlog (`eval/promotion_cycle_4.md`).
+Hand-off data version: D4 (`runs/cycle_4/`).
+
 ### Convergence and stopping
 
 Stop the data track when a cycle produces no novel finding **and** the

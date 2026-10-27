@@ -727,3 +727,15 @@
   approved_by: actuary (HyunSu Kim), 2026-10-27; DS generality review pending (gate 2)
   status: ACTIVE
   location: playbooks/data_readiness_playbook.md
+
+# ---------------------------------------------------------------- backlog (approved 2026-10-27, NOT deployed)
+# The data track stopped at cycle 4; harness-v4 is the final executed state.
+# Cycle-4 proposals approved by the actuary for the next market, kept out of
+# the playbooks so that the final harness is one that was actually run:
+#   B-01 sibling-stability test before imputing time-invariant policy attributes (R-0018)
+#   B-02 ratio bins beyond the named clusters after convention/clusters (R-0014)
+#   B-03 capacity secondary check must come from the same volume (R-0312)
+#   B-04 year-by-year segment relativities before trusting a model's segment effect (R-0410)
+#   B-05 level gate by line with a learner-fix order (R-0311)
+#   B-06 period-end / leap-year sanity line in the profile (new)
+# Full text and decisions: eval/promotion_cycle_4.md
