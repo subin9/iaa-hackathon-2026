@@ -16,5 +16,5 @@
 | validate_outputs result | PASS — 23 findings (17 rule-attributed, 6 novel); holdout 100% coverage; check_sub passes for both candidates |
 | Deliverables present | … |
 | Holdout grade (eval/grade_holdout.py) | D2_agent 0.0978 (motor 0.0658 / buildings 0.0347 / contents 0.0509); B_devtrend 0.0959 |
-| Transcript | … |
-| Anything odd | … |
+| Transcript | `runs/transcripts/935d1d45….jsonl` (both restarts in one session file) and `runs/cycle_2/transcript.txt`. Audit: **clean** for outside-folder access; **contaminated by cycle 1's auto-memory note**, read on the first tool call (content and effect in `eval/scorecards/cycle_2.md`). |
+| Anything odd | Auto-memory leak between cycles (above). Agent re-chose capacity down to 75 rounds for motor on one fold; R-0311 level check failed and an explicit level factor was applied. |

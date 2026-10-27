@@ -42,12 +42,19 @@ actuary's judgment to its real reader; the marked sentences are rewritten
 ### Per cycle
 
 1. **Prepare** (HS)
-   - Run from an isolated copy outside the repository
-     (`C:\Users\Guest1337\harness_run`): copy `harness/` minus `memory/`,
-     `outputs/`, `work/`; the copy has no git context above it and no
-     `../eval` to reach. Isolation is physical, so the settings file runs
-     with `bypassPermissions` and without the read block (the read block
-     prompts on every stdin-code command and stalls an unattended run).
+   - Run from an isolated copy outside the repository **with a new folder
+     name per cycle** (`C:\Users\Guest1337\harness_run_c3`, `_c4` …): copy
+     `harness/` minus `memory/`, `outputs/`, `work/`. The copy has no git
+     context above it and no `../eval` to reach. A new folder name also
+     gives Claude Code a new project directory, so its **auto-memory**
+     (`~/.claude/projects/<folder>/memory/MEMORY.md`) and earlier session
+     files cannot carry over — cycle 2 read cycle 1's auto-memory note on
+     its first tool call (found by the transcript audit; see
+     `eval/scorecards/cycle_2.md`). Belt and braces: delete that `memory/`
+     directory before every run. Isolation is physical, so the settings
+     file runs with `bypassPermissions` and without the read block (the
+     read block prompts on every stdin-code command and stalls an
+     unattended run).
    - `data/emerging/` and `data/developed/` hold a copy of the competition
      data (read-only to the agent; gitignored).
    - Empty `harness/outputs/` and `harness/work/`. Keep `CLAUDE.md`,
@@ -68,6 +75,11 @@ actuary's judgment to its real reader; the marked sentences are rewritten
    - Note end time and the session's token/cost figure if shown.
 
 3. **Collect** (HS)
+   - Copy the session JSONL(s) from `~/.claude/projects/<folder>/` and the
+     auto-memory directory to `runs/transcripts/` (gitignored); run the
+     outside-access audit (tool inputs referencing `../`, `eval`,
+     `answer_key`, the repo, the raw data) and record the result in
+     `log.md`.
    - Copy `harness/outputs/*` to `runs/cycle_N/` (findings.json, the
      markdown deliverables, baseline/ if present; `cleaned/` and
      `modelling_tables/` are not committed — derived from CC BY-NC data —
