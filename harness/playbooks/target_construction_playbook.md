@@ -30,9 +30,10 @@ cannot be fitted — say so, borrow explicitly, and quantify.
   reverse-time product-limit estimator (each step uses only claims old
   enough to have been observed at that age), anchor it at the oldest
   well-populated age, and borrow only the share beyond the anchor from the
-  reference market. Carry both the spliced curve and the no-tail variant in
-  the modelling tables so the borrowed share is visible and testable.
-  *(cycle 1, agent)*
+  reference market. The modelling tables must carry both the spliced
+  completion and the no-tail completion as separate columns, so the
+  borrowed share is visible and the sensitivity can be re-run without
+  rebuilding the curve. *(cycle 1, agent; amended cycle 3, agent)*
 
 <!-- rule: R-0109 -->
 - **Empirical completion check from the oldest accident year.** Whenever a

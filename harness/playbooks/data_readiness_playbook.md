@@ -20,15 +20,16 @@ the matching test table.
 
 <!-- rule: R-0014 -->
 - **Classify exposure mismatches by ratio cluster before repairing.**
-  Compute stored ÷ date-derived exposure for every row and tabulate the
-  ratio: clusters near 365 are day counts, near 365/360 a 360-day basis,
-  near (n−1)/n an exclusive end date, near 1 rounding. Report each cluster
-  as its own finding, then repair every row from the dates. Run the
-  tabulation again on the residual after the obvious cluster is removed —
-  a smaller convention sits inside the "looks fine" range and only shows
-  as a spike in the ratio — and run it on the test files separately, which
-  may come from a different system and be clean. *(cycle 1, agent;
-  amended cycle 2, agent)*
+  First determine the dominant day-count convention from full-year rows
+  (inclusive end − start + 1, or exclusive), then compute stored ÷
+  date-derived exposure on that basis for every row and tabulate the ratio:
+  clusters near 365 are day counts, near 365/360 a 360-day basis, near
+  (n−1)/n an exclusive end date, near 1 rounding. On the wrong basis short
+  rows smear across 1.0–2.0 and hide the smaller spikes. Report each
+  cluster as its own finding, then repair every row from the dates. Run
+  the tabulation again on the residual after the obvious cluster is
+  removed, and on the test files separately. *(cycle 1, agent; amended
+  cycles 2 and 3, agent)*
 
 <!-- rule: R-0003 -->
 - **Unit-scale profiling of amount columns.** For every monetary column
@@ -90,8 +91,11 @@ the matching test table.
   cancellations is a survivor sample — the extract only reaches back for
   policies still in force later — and must be labelled as such in the shift
   report and the validation design, because its frequency and mix are
-  conditioned on survival. Applies to any extract whose first year predates
-  the extract's own history window. *(cycle 2, agent)*
+  conditioned on survival. Cross-tabulate each decision value with presence
+  in the following year as well: a value that should end a policy
+  ("declined", "cancelled") but shows near-complete persistence is a
+  semantic defect to query, not a risk segment. *(cycle 2, agent; amended
+  cycle 3, agent)*
 
 <!-- rule: R-0008 -->
 - **Identify dominant large losses early.** For each line and accident
@@ -140,6 +144,15 @@ the matching test table.
   dropping it. Dropping mix features prices the new book at the old book's
   level. *(cycle 2, agent)*
 
+<!-- rule: R-0022 -->
+- **Prediction-year environmental data is a calendar stamp by default.**
+  When a table carries values for the prediction year (weather, indices)
+  that could not be known when the policies were priced, test each index
+  alone against the train/test label; if the prediction year's values
+  differ for every address, the index is a year effect to the model.
+  Exclude it, or replace it with an address-level summary over the
+  training years only, and record the choice. *(cycle 3, agent)*
+
 <!-- rule: R-0011 -->
 - **Data-quality flags are not risk factors.** Columns you create to mark
   repaired or suspicious rows stay out of the feature set. Keep them in the
@@ -173,9 +186,10 @@ the matching test table.
   the cleaning, not in the data.
 
 <!-- rule: R-0017 -->
-- **Reconciliation ladder.** Write the whole chain as one table — exposure
-  (raw → cleaned), claims count and net incurred (raw → cleaned), Σ target
-  (modelling tables → cleaned claims), model level (Σ prediction → Σ target
-  on training rows) — and refuse to proceed while any link is open. The
-  ladder is what catches a silent level drift in a model as quickly as a
-  dropped row in cleaning. *(cycle 1, agent)*
+- **Reconciliation ladder — printed by the pipeline.** Write the whole
+  chain as one table — exposure (raw → cleaned), claims count and net
+  incurred (raw → cleaned), Σ target (modelling tables → cleaned claims),
+  model level (Σ prediction → Σ target on training rows), holdout level —
+  and have the pipeline script print it, so the final check is a
+  read-through rather than a recomputation. Refuse to proceed while any
+  link is open. *(cycle 1, agent; amended cycle 3, agent)*

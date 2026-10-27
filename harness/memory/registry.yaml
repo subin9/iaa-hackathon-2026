@@ -400,6 +400,7 @@
   source_cycle: 0
   approved_by: actuary (HyunSu Kim)
   status: ACTIVE
+  amendments: cycle 3 (AGENT_RETRO) — PSI on non-null values plus a separate null-rate delta; identical PSI across columns ⇒ null bin or join
   location: playbooks/adaptation_playbook.md
 
 - id: R-0403
@@ -554,7 +555,7 @@
   source_cycle: 1
   approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
   status: ACTIVE
-  amendments: cycle 2 (AGENT_RETRO) — re-run on the residual after the obvious cluster and on test files separately
+  amendments: cycle 2 (AGENT_RETRO) — re-run on the residual after the obvious cluster and on test files separately; cycle 3 (AGENT_RETRO) — determine the day-count convention from full-year rows before tabulating ratios
   location: playbooks/data_readiness_playbook.md
 
 - id: R-0015
@@ -585,6 +586,7 @@
   source_cycle: 1
   approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
   status: ACTIVE
+  amendments: cycle 3 (AGENT_RETRO) — ladder printed by the pipeline script
   location: playbooks/data_readiness_playbook.md
 
 - id: R-0018
@@ -605,6 +607,7 @@
   source_cycle: 1
   approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
   status: ACTIVE
+  amendments: cycle 3 (AGENT_RETRO) — spliced and no-tail completion both required as table columns
   location: playbooks/target_construction_playbook.md
 
 - id: R-0311
@@ -615,7 +618,7 @@
   source_cycle: 1
   approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
   status: ACTIVE
-  amendments: cycle 2 (AGENT_RETRO) — level check made a gate: stop and fix/apply explicit factor before reading scores; approved by actuary 2026-10-27
+  amendments: cycle 2 (AGENT_RETRO) — level check made a gate: stop and fix/apply explicit factor before reading scores; approved by actuary 2026-10-27; cycle 3 (AGENT_RETRO) — gate precedes capacity choice; leaf-step limit and categorical level-count guard named
   location: playbooks/modeling_playbook.md
 
 - id: R-0312
@@ -637,6 +640,7 @@
   source_cycle: 1
   approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
   status: ACTIVE
+  amendments: cycle 3 (AGENT_RETRO) — identify the acquired book or its training analogue in a pre-registered table
   location: playbooks/adaptation_playbook.md
 
 - id: R-0411
@@ -690,6 +694,7 @@
   source_cycle: 2
   approved_by: actuary (HyunSu Kim), 2026-10-27; DS generality review pending (gate 2)
   status: ACTIVE
+  amendments: cycle 3 (AGENT_RETRO) — label-does-not-terminate cross-tab added
   location: playbooks/data_readiness_playbook.md
 
 - id: R-0109
@@ -708,6 +713,17 @@
   origin: AGENT_RETRO
   evidence: Cycle 2 retrospective proposal 9; a "Self-employed" prefix attached at the same rate to retired and student records.
   source_cycle: 2
+  approved_by: actuary (HyunSu Kim), 2026-10-27; DS generality review pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+# ---------------------------------------------------------------- harness v4 (cycle 3 promotions)
+- id: R-0022
+  statement: Prediction-year environmental data (weather, indices) is a calendar stamp by default; test each index alone against the train/test label and exclude or replace with a training-years address summary.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 3 retrospective proposal 5; every weather index separated 2024 from 2025 alone; Part 1 found weather hurt out-of-year (R-0302).
+  source_cycle: 3
   approved_by: actuary (HyunSu Kim), 2026-10-27; DS generality review pending (gate 2)
   status: ACTIVE
   location: playbooks/data_readiness_playbook.md

@@ -18,10 +18,15 @@ what carries over — and to say plainly what remains uncertain.
 <!-- rule: R-0402 -->
 - **Shift report, two comparisons.** For every shared column compute a
   distribution distance (PSI or equivalent) for (a) emerging train vs
-  emerging test and (b) developed vs emerging training years. Rank the
-  shifts and interpret each as portfolio mix, data-definition change, or
-  leakage. Mix is modelled; definition changes are mapped; leakage is
-  excluded.
+  emerging test and (b) developed vs emerging training years. Compute the
+  distance on non-null values and report the null-rate difference as a
+  separate number: a null bin turns a data-capture difference into an
+  apparent shift in every column of a table at once, and an unmatched join
+  does the same. When several unrelated columns show the same distance,
+  suspect the null bin or the join, not the data. Rank the shifts and
+  interpret each as portfolio mix, data-definition change, or leakage. Mix
+  is modelled; definition changes are mapped; leakage is excluded.
+  *(amended cycle 3, agent)*
 
 <!-- rule: R-0403 -->
 - **Decompose into frequency, severity and peril mix.** Per line, per
@@ -48,14 +53,17 @@ what carries over — and to say plainly what remains uncertain.
   extrapolating.
 
 <!-- rule: R-0410 -->
-- **New-business pre-model check.** When the prediction year is dominated
-  by new business, compute before modelling: the new-business frequency and
-  cost excess inside the training data, age-standardised; and the
-  persistence of first-year policies into their second year. After
-  modelling, compare the model's new-business relativity with that
-  pre-model figure and explain any gap — a model can price new business
-  flat against a clear data signal when the segment is thin.
-  *(cycle 1, agent)*
+- **New-business pre-model check — identify the acquired book explicitly.**
+  When the prediction year is dominated by new or transferred business,
+  first establish which flag singles that book out (channel, a join-year,
+  the new-business flag); if none does, state which training segment is
+  its analogue, that segment's size in claims, and its age-standardised
+  frequency and cost relativity. Also compute the persistence of first-year
+  policies into their second year. Put this in a pre-registered table
+  before modelling, and after modelling compare the model's new-business
+  relativity with it and explain any gap — a model can price new business
+  flat against a clear data signal when the segment is thin. *(cycle 1,
+  agent; amended cycle 3, agent)*
 
 <!-- rule: R-0412 -->
 - **Reference tables must cover the portfolio — and the gap is a finding.**

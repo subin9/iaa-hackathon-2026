@@ -44,15 +44,19 @@ copy.
   exactly equivalent for Tweedie losses.
 
 <!-- rule: R-0311 -->
-- **The level check is a gate, not a report.** Put log(Σ target ÷ Σ exposure
-  basis) in the init score of offset-boosted models so the trees learn
-  relativities; then, after every fit, compute Σ prediction ÷ Σ target on
-  the training rows. If it differs from one by more than rounding, stop:
-  fix the learner (regularisation, rounds) or apply and report an explicit
-  level factor — before any fold score is read. A shallow, heavily
-  regularised fit on a small market can lose a double-digit share of the
-  level even with a correct init score. *(cycle 1, agent; strengthened
-  cycle 2, agent)*
+- **The level check is a gate, not a report — and it comes before the
+  capacity choice.** Put log(Σ target ÷ Σ exposure basis) in the init score
+  of offset-boosted models so the trees learn relativities; after every
+  fit compute Σ prediction ÷ Σ target on the training rows. If it differs
+  from one by more than a few percent, stop and fix the learner before any
+  fold score is read or any round grid is run: on a few thousand claims an
+  unguarded log-link booster can lose a double-digit share of level and D²
+  can fall with rounds. The usual fixes are a leaf-step limit
+  (`max_delta_step` ≈ 0.5–1), stronger leaf regularisation, and excluding
+  categoricals whose level count is comparable to the claim count. Only
+  then re-choose capacity (R-0312). If a residual gap remains, apply and
+  report an explicit level factor. *(cycle 1, agent; strengthened cycles 2
+  and 3, agent)*
 
 <!-- rule: R-0305 -->
 - **Blend diverse families with equal weights, seed-average each.** Part 1's
