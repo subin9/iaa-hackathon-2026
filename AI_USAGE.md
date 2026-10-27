@@ -38,9 +38,10 @@ checks, what was rejected and why).
 |---|---|---|---|---|---|---|---|---|
 | 1 | v1 (50) | yes | 75 min / 45 min | $20.93 | 15 / 8 / 0 | 0.1125 | D1 (first) | 13 rules → v2 |
 | 2 | v2 (63) | **no** — read cycle 1's auto-memory note (disclosed in scorecard) | 4h17 incl. hand-approved prompts and one restart / 53 min | $25.71 | 17 / 6 / 0 | 0.0978 | D2 = D1 (rows, exposure, Σy identical) | 10 proposals → v3 |
-| 3 | v3 (67) | yes (fresh folder) | 44 min / 41 min | $19.09 | 23 / 2 / 0 | 0.1065 | D3 = D2 = D1 | (v4 for the record) |
+| 3 | v3 (67) | yes (fresh folder) | 44 min / 41 min | $19.09 | 23 / 2 / 0 | 0.1065 | D3 = D2 = D1 | 8 proposals → v4 |
+| 4 | v4 (68) | yes (fresh folder) | 59 min / 42 min | $22.29 | 23 / 2 / 0 (both trivial) | 0.1031 | D4 = D3 on targets; nulls reduced by sibling reconstruction | v5 = final recorded state |
 
-Effort was constant across cycles (API time 45 / 53 / 41 min; output tokens 192k / 210k / 187k); wall-clock includes operator response time and is not a measure of the agent. Answer key: 10 items, all found in every cycle; the agent found two defects the key missed in cycle 1 and three more structural facts in cycles 2–3 (survivor-sample first year, non-terminating "declined" label, zero-length rows). Agent-built baselines vary with single-fold modelling choices and are not the measure of data quality (LOOP.md); the data effect is read from the frozen pipeline model.
+Effort was constant across cycles (API time 45 / 53 / 41 / 42 min; output tokens 192k / 210k / 187k / 184k; cost $21 / $26 / $19 / $22); wall-clock includes operator response time and is not a measure of the agent. Answer key: 10 items, all found in every cycle; the agent found two defects the key missed in cycle 1 and three more structural facts in cycles 2–3 (survivor-sample first year, non-terminating "declined" label, zero-length rows). Agent-built baselines vary with single-fold modelling choices and are not the measure of data quality (LOOP.md); the data effect is read from the frozen pipeline model.
 
 Floor for the holdout: a constant 2023 burning cost by line scores D² 0.068
 (`eval/holdout_results.csv`, `naive_2023_rate`). Data track stops when a
