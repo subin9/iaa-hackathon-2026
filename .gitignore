@@ -40,3 +40,4 @@ runs/**/baseline/*.csv
 runs/**/*.jsonl
 runs/**/transcript*.txt
 runs/**/affected_ids.json
+runs/hs_model/*.csv
