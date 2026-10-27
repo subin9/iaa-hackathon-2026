@@ -1,4 +1,9 @@
-# Actuarial decisions for the Part 2 submission (gate ④ — draft for HS)
+# Actuarial decisions for the Part 2 submission (gate ④)
+
+**Signed: HyunSu Kim (actuary), 2026-10-27 20:12 SGT — all recommendations below adopted as proposed.** External check:
+a public-score level probe on the data scientist's model (global ×0.95 / ×1.05 and one line at a time ×1.10, five
+submissions on one UTC day) is planned for Wednesday; probed line levels are shrunk 30 % toward these pre-probe
+estimates, as in Part 1 (`submissions/probe_plan.md`).
 
 Evidence: four independent agent runs (cycles 1–4) on the same data under harness v1–v4; each produced
 `adaptation_decisions.md`, `target_notes.md` and `baseline/validation.md`. Numbers below are quoted from those files
