@@ -7,14 +7,14 @@
 | Run location | `C:\Users\Guest1337\harness_run` — copy of `harness/` outside the repo (no git context, no `../eval` reachable), `memory/` removed before kickoff |
 | Parent CLAUDE.md / user CLAUDE.md present? | none (`%USERPROFILE%\.claude\CLAUDE.md` absent; no CLAUDE.md in C:\, C:\Users\Guest1337, Documents, repo root) |
 | Permission test (throwaway session) | not repeated (same isolated copy as cycle 1) |
-| Start (SGT) | … |
-| End (SGT) | … |
-| Interventions | … |
+| Start (SGT) | 2026-10-27 ≈11:30 (kickoff pasted verbatim) |
+| End (SGT) | 2026-10-27 15:28 (agent's own 'done' stamp) |
+| Interventions | ≈11:40 Esc→/exit→`claude --continue --permission-mode bypassPermissions` (auto mode still prompting); ≈13:45 Esc→/exit→`claude --continue` after disabling blockReadsOutsideWorkingDirectories (it prompted on every stdin-code command). No content instruction. |
 | Permission prompts seen | … |
 | Cost / tokens (`/cost`) | … |
 | Code written | … |
-| validate_outputs result | … |
+| validate_outputs result | PASS — 23 findings (17 rule-attributed, 6 novel); holdout 100% coverage; check_sub passes for both candidates |
 | Deliverables present | … |
-| Holdout grade (eval/grade_holdout.py) | … |
+| Holdout grade (eval/grade_holdout.py) | D2_agent 0.0978 (motor 0.0658 / buildings 0.0347 / contents 0.0509); B_devtrend 0.0959 |
 | Transcript | … |
 | Anything odd | … |
