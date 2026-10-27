@@ -37,10 +37,10 @@ checks, what was rejected and why).
 | Cycle | Harness (rules) | Fresh? | Wall / API | Cost | Findings rule-caught / novel / missed | Agent-baseline holdout D² | Data version vs previous | Promoted |
 |---|---|---|---|---|---|---|---|---|
 | 1 | v1 (50) | yes | 75 min / 45 min | $20.93 | 15 / 8 / 0 | 0.1125 | D1 (first) | 13 rules → v2 |
-| 2 | v2 (63) | **no** — read cycle 1's auto-memory note (disclosed in scorecard) | 4h17 incl. two restarts / 53 min | $25.71 | 17 / 6 / 0 | 0.0978 | D2 = D1 (rows, exposure, Σy identical) | 10 proposals → v3 |
+| 2 | v2 (63) | **no** — read cycle 1's auto-memory note (disclosed in scorecard) | 4h17 incl. hand-approved prompts and one restart / 53 min | $25.71 | 17 / 6 / 0 | 0.0978 | D2 = D1 (rows, exposure, Σy identical) | 10 proposals → v3 |
 | 3 | v3 (67) | yes (fresh folder) | 44 min / 41 min | $19.09 | 23 / 2 / 0 | 0.1065 | D3 = D2 = D1 | (v4 for the record) |
 
-Answer key: 10 items, all found in every cycle; the agent found two defects the key missed in cycle 1 and three more structural facts in cycles 2–3 (survivor-sample first year, non-terminating "declined" label, zero-length rows). Agent-built baselines vary with single-fold modelling choices and are not the measure of data quality (LOOP.md); the data effect is read from the frozen pipeline model.
+Effort was constant across cycles (API time 45 / 53 / 41 min; output tokens 192k / 210k / 187k); wall-clock includes operator response time and is not a measure of the agent. Answer key: 10 items, all found in every cycle; the agent found two defects the key missed in cycle 1 and three more structural facts in cycles 2–3 (survivor-sample first year, non-terminating "declined" label, zero-length rows). Agent-built baselines vary with single-fold modelling choices and are not the measure of data quality (LOOP.md); the data effect is read from the frozen pipeline model.
 
 Floor for the holdout: a constant 2023 burning cost by line scores D² 0.068
 (`eval/holdout_results.csv`, `naive_2023_rate`). Data track stops when a

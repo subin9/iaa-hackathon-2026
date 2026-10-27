@@ -1,6 +1,6 @@
 # Scorecard — cycle 2 (harness-v2 → data version D2)
 
-Run: 2026-10-27 ≈11:30 → 15:28 SGT (two restarts for permission-mode changes, no content instruction) | operator: HS | model: claude-fable-5-1, xhigh | location: isolated copy, memory/ removed | cost: … (from `/cost`)
+Run: 2026-10-27 ≈11:30 → 15:28 SGT (prompts approved by hand, one restart for a permission-setting change; no content instruction) | operator: HS | model: claude-fable-5-1, xhigh | location: isolated copy, memory/ removed | cost: … (from `/cost`)
 
 ## A. Detection and treatment — technical (draft, Evan to confirm)
 23 findings: **rule-caught 17 · novel 6 · missed 0** (cycle 1: 15 / 8 / 0). What was novel in cycle 1 is now rule-caught: 360-day exposure (R-0014), ×1000 by ratio (R-0013), pre-inception claims by lag (R-0015), campaign_code cohort stamp (R-0016), flood_zone MNAR and the 12% MCAR block (R-0018), missing comparison-site commission (R-0412). All ten answer-key items found again with the same treatments and counts.
