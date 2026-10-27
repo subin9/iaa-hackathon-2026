@@ -58,11 +58,13 @@ what carries over — and to say plainly what remains uncertain.
   *(cycle 1, agent)*
 
 <!-- rule: R-0412 -->
-- **Reference tables must cover the portfolio.** Every channel, segment or
-  product present in the book must have an entry in the expense, commission
-  and loading tables used for the premium build. A missing entry is a
-  finding for the premium build and a team query (missing loading or wrong
-  label), not something to fill in silently. *(cycle 1, actuary)*
+- **Reference tables must cover the portfolio — and the gap is a finding.**
+  Join the channel, product and segment lists of the policy tables to every
+  expense, commission and loading table; record a finding in findings.json
+  with `team_query` set for each missing or null entry, so it is not lost
+  between the data phase and the premium build. A missing entry is a
+  premium-build question (missing loading or wrong label), never something
+  to fill in silently. *(cycle 1, actuary; amended cycle 2, agent)*
 
 ## 2. Decide what carries over
 

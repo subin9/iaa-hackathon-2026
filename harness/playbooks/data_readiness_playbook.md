@@ -154,6 +154,15 @@ the matching test table.
   the mode, and say so. If nulls look like independent draws, no indicator
   feature is needed. *(cycle 1, actuary)*
 
+<!-- rule: R-0021 -->
+- **Free-text noise test.** For a categorical column with more distinct
+  values than its code list, first normalise case and whitespace; then test
+  whether any remaining prefix or suffix variant occurs at the same rate in
+  every base category. A uniform rate — the same prefix attached to
+  categories where it is meaningless — marks a random corruption to strip;
+  a non-uniform rate marks a real attribute to keep as a flag. Record which
+  it was. *(cycle 2, agent)*
+
 ## Final gate
 
 <!-- rule: R-0012 -->

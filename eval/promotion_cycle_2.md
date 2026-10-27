@@ -12,9 +12,9 @@
 | 8 | Open-claim selection effect when comparing open vs closed costs | target, amend R-0105 | ACCEPT (text to be taken from retro §8) | pending | ✅ 2026-10-27 |
 | A | (ACTUARY) Agent-built baselines vary between fresh runs through single-fold modelling choices; the data effect is measured only with a frozen external model (M0) — eval-side note, not a harness rule | eval/LOOP.md | note | | |
 
-Not in the table when approved — **pending HS yes/no** (both method-level, low risk):
+Approved after the table (HS, 2026-10-27 15:49):
 
 | # | Proposed rule (agent) | Target | Draft |
 |---|---|---|---|
-| 9 | Free-text noise test: after case/whitespace normalisation, test whether a remaining prefix/suffix variant occurs at the same rate in every base category — uniform rate = random corruption to strip, non-uniform = real attribute to keep as a flag | data_readiness, new | ACCEPT |
-| 10 | Reference-table coverage recorded as a findings item with team_query (join channel/product/segment lists to every loading table) | adaptation, amend R-0412 | ACCEPT |
+| 9 | Free-text noise test: after case/whitespace normalisation, test whether a remaining prefix/suffix variant occurs at the same rate in every base category — uniform rate = random corruption to strip, non-uniform = real attribute to keep as a flag | data_readiness, new (R-0021) | ACCEPT ✅ |
+| 10 | Reference-table coverage recorded as a findings item with team_query (join channel/product/segment lists to every loading table) | adaptation, amend R-0412 | ACCEPT ✅ |

@@ -657,6 +657,7 @@
   source_cycle: 1
   approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
   status: ACTIVE
+  amendments: cycle 2 (AGENT_RETRO) — the coverage gap is recorded as a findings.json item with team_query
   location: playbooks/adaptation_playbook.md
 
 - id: R-0507
@@ -700,3 +701,13 @@
   approved_by: actuary (HyunSu Kim), 2026-10-27; DS generality review pending (gate 2)
   status: ACTIVE
   location: playbooks/target_construction_playbook.md
+
+- id: R-0021
+  statement: After case/whitespace normalisation of free text, test whether a residual prefix/suffix variant occurs at the same rate in every base category; uniform = corruption to strip, non-uniform = attribute to keep as a flag.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 2 retrospective proposal 9; a "Self-employed" prefix attached at the same rate to retired and student records.
+  source_cycle: 2
+  approved_by: actuary (HyunSu Kim), 2026-10-27; DS generality review pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
