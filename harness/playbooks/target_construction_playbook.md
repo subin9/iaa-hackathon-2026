@@ -34,6 +34,15 @@ cannot be fitted — say so, borrow explicitly, and quantify.
   the modelling tables so the borrowed share is visible and testable.
   *(cycle 1, agent)*
 
+<!-- rule: R-0109 -->
+- **Empirical completion check from the oldest accident year.** Whenever a
+  lag curve is spliced or borrowed, compare the oldest accident year's cost
+  reported by twelve months with its cost reported by the valuation date
+  (cost-weighted, large claims capped) against the ratio the curve implies
+  for those two ages. It is the only direct test of the completion level a
+  short history allows; a disagreement means the anchor or the borrowed
+  share is wrong. *(cycle 2, agent)*
+
 <!-- rule: R-0103 -->
 - **Trend from mature years only.** Fit a log-linear trend of cost per
   exposure-year by line on accident years whose completion is close to
@@ -51,12 +60,16 @@ cannot be fitted — say so, borrow explicitly, and quantify.
 
 <!-- rule: R-0105 -->
 - **Check open-claim adequacy (IBNER) but do not adopt it blind.** Compare
-  average incurred of open vs closed claims by accident year and peril. If
-  the latest year's open claims look under-reserved relative to the trend
-  of earlier years, quantify the implied uplift by line — then record it as
-  an uncertainty rather than applying it, unless you have out-of-sample
-  evidence. Validation years carry the same reserving bias, so local
-  validation cannot confirm this adjustment.
+  average incurred of open vs closed claims by accident year and peril,
+  stating first that open claims are a selected sample (large claims close
+  late), and compare like with like — the older year's open claims at the
+  same age, where available — before reading any implied uplift. If the
+  latest year's open claims still look under-reserved relative to the
+  trend of earlier years, quantify the implied uplift by line, then record
+  it as an uncertainty rather than applying it, unless you have
+  out-of-sample evidence. Validation years carry the same reserving bias,
+  so local validation cannot confirm this adjustment. *(amended cycle 2,
+  agent)*
 
 <!-- rule: R-0106 -->
 - **Late-reporting pattern of the last calendar month.** Losses in the last

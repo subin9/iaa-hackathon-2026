@@ -16,11 +16,16 @@ copy.
   complexity only when R-0202 passes.
 
 <!-- rule: R-0312 -->
-- **Re-choose capacity when volume changes by an order of magnitude.**
-  Pre-register a small grid of round counts (half, default, double) and an
-  adoption rule before scoring; a round count tuned on hundreds of
-  thousands of rows over-fits lines with a few hundred claims. Record the
-  rule and the result even when the default wins. *(cycle 1, agent)*
+- **Re-choose capacity when volume changes by an order of magnitude — with
+  an edge rule and a floor.** Pre-register a small grid of round counts
+  (half, default, double) and the action when the best point sits at the
+  grid edge (halve or double and re-test), so extending the grid after
+  seeing a result is part of the registered procedure. Two guards: never go
+  below a floor of about one hundred rounds at a learning rate of 0.02
+  (fewer rounds cannot express the relativities and the gain is fold
+  noise), and adopt a smaller count only if the secondary check agrees.
+  Record the rule and the result even when the default wins. *(cycle 1,
+  agent; amended cycle 2, agent + actuary)*
 
 <!-- rule: R-0302 -->
 - **Lean feature set.** Removing weather, sales-channel, marketing and
@@ -39,12 +44,15 @@ copy.
   exactly equivalent for Tweedie losses.
 
 <!-- rule: R-0311 -->
-- **Put the intercept in the init score of offset-boosted models.** Add
-  log(Σ target ÷ Σ exposure basis) to the offset so the trees learn
-  relativities and the level reconciles to the training years by
-  construction; check Σ prediction = Σ target on the training rows before
-  reading any score. Without it the level drifts with the round count.
-  *(cycle 1, agent)*
+- **The level check is a gate, not a report.** Put log(Σ target ÷ Σ exposure
+  basis) in the init score of offset-boosted models so the trees learn
+  relativities; then, after every fit, compute Σ prediction ÷ Σ target on
+  the training rows. If it differs from one by more than rounding, stop:
+  fix the learner (regularisation, rounds) or apply and report an explicit
+  level factor — before any fold score is read. A shallow, heavily
+  regularised fit on a small market can lose a double-digit share of the
+  level even with a correct init score. *(cycle 1, agent; strengthened
+  cycle 2, agent)*
 
 <!-- rule: R-0305 -->
 - **Blend diverse families with equal weights, seed-average each.** Part 1's

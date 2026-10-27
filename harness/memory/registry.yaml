@@ -176,6 +176,7 @@
   source_cycle: 0
   approved_by: actuary (HyunSu Kim)
   status: ACTIVE
+  amendments: cycle 2 (AGENT_RETRO) — state the open-claim selection effect and compare like with like before reading an uplift
   location: playbooks/target_construction_playbook.md
 
 - id: R-0106
@@ -542,6 +543,7 @@
   source_cycle: 1
   approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
   status: ACTIVE
+  amendments: cycle 2 (AGENT_RETRO) — boundary placed in the widest empty log-ratio interval; second column if none
   location: playbooks/data_readiness_playbook.md
 
 - id: R-0014
@@ -552,6 +554,7 @@
   source_cycle: 1
   approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
   status: ACTIVE
+  amendments: cycle 2 (AGENT_RETRO) — re-run on the residual after the obvious cluster and on test files separately
   location: playbooks/data_readiness_playbook.md
 
 - id: R-0015
@@ -612,6 +615,7 @@
   source_cycle: 1
   approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
   status: ACTIVE
+  amendments: cycle 2 (AGENT_RETRO) — level check made a gate: stop and fix/apply explicit factor before reading scores; approved by actuary 2026-10-27
   location: playbooks/modeling_playbook.md
 
 - id: R-0312
@@ -622,6 +626,7 @@
   source_cycle: 1
   approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
   status: ACTIVE
+  amendments: cycle 2 (AGENT_RETRO + ACTUARY) — pre-registered edge rule; floor ≈100 rounds; secondary check must agree (cycle-2 baseline regressed at 75 rounds)
   location: playbooks/modeling_playbook.md
 
 - id: R-0410
@@ -663,3 +668,35 @@
   approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
   status: ACTIVE
   location: playbooks/submission_guardrails.md
+
+# ---------------------------------------------------------------- harness v3 (cycle 2 promotions)
+
+- id: R-0019
+  statement: A feature that separates years is a time stamp only if its meaning changes with the calendar; mix features (new business, tenure, age) are kept and evaluated on the shifted subset.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 2 retrospective proposal 2; new_business scored like a stamp on single-feature AUC.
+  source_cycle: 2
+  approved_by: actuary (HyunSu Kim), 2026-10-27; DS generality review pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0020
+  statement: Audit persistence of every training year (share reappearing next year, end-of-period decisions); complete persistence with no lapses = survivor sample, label it in shift report and validation design.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 2 F-SURVIVOR-2023 (verified: 100% of 2023 policies reappear in 2024; developed 2021 likewise).
+  source_cycle: 2
+  approved_by: actuary (HyunSu Kim), 2026-10-27; DS generality review pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0109
+  statement: Compare the oldest accident year's cost at 12 months vs at the valuation date with the ratio the spliced/borrowed curve implies for those ages.
+  applies_to: target
+  origin: AGENT_RETRO
+  evidence: Cycle 2 retrospective proposal 7; the one direct completion test a two-year market allows.
+  source_cycle: 2
+  approved_by: actuary (HyunSu Kim), 2026-10-27; DS generality review pending (gate 2)
+  status: ACTIVE
+  location: playbooks/target_construction_playbook.md

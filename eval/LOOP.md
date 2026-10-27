@@ -132,6 +132,14 @@ promoted rules.
 - Every submission is logged with both coordinates (`data_version`,
   `model_version`) in `submissions/log.csv`; the report shows the matrix.
 
+### Agent-built baselines are not the instrument
+Fresh agents make different single-fold modelling choices (cycle 1: 300
+rounds; cycle 2: 75 rounds and an explicit level factor) and their holdout
+scores move accordingly (0.1125 → 0.0978) while the data versions they
+produced were identical. The agent's stretch baseline is evidence about the
+*modelling playbook*, never about the data; the data effect is read only
+from the frozen pipeline model M0.
+
 ### Three layers of grading
 
 | Layer | What | Who | Catches |

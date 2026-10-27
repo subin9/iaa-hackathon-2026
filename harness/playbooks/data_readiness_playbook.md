@@ -23,9 +23,12 @@ the matching test table.
   Compute stored ÷ date-derived exposure for every row and tabulate the
   ratio: clusters near 365 are day counts, near 365/360 a 360-day basis,
   near (n−1)/n an exclusive end date, near 1 rounding. Report each cluster
-  as its own finding, then repair every row from the dates. A second
-  convention hides behind the first when only the obvious cluster is
-  checked. *(cycle 1, agent)*
+  as its own finding, then repair every row from the dates. Run the
+  tabulation again on the residual after the obvious cluster is removed —
+  a smaller convention sits inside the "looks fine" range and only shows
+  as a spike in the ratio — and run it on the test files separately, which
+  may come from a different system and be clean. *(cycle 1, agent;
+  amended cycle 2, agent)*
 
 <!-- rule: R-0003 -->
 - **Unit-scale profiling of amount columns.** For every monetary column
@@ -39,11 +42,14 @@ the matching test table.
 <!-- rule: R-0013 -->
 - **Decide unit errors per row on a proportionality ratio, not a value
   threshold.** When two amount columns should be proportional (premium and
-  sum insured, paid and incurred), tabulate their ratio per row: a unit
+  sum insured, paid and incurred), tabulate their log-ratio per row: a unit
   error in one column shows as a ratio shifted by a power of ten while the
-  value alone may look merely large. The ratio rule is self-calibrating and
-  applies unchanged to training, test and reference tables; a value cut-off
-  is a tuned number that has to be justified. *(cycle 1, agent)*
+  value alone may look merely large. Place the boundary inside the widest
+  empty interval between the normal mass and the power-of-ten cluster and
+  report that interval; if no empty interval exists, the ratio alone is
+  insufficient and a second column must be brought in. The same rule
+  applies unchanged to training, test and reference tables. *(cycle 1,
+  agent; amended cycle 2, agent)*
 
 <!-- rule: R-0002 -->
 - **Content-key uniqueness of claims.** Test whether any claims repeat
@@ -75,6 +81,17 @@ the matching test table.
   confirm that no claim falls in the test period. Note how much of the
   latest accident year's reporting is likely still outstanding (this feeds
   target construction).
+
+<!-- rule: R-0020 -->
+- **Persistence audit of every training year.** For each training year,
+  compute the share of its policies that appear in the following year and
+  the distribution of the end-of-period decision (renewed, lapsed,
+  cancelled, declined). A year with complete persistence and no lapses or
+  cancellations is a survivor sample — the extract only reaches back for
+  policies still in force later — and must be labelled as such in the shift
+  report and the validation design, because its frequency and mix are
+  conditioned on survival. Applies to any extract whose first year predates
+  the extract's own history window. *(cycle 2, agent)*
 
 <!-- rule: R-0008 -->
 - **Identify dominant large losses early.** For each line and accident
@@ -112,6 +129,16 @@ the matching test table.
   is a time stamp. Confirm with a single-feature adversarial AUC, exclude
   it, and only then run the multivariate check; this orders the exclusions
   in one pass. *(cycle 1, agent)*
+
+<!-- rule: R-0019 -->
+- **Meaning test before the stamp test.** A feature that separates the
+  training years from the prediction year is a time stamp only if its
+  *meaning* changes with the calendar (join year, the existence of a
+  campaign, in-period counts). A feature whose values shift because the
+  portfolio changed (new-business flag, tenure, age mix) is mix: keep it,
+  and evaluate the model on the shifted subset (R-0406) rather than
+  dropping it. Dropping mix features prices the new book at the old book's
+  level. *(cycle 2, agent)*
 
 <!-- rule: R-0011 -->
 - **Data-quality flags are not risk factors.** Columns you create to mark

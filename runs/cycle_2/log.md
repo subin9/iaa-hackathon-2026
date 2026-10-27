@@ -11,8 +11,8 @@
 | End (SGT) | 2026-10-27 15:28 (agent's own 'done' stamp) |
 | Interventions | ≈11:40 Esc→/exit→`claude --continue --permission-mode bypassPermissions` (auto mode still prompting); ≈13:45 Esc→/exit→`claude --continue` after disabling blockReadsOutsideWorkingDirectories (it prompted on every stdin-code command). No content instruction. |
 | Permission prompts seen | … |
-| Cost / tokens (`/cost`) | … |
-| Code written | … |
+| Cost / tokens (`/cost`) | **$25.71** — fable-5-1: 2.3k input, 209.6k output, 12.8m cache read, 600.4k cache write; haiku 1.4k/22 ($0.0002); 29 requests, 96% from cache, 1 miss (idle > 1h TTL during a restart). API time 53m 0s; wall 4h 17m (includes two restarts). Weekly Fable usage after the run: 55% (43% after cycle 1 → ≈12% per cycle) |
+| Code written | 2,448 lines added, 10 removed (`work/p00…p40`, two patch scripts) |
 | validate_outputs result | PASS — 23 findings (17 rule-attributed, 6 novel); holdout 100% coverage; check_sub passes for both candidates |
 | Deliverables present | … |
 | Holdout grade (eval/grade_holdout.py) | D2_agent 0.0978 (motor 0.0658 / buildings 0.0347 / contents 0.0509); B_devtrend 0.0959 |
