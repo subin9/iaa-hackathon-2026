@@ -7,7 +7,7 @@
 | Run location | `C:\Users\Guest1337\harness_run_c3` — fresh folder name (new Claude Code project dir: no auto-memory, no prior sessions), copy of `harness/` outside the repo, `memory/` removed before kickoff |
 | Parent CLAUDE.md / user CLAUDE.md present? | none (`%USERPROFILE%\.claude\CLAUDE.md` absent; no CLAUDE.md in C:\, C:\Users\Guest1337, Documents, repo root) |
 | Permission test (throwaway session) | not repeated (same isolated copy as cycle 1) |
-| Start (SGT) | … |
+| Start (SGT) | 2026-10-27 16:02 (kickoff pasted verbatim) |
 | End (SGT) | … |
 | Interventions | … |
 | Permission prompts seen | … |
