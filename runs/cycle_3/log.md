@@ -16,5 +16,5 @@
 | validate_outputs result | PASS — 25 findings (23 rule-attributed, 2 novel); holdout 100% coverage; check_sub passes for both candidates |
 | Deliverables present | all required + stretch (submission, submission_no_trend, holdout_2024, validation) |
 | Holdout grade (eval/grade_holdout.py) | D3_agent_baseline 0.1065 (motor 0.0766 / buildings 0.0427 / contents 0.0582) |
-| Transcript | to copy: `~/.claude/projects/C--Users-Guest1337-harness-run-c3/*.jsonl` + `memory/` → `runs/transcripts/`; `/export` → `runs/cycle_3/transcript.txt`. Audit: pending |
+| Transcript | `runs/transcripts/0dd3a5c8….jsonl`, `runs/cycle_3/transcript.txt`, `memory_after_cycle3/`. Audit: **clean** — no reference outside the run folder, no web tools, no questions; auto-memory only **written** at the end (tool #129 of 137, a Windows/polars console note), never read — the fresh folder had none to read. |
 | Anything odd | Fresh folder → no auto-memory available; first tool call went straight to the data. Agent added `max_delta_step` after its first run lost level (R-0311 gate worked as a gate). |

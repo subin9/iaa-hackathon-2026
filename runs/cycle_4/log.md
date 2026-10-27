@@ -16,5 +16,5 @@
 | validate_outputs result | PASS — 25 findings (23 rule-attributed, 2 novel); holdout 100% coverage; check_sub passes |
 | Deliverables present | all required + stretch |
 | Holdout grade (eval/grade_holdout.py) | D4_agent_baseline 0.1031 (motor 0.0710 / buildings 0.0306 / contents 0.0718) |
-| Transcript | to copy from `~/.claude/projects/C--Users-Guest1337-harness-run-c4/`; audit pending |
+| Transcript | `runs/transcripts/353f1526….jsonl`, `runs/cycle_4/transcript.txt`, `memory_after_cycle4/`. Audit: **clean** — no reference outside the run folder, no web tools, no questions; auto-memory only **written** at the end (tool #188 of 192, a workspace status note), never read. |
 | Anything odd | New repair found: sibling reconstruction of time-invariant policy attributes (F-18, verified exactly) — the first cycle to change the cleaned tables beyond cycle 1. |
