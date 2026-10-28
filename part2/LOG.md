@@ -176,3 +176,18 @@ customer): power 1.6 in the average +0.00018 (sd 0.00023, better in 78% of resam
   days quote to inception -0.00047, start month -0.00024, tenure -0.00024, number of lines -0.00002; the four marketing columns together +0.00016 (sd 0.00033),
   against negative values one at a time, so noise. Boosting rounds 350 -0.00026, 1000 0.00000 (600 used).
 - Log blend with v9's model at weight 0.5: -0.00042 (sd 0.00017).
+
+## 2026-10-28, other directions on the cleaned files (v11)
+
+- Residual boosting (`e23_residual_boost.py`): a small Tweedie LightGBM on the emerging training rows with the pipeline's fitted values as offset. On every
+  line and every column it overfits within 25 to 50 rounds (buildings and contents lose from the first rounds). On motor alone, with a whitelist of rating,
+  history and premium columns, 3 leaves, 1500 rows per leaf, 50 rounds: +0.00075 over v10's model (sd 0.00028, better in 99.9% of resamples; 25 and 100
+  rounds +0.00047 and +0.00057). The gain holds on the motor new business rows (D2 inside that segment 0.0448 to 0.0483) as well as on renewals.
+- Joint prior (`e24_joint_prior.py`, `e24_joint_cv.py`): the per-peril LightGBM trained on the developed rows together with the emerging training rows
+  (weight 3, market flag, optionally gender and region), a separate prior per fold. Alone -0.0054 and -0.0057 against v10's average, in the average -0.0011
+  and -0.0006. Rejected.
+- v11 (`residual_motor.py`, three seeds): v10's base times the motor booster, rescaled to v7's twelve cell totals. Rule fixed before the score: keep v11
+  unless its public score is more than 0.0003 below v9's. Public 0.17184 against v9 0.17303 and v10 0.17247, so v9 stays the final candidate.
+- Pattern across v9, v10 and v11: paired CV gains of +0.00018, +0.00098 and +0.00075 came out as +0.00003, -0.00056 and -0.00063 on the public rows. At
+  this margin the CV on the 2023-24 rows does not predict the 2025 rows once the cell levels are fitted to the leaderboard, so further changes inside the
+  cells are not worth submitting on CV evidence alone.

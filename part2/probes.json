@@ -50,6 +50,11 @@
    "name": "v10",
    "public": 0.17247,
    "what": "teammate's cleaned emerging files and feature list (renewal_count and vehicle details in all three priors), rescaled to v7's cell totals"
+  },
+  {
+   "name": "v11",
+   "public": 0.17184,
+   "what": "v10 times a motor residual booster (rating, history and premium columns, 50 rounds), rescaled to v7's cell totals"
   }
  ],
  "probes_on_v1": [
