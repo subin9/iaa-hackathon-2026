@@ -1,0 +1,9 @@
+{"base": "work/p2/submitted/v10.csv", "base_public": 0.17247,
+ "probes": [
+  {"name": "motor NB married", "file": "work/p2/q12/q12a.csv", "c": 1.2, "public": 0.17138},
+  {"name": "motor driver age 17-24", "file": "work/p2/q12/q12f.csv", "c": 1.2, "public": 0.17276},
+  {"name": "motor NB region E01 or E06", "file": "work/p2/q12/q12h.csv", "c": 1.2, "public": 0.17353},
+  {"name": "motor driver age 65+", "file": "work/p2/q12/q12g.csv", "c": 1.2, "public": 0.17204},
+  {"name": "motor NB region E02", "file": "work/p2/q12/q12b.csv", "c": 1.2, "public": 0.17153},
+  {"name": "motor renewals monthly payment", "file": "work/p2/q12/q12e.csv", "c": 1.2, "public": 0.17203},
+  {"name": "motor NB business use", "file": "work/p2/q12/q12c.csv", "c": 1.2, "public": 0.17166}]}

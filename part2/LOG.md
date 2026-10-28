@@ -231,3 +231,15 @@ customer): power 1.6 in the average +0.00018 (sd 0.00023, better in 78% of resam
   rows with as many rows as the segment's public third. The shrunk factors multiply the segment rows of the final base (v12c if kept, else v10)
   as one file, v13. v13 replaces the base unless its public score is below the base's: the factors are fitted on the public rows, so a fall
   would mean the separable model is wrong.
+
+### Results of the 2026-10-28 18:00 UTC round, and the rule for v13 (fixed before its scores)
+
+- v12c public 0.17333 (v10 0.17247, v9 0.17303): above the 0.17167 threshold, so v12c replaces v10 as the final. First late change in this
+  competition whose CV gain also appeared on the public rows (+0.00086 against v10).
+- Probes on v10 (`probe_overlays.py`, `q12_probes.json`), best factor m* and the shrunk factor: motor NB married 0.952 / 0.957, driver age 17-24
+  1.126 / 1.109, motor NB regions E01+E06 1.242 / 1.207, driver age 65+ 1.021 / 1.018, motor NB E02 0.865 / 0.890, motor renewals paying monthly
+  0.914 / 0.932, motor NB business use 0.755 / 0.813. The training new business points the same way where it has evidence (E01 1.59, E06 1.55,
+  E02 0.87, business use 0.71 relative A/E). The comparison-site probe is dropped to save a submission.
+- The single-probe solution does not say whether the rest of each motor cell should move the other way. Two v13 files bracket that: v13_raw
+  (v12c times the factors; motor new-business total +6.5%) and v13_cells (the same, rescaled to v7's twelve cell totals). Both go out on the
+  next UTC day. Rule: the higher of the two replaces v12c if its public score is at least v12c's 0.17333; otherwise v12c stays.
