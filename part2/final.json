@@ -1,0 +1,13 @@
+{
+ "note": "Final submissions chosen by the team. Public scores copied from `kaggle competitions submissions`; private scores are not known before the competition closes.",
+ "part1": {"file": "submissions/eq20.csv", "public": 0.12956, "private": 0.13755, "private_rank": "8 of 54"},
+ "part2": {
+  "file": "work/p2/v10.csv",
+  "name": "v10",
+  "public": 0.17247,
+  "best_public": {"name": "v9", "public": 0.17303},
+  "why": "v9 and v10 are a tie within noise (public -0.00056, about 1.3 public standard errors; paired CV +0.00098). v10 is built on the repaired emerging files, so the final file carries the data-quality work; the expected private difference is below 0.0005 either way.",
+  "modelling_only_public": {"name": "v4", "public": 0.16135},
+  "leaderboard_calibrated_from": "v7 (twelve cell levels solved from seven segment probes on v5, shrunk by sampling noise)"
+ }
+}

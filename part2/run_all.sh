@@ -54,4 +54,15 @@ for l in motor buildings contents; do ln -sfn ../../../work/$l.parquet $R/work/$
  $PY part2/average_priors.py _tm_p16 _tm_po _tm_ex _tm_avg
  $PY part2/fit_final.py work/p2/sub_v4_tm.csv --tag _tm_avg)
 $PY part2/transplant_cells.py work/p2/v7.csv $R/work/p2/sub_v4_tm.csv work/p2/v10.csv
-echo "work/p2/v9.csv and work/p2/v10.csv are the Part 2 final candidates; the choice is made in the Kaggle UI"
+
+# 9. v11 (submitted 2026-10-28, public 0.17184, rejected): v10's base times a motor residual booster (e23), carried to v7's cell totals
+(cd $R && $PY part2/residual_motor.py work/p2/sub_v4_tm.parquet work/p2/sub_v4_tm_rb.csv --tag _tm_avg)
+$PY part2/transplant_cells.py work/p2/v7.csv $R/work/p2/sub_v4_tm_rb.csv work/p2/v11.csv
+
+# 10. office premium of the 20 reference policies from the final file (part2/final.json), figures, report and slides
+$PY -c "import polars as pl; pl.read_csv('work/p2/v10.csv').write_parquet('work/p2/v10.parquet')"
+$PY part2/office_premium.py work/p2/v10.parquet work/p2/office_v10.csv
+$PY part2/report/figures.py
+$PY part2/report/build_report.py work/p2/office_v10.csv
+$PY part2/video/slides.py
+echo "final Part 2 file: work/p2/v10.csv (v9.csv has the best public score); the final selection is made in the Kaggle UI"

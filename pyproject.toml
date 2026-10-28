@@ -10,3 +10,12 @@ dependencies = [
     "scikit-learn>=1.9.1",
     "statsmodels>=0.15.0",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest==9.1.1",
+]
+report = [
+    "matplotlib==3.11.2",
+    "weasyprint==70.0",
+]

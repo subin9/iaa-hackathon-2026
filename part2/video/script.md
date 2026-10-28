@@ -1,24 +1,62 @@
-# 5 minute video: script and slide cues
+# Video material from the modelling track
 
-Target 4:45 to 5:00 at about 135 words a minute. Slides: `part2/video/slides.pdf` (built by `part2/video/slides.py`). Numbers marked [final] are filled in from `part2/final.json` once the last submission is chosen.
+The team video follows the teammate's six-scene plan (`W2_video_scene_plan.xlsx`, 4:50 in total). This file gives, scene by scene, the
+verified numbers and suggested lines from the modelling track, the corrections to items the plan marks as assumed, and the screen
+recordings to cut in. Every number is copied from `part2/LOG.md`, `part2/probes.json` or script output.
 
-**[0:00 to 0:25] Slide 1, title and result.**
-We are team HS. This is our two-week story: a developed market in Part 1, an emerging market in Part 2, and an AI coding agent next to us all the way. Part 1 ended with a private D-squared of 0.13755, rank eight of fifty-one. Part 2 reached a public D-squared of [final], and the interesting part is how.
+## Corrections to the scene plan
 
-**[0:25 to 1:10] Slide 2, what changed.**
-The emerging market has two years of data, a hundred and nine thousand training rows against two hundred and nine thousand to predict, and three quarters of the 2025 rows are new business from a broker. We asked one question before modelling: what carries over? The answer is on the left. Rating-factor effects, like young drivers or no-claims bonus, look almost the same in both markets. Levels do not. Motor cost is a quarter lower, escape of water is half, and the climate is different, with twice the hail days and half the freezing days. So we keep the relativities and re-learn the levels.
+| scene | item in the plan | what the record shows |
+| --- | --- | --- |
+| 4 | "The agent never submits" | True for the data harness. In the modelling track the agent submitted with the Kaggle CLI after the team member set the budget for each round; the final selection is made by a person. Say "the harness never submits" or "no file is submitted without a person's go-ahead". |
+| 4 | "D-zero is Evan's unaided port" | The port was AI-assisted (the coding agent wrote it). "Unaided" can only mean "without the harness". |
+| 4 | "M-zero is a lean three-leaf GBM blend, fixed seeds ... score the 2024 holdout ... every fold moves the same way by more than the noise floor" | That is the Part 1 rule (two time folds). In Part 2 there is no 2024 holdout: the model is a per-peril prior with shrunk levels, compared on the same five folds grouped by customer with a paired bootstrap, and late submissions are kept or dropped by a rule written before the public score returns. |
+| 3 | "I marked [N] sentences I could not implement" | The modelling track did not review the harness rule book line by line, so there is no N. Use a different line (below). |
+| 2 | level cost "-9 / -6 / -13%", prior estimate "+4 / -3 / flat" | Not from the modelling track. Measured costs of a 15% level error (public D2, probes on v5 = 0.16797): motor new business -0.00244, buildings new business -0.00085, contents new business -0.00035, renewals -0.00043. Evidence before the leaderboard: the developed market's new-business uplift is +8% motor and +13% buildings; emerging training motor new business A/E 1.23 (se 0.15). |
+| 7 | "Data quality drives model quality" | On this data the cleaning alone moved the paired CV by +0.00009 (sd 0.00019) and the public score did not rise (v10 0.17247 against v9 0.17303). The supported claim is narrower: "the harness found what our pipeline found, independently, and the cleaned files are what we ship". |
+| 5/6 | "3. uncleaned + optimised does not exist" | It exists: v9 (competition files, our pipeline) public 0.17303. The matrix is complete once the teammate's two files are scored. |
 
-**[1:10 to 2:05] Slide 3, the approach.**
-Step one: a prior. Shallow gradient boosting per line and per peril, trained on four years of developed data, on the fields both markets share. Step two: peril levels from the emerging data, shrunk toward the line level so that a peril with fifty claims cannot move far. Step three: corrections, but only those the data can prove. A robust score test screens candidate factors, a ridge model fits them, and nested cross-validation keeps us honest. Two survived: male drivers cost thirty-nine percent more on the at-fault perils, and buildings policyholders aged thirty-five to forty-nine cost a third less. Step four: new business, which I come back to.
+## Scene 2, pricing and adaptation (facts to use)
 
-**[2:05 to 2:55] Slide 4, validation and guardrails.**
-Cross-validation is grouped by customer so nobody is on both sides. The ladder shows what each step buys: a constant rate gives 0.078, a model on emerging data alone 0.118, the Part 1 model ported unchanged 0.134, the final pipeline 0.141. Twenty-two automated tests guard the pipeline. They exist because things went wrong: a reordered column frame took the score from 0.134 to 0.036, a double level correction inflated motor predictions by twelve percent, and the developed data had timber coded T in two years and W in three, which a model reads as a year flag. Each is now a test.
+- Ultimate: developed completion curves; the emerging report lags match (motor median 9 days, 90th percentile 44 against 46).
+- Trend: none; two emerging years only, and the fire level alone swung from A/E 3.34 (2023) to 1.10 (2024).
+- Transferred broker book: 76% of 2025 rows are new business against 12-15% in training; new-business flag in the prior, then cell levels
+  measured on the public board and shrunk for sampling noise (sd of log factor 0.05 to 0.32).
+- What carried over: rating-factor effects (log correlation of one-way relativities across markets in the report figure). What did not: levels
+  (motor 25% lower, bodily injury 0.64, glass 1.28 of the developed model).
 
-**[2:55 to 3:50] Slide 5, new business.**
-Cross-validation cannot see new business, it is twelve percent of the training rows. The public leaderboard can, because three quarters of the test rows are new business. The public score is a sum over rows, so it separates by segment. One probe per segment gives the best multiplier for that segment. The method said: motor new business forty percent higher than our model, buildings twenty-three, contents eleven, renewals unchanged. It predicted a score for the half-way point of 0.16433, and the leaderboard returned 0.16446. We use these multipliers shrunk, say openly that they come from the leaderboard, and list every probe in the repository.
+## Scene 3, effective AI use: suggested line for Evan (about 30 words)
 
-**[3:50 to 4:35] Slide 6, the AI workflow.**
-The AI wrote and ran the exploration, the models, the tests and this report. We controlled the decisions: which experiments, what counts as adoption, which submissions, which final. Verification was concrete: every number in the report is copied from script output, the AI's own correction code is tested against a planted effect and against noise, and rejected ideas, such as experience rating or weather in the prior, stay in the log with their numbers.
+"On my side the agent wrote and ran every experiment, and another agent reviewed its code cold. That review found a missing constant in our
+leaderboard solver and two tests that could never fail."
 
-**[4:35 to 5:00] Slide 7, limits and what next.**
-What we do not know: new business is the biggest uncertainty, whether the uplift sits in the broker channel is unresolved, and the 2025 weather shift is not modelled. Small perils like fire and subsidence are shrunk hard. Next we would collect broker-portfolio claims early, because that is where the money is. Thank you.
+## Scene 4, guardrails: suggested line for Evan (about 45 words)
+
+"Our model is a transferred prior with shrunk levels. Every change is compared on the same five folds with a paired bootstrap by customer,
+and before each late submission we wrote down the score that would make us drop it. Three changes won in cross-validation. Two lost on the
+leaderboard, so we kept the rule."
+
+Numbers behind it: paired CV gains +0.00018, +0.00098, +0.00075 (v9, v10, v11) came out +0.00003, -0.00056, -0.00063 on the public rows.
+
+## Scene 5, results
+
+| | AI-proposed model, not optimised | our pipeline with leaderboard levels |
+| --- | --- | --- |
+| competition files | teammate's file 4 (to be scored) | v9 0.17303 |
+| cleaned files | teammate's file 2 (to be scored) | v10 0.17247 (final) |
+
+Model-only reference: v4 0.16135 (no leaderboard information). Validation ladder in CV (pooled D2): constant 0.078, emerging-only GBM 0.118,
+Part 1 prior as is 0.134, final 0.141; final recipe on the cleaned files 0.1425. Part 1: private 0.13755, rank 8 of 54.
+
+## Screen recordings (about 30 seconds in total)
+
+Record in a terminal with a large font. The Kaggle token must not appear on screen: set it in the shell before recording
+(`export KAGGLE_API_TOKEN=...` in a window that is not recorded) and never type it while recording.
+
+1. Scene 4, tests (5 s): `PYTHONPATH=src:part2 .venv/bin/python -m pytest part2/tests -q` ends with "22 passed".
+2. Scene 4, the rule before the result (10 s): `part2/LOG.md` open in the editor at "other directions on the cleaned files (v11)", with the
+   line "Rule fixed before the score: keep v11 unless its public score is more than 0.0003 below v9's" highlighted.
+3. Scene 4/5, the result (10 s): `kaggle competitions submissions iaa-ai-assisted-hackathon-2026-part-2` showing v11 0.17184 under v10 0.17247
+   and v9 0.17303, each with its description (this list is also the probe disclosure).
+4. Scene 2, optional (5 s): `PYTHONPATH=src:part2 .venv/bin/python part2/office_premium.py work/p2/v10.parquet /tmp/office.csv`, the
+   build-up table for the 20 reference policies.

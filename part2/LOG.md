@@ -191,3 +191,16 @@ customer): power 1.6 in the average +0.00018 (sd 0.00023, better in 78% of resam
 - Pattern across v9, v10 and v11: paired CV gains of +0.00018, +0.00098 and +0.00075 came out as +0.00003, -0.00056 and -0.00063 on the public rows. At
   this margin the CV on the 2023-24 rows does not predict the 2025 rows once the cell levels are fitted to the leaderboard, so further changes inside the
   cells are not worth submitting on CV evidence alone.
+
+## 2026-10-29, final choice and deliverables
+
+- Final Part 2 file: v10 (public 0.17247), with v9 (0.17303) as the fallback. Paired CV +0.00098 for v10 and public -0.00056 (about 1.3 public
+  standard errors) make the two a tie; v10 is built on the cleaned emerging files, so the final file carries the data-quality work. Recorded in
+  `final.json`; the selection itself is made in the Kaggle interface.
+- Reproduction checked: v7 and v11 rebuild byte for byte from the commands in `run_all.sh`; v10 rebuilds under new prior tags to a largest
+  row log-ratio of 3e-13.
+- Office premium fixed: `written_premium` is an annual figure (its mean is flat across exposure bands in all three training files), so the
+  earlier ratio of the row's office premium to it was wrong for part-year rows. The build-up is now annual (risk premium = prediction /
+  exposure, fixed expense 85 per policy-year) with the row's own premium shown as P x exposure. Across all 2025 rows the technical premium is
+  2.1x (motor), 3.1x (buildings) and 2.6x (contents) the written premium, exposure-weighted; the 2023-24 ultimate loss ratios on written
+  premium are 0.67, 1.14 and 0.70. The emerging expenses table has no comparison-site commission although 5% of the 2025 rows use that channel.

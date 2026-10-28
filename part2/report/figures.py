@@ -59,24 +59,35 @@ def model2_perils(df):
 
 def fig_ladder():
     r = json.load(open("work/p2/report_numbers.json")); names = list(r)
-    lab = ["constant rate\nper line", "emerging data\nonly (GBM)", "Part 1 prior\nported as is", "prior +\nline level", "prior + shrunk\nperil levels", "final: + gender,\nage-band"]
-    fig, ax = plt.subplots(figsize=(3.6, 2.5)); x = np.arange(len(names)); v = [r[k]["pooled"] for k in names]
+    lab = ["constant\nper line", "emerging\nonly GBM", "Part 1\nprior as is", "prior +\nline level", "+ shrunk\nperil levels", "+ gender,\nage band"]
+    fig, ax = plt.subplots(figsize=(3.9, 2.5)); x = np.arange(len(names)); v = [r[k]["pooled"] for k in names]
     ax.bar(x, v, color=["#bbbbbb", "#bbbbbb", "#8fb4d9", "#5b8fc4", "#3a6fa8", "#1d4e89"], width=0.7)
     for i, a in enumerate(v): ax.text(i, a + 0.002, f"{a:.3f}", ha="center", fontsize=7)
     ax.set_xticks(x); ax.set_xticklabels(lab, fontsize=5.8); ax.set_ylim(0, 0.16); ax.set_ylabel("pooled D2, 5-fold CV by customer"); ax.set_title("Validation ladder (emerging 2023-24 rows)")
     fig.tight_layout(); fig.savefig(OUT + "ladder.png", dpi=220); plt.close(fig)
 
 
+MODEL_ONLY = {"v0", "v1", "v2", "v4"}   # versions that use no leaderboard information
+# paired CV gain (e20, e21, e23) and public gain of each change inside the twelve cells, against the version it replaced (part2/LOG.md)
+CV_VS_PUBLIC = [("v9 vs v7\npower 1.6 prior", 0.00018, 0.00003), ("v10 vs v9\ncleaned files,\nteammate features", 0.00098, -0.00056),
+                ("v11 vs v10\nmotor residual\nbooster", 0.00075, -0.00063)]
+
+
 def fig_leaderboard():
-    p = json.load(open("part2/probes.json")); fig, ax = plt.subplots(1, 2, figsize=(7.2, 2.4), gridspec_kw={"width_ratios": [1.2, 1]})
-    names = [v["name"] for v in p["versions"]]; sc = [v["public"] for v in p["versions"]]
-    ax[0].plot(range(len(sc)), sc, "o-", color="#1d4e89")
-    for i, s in enumerate(sc): ax[0].text(i, s + 0.0006, f"{s:.4f}", ha="center", fontsize=7)
-    ax[0].set_xticks(range(len(names))); ax[0].set_xticklabels(names); ax[0].set_ylim(0.145, 0.170); ax[0].set_ylabel("public D2"); ax[0].set_title("Public leaderboard by version")
-    m = p["solved_on_v2"]; k = list(m); ax[1].barh(range(len(k))[::-1], [m[x] for x in k], color="#d9822b", height=0.6); ax[1].axvline(1, color="k", lw=0.8)
-    ax[1].set_yticks(range(len(k))[::-1]); ax[1].set_yticklabels([x.replace("_nb", " new business").replace("renewal", "renewals") for x in k]); ax[1].set_xlabel("best multiplier on v2 (from segment probes)")
-    for i, x in enumerate(k): ax[1].text(m[x] + 0.01, len(k) - 1 - i, f"{m[x]:.2f}", va="center", fontsize=7)
-    ax[1].set_xlim(0.8, 1.6); ax[1].set_title("New business is under-priced by v2")
+    p = json.load(open("part2/probes.json")); fig, ax = plt.subplots(1, 2, figsize=(7.2, 2.5), gridspec_kw={"width_ratios": [1.45, 1]})
+    names = [v["name"] for v in p["versions"]]; sc = [v["public"] for v in p["versions"]]; x = np.arange(len(sc))
+    ax[0].plot(x, sc, "-", color="#999999", lw=0.8)
+    for i, (n, s) in enumerate(zip(names, sc)):
+        ax[0].scatter(i, s, color="#1d4e89" if n in MODEL_ONLY else "#d9822b", s=60 if n == "v10" else 18, marker="*" if n == "v10" else "o", zorder=3)
+        ax[0].text(i, s + (0.0009 if i % 2 == 0 else -0.0024), f"{s:.5f}", ha="center", fontsize=5.2)
+    ax[0].scatter([], [], color="#1d4e89", s=14, label="model only"); ax[0].scatter([], [], color="#d9822b", s=14, label="levels from leaderboard probes")
+    ax[0].legend(frameon=False, fontsize=6.3, loc="lower right"); ax[0].set_xticks(x); ax[0].set_xticklabels(names, fontsize=6.3, rotation=30)
+    ax[0].set_ylim(0.145, 0.176); ax[0].set_ylabel("public D2"); ax[0].set_title("Public score by version (star: final)")
+    lab = [c[0] for c in CV_VS_PUBLIC]; y = np.arange(len(lab)); w = 0.38
+    ax[1].bar(y - w / 2, [c[1] * 1e3 for c in CV_VS_PUBLIC], w, color="#5b8fc4", label="paired CV gain")
+    ax[1].bar(y + w / 2, [c[2] * 1e3 for c in CV_VS_PUBLIC], w, color="#d9822b", label="public gain")
+    ax[1].axhline(0, color="k", lw=0.7); ax[1].set_xticks(y); ax[1].set_xticklabels(lab, fontsize=5.8); ax[1].set_ylabel("D2 change (x 1e-3)")
+    ax[1].legend(frameon=False, fontsize=6.3, loc="lower left"); ax[1].set_title("Changes inside the cells: CV vs public")
     fig.tight_layout(); fig.savefig(OUT + "leaderboard.png", dpi=220); plt.close(fig)
 
 
