@@ -18,11 +18,11 @@ def load(line, market):
 
 
 TAG = os.environ.get("P2_TAG", "")                      # suffix of the prior files, e.g. "_nb"
-KEEP = [c for c in os.environ.get("P2_KEEP", "").split(",") if c]  # lean columns the prior keeps, e.g. new_business
+KEEP = [c for c in os.environ.get("P2_KEEP", "").split(",") if c]  # columns the prior keeps although a list below drops them, e.g. new_business
 
 
 def drop_cols(extra=(), premium=False, weather=False, lean=True):
-    d = list(MARKET) + list(HISTORY) + list(extra)
+    d = [c for c in list(MARKET) + list(HISTORY) if c not in KEEP] + list(extra)
     if lean:
         d += [c for c in common.LEAN if c not in KEEP]
     if not premium:

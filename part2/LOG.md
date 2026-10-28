@@ -165,3 +165,14 @@ customer): power 1.6 in the average +0.00018 (sd 0.00023, better in 78% of resam
   percentiles). Rule fixed before the score: keep v10 unless its public score is more than 0.0007 below v9's (precision-weighted CV and public paired
   differences). Public 0.17247 against 0.17303 (-0.00056), so the rule keeps v10, but the combined estimate is only +0.0001. The rule treats the CV gain as an
   unbiased estimate of the test gain, and v9's own CV gain (+0.00018) showed up as +0.00003 on the public rows, so the two files are a tie within noise.
+
+## 2026-10-28, second round on the cleaned files (all rejected)
+
+`e22_cleaned_round2.py`, against v10's model (D2 0.14253), same folds, paired bootstrap by customer. Nothing beats the noise, so no submission.
+- One extra screened correction per line: the best are motor overnight parking on theft +0.00006 (sd 0.00007) and contents high-value items on theft
+  +0.00003. Several never pass the screen (gain exactly 0). Buildings smoke alarms on fire -0.0015, motor vehicle age -0.0006.
+- Peril-level shrinkage n0: 200 -0.00017, 800 +0.00006, 1600 +0.00006 (sd 0.00016).
+- One more column in the power 1.6 prior (`P2_KEEP` now overrides every drop list, not only the lean one): channel -0.00008, payment method -0.00008,
+  days quote to inception -0.00047, start month -0.00024, tenure -0.00024, number of lines -0.00002; the four marketing columns together +0.00016 (sd 0.00033),
+  against negative values one at a time, so noise. Boosting rounds 350 -0.00026, 1000 0.00000 (600 used).
+- Log blend with v9's model at weight 0.5: -0.00042 (sd 0.00017).
