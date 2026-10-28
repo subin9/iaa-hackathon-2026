@@ -221,3 +221,13 @@ customer): power 1.6 in the average +0.00018 (sd 0.00023, better in 78% of resam
 - Candidates built, not submitted: v12a (v10 with the fire term at b = 1.662), v12b (geometric mean of v9 and v10), v12c (both), each rescaled
   to v7's twelve cell totals; eight x1.2 probe files on v10 for motor segments (`work/p2/q12/`). The single-probe solver with the null deviance
   from the corrected cell fit (8.60M) reproduces the earlier v5 overlay results in direction.
+
+### Rules fixed before the scores (2026-10-28 17:50 UTC, the user approved about ten submissions)
+
+- v12c (v9/v10 geometric mean with the fire term, v7 cell totals): replaces v10 as the final unless its public score is below 0.17167 (v10 minus
+  0.0008, about two public standard errors of a buildings-only change).
+- Probes q12a to q12h (x1.2 on one motor segment of v10 each): each gives m* = U_s / (F T_s) from its score change, with the public null deviance
+  8.60M from the corrected cell fit and F = 1/3. log m* is shrunk by tau^2 / (tau^2 + se^2), tau = 0.25, se bootstrapped from the out-of-fold motor
+  rows with as many rows as the segment's public third. The shrunk factors multiply the segment rows of the final base (v12c if kept, else v10)
+  as one file, v13. v13 replaces the base unless its public score is below the base's: the factors are fitted on the public rows, so a fall
+  would mean the separable model is wrong.
