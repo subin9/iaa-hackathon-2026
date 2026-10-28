@@ -204,3 +204,20 @@ customer): power 1.6 in the average +0.00018 (sd 0.00023, better in 78% of resam
   exposure, fixed expense 85 per policy-year) with the row's own premium shown as P x exposure. Across all 2025 rows the technical premium is
   2.1x (motor), 3.1x (buildings) and 2.6x (contents) the written premium, exposure-weighted; the 2023-24 ultimate loss ratios on written
   premium are 0.67, 1.14 and 0.70. The emerging expenses table has no comparison-site commission although 5% of the 2025 rows use that channel.
+
+## 2026-10-29, last search for gains (no submission yet)
+
+- Leak checks, all negative: `customer_service_contacts` in the test files matches the zero-claim training rows (mean 0.40 against 0.42; claimant
+  rows carry the claim-driven contacts), so it holds no 2025 claim information; A/E by row_id and policy_id order is noise; how a 2025 row starts
+  and ends (mid-term change, early end) moves A/E by amounts within noise; region and channel mix of the 2025 new business match the training
+  new business.
+- Residual scan of v10's out-of-fold predictions by every column level and year: nothing beyond the expected maximum of about 95 scanned levels.
+- Weather on single perils with the developed-market slope (`e25_weather_peril.py`, the prior leaves weather out): fire on wildfire_index
+  (developed Poisson slope 1.66, se 0.24; emerging 1.55, se 0.80) +0.00088 at b = 1.8 (sd 0.00061, P 0.93), +0.00055 at b = 1.0; 22% of the
+  2025 buildings rows lie above the developed maximum of 0.635, where the tree prior is flat. Glass on hail days +0.00018 (b 0.033, P 0.91).
+  Storm, escape of water, subsidence and flood: zero or negative.
+- A public team repository of another participant reports a 239-row sum insured error in the test files (already fixed here: 104 buildings and
+  135 contents rows flagged) and a year_built = 1900 placeholder (3.2% of addresses in both markets, left to the trees).
+- Candidates built, not submitted: v12a (v10 with the fire term at b = 1.662), v12b (geometric mean of v9 and v10), v12c (both), each rescaled
+  to v7's twelve cell totals; eight x1.2 probe files on v10 for motor segments (`work/p2/q12/`). The single-probe solver with the null deviance
+  from the corrected cell fit (8.60M) reproduces the earlier v5 overlay results in direction.
