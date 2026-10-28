@@ -14,7 +14,10 @@ from pathlib import Path
 import numpy as np, pandas as pd, polars as pl, lightgbm as lgb
 
 ROOT = Path(__file__).resolve().parents[2]
-D = ROOT / "runs/cycle_4/modelling_tables"
+import argparse
+_ap = argparse.ArgumentParser(); _ap.add_argument("--tables", default=str(ROOT / "runs/cycle_4/modelling_tables")); _ap.add_argument("--tag", default="D4"); _ap.add_argument("--completion", default="completion")
+_args = _ap.parse_args()
+D = Path(_args.tables); TAG = _args.tag; COMP = _args.completion
 OUT = Path(__file__).resolve().parent
 LINES = ["motor", "buildings", "contents"]
 SEEDS = [0, 1, 2]; ROUNDS = 300; THREADS = 2
@@ -57,7 +60,7 @@ def align(Xtr, Xte):
 def fit_predict(tr: pl.DataFrame, te: pl.DataFrame, te_basis: np.ndarray, label: str):
     """Train on tr (y_cap, offset log(exposure*completion)), predict te on the given basis (exposure*completion*...)."""
     Xtr = features(tr); Xte = align(Xtr, features(te))
-    y = tr["y_cap"].to_numpy(); e = (tr["exposure"] * tr["completion"]).to_numpy()
+    y = tr["y_cap"].to_numpy(); e = (tr["exposure"] * tr[COMP]).to_numpy()
     intercept = np.log(y.sum() / e.sum())
     init = np.log(e) + intercept
     cap_mult = tr["y"].sum() / tr["y_cap"].sum()
@@ -84,7 +87,7 @@ def main():
         tr = df.filter(pl.col("split") == "train"); te = df.filter(pl.col("split") == "test")
         # holdout: 2023 -> 2024 on the observed basis
         tr23 = tr.filter(pl.col("year") == 2023); tr24 = tr.filter(pl.col("year") == 2024)
-        basis24 = (tr24["exposure"] * tr24["completion"]).to_numpy()
+        basis24 = (tr24["exposure"] * tr24[COMP]).to_numpy()
         p24, info = fit_predict(tr23, tr24, basis24, f"{ln} holdout 2023->2024")
         hold.append(pl.DataFrame({"row_id": tr24["row_id"], "prediction": p24}))
         report.append(info)
@@ -99,9 +102,10 @@ def main():
                      nb_share_rows=round(float(nb.mean()), 3))
         report.append(info2)
         print(info, "\n", info2)
-    pl.concat(hold).write_csv(OUT / "holdout_2024.csv"); pl.concat(subA).write_csv(OUT / "submission_A.csv"); pl.concat(subB).write_csv(OUT / "submission_B.csv")
-    (OUT / "level_report.json").write_text(json.dumps(report, indent=2))
-    print("written: holdout_2024.csv, submission_A.csv, submission_B.csv, level_report.json")
+    sfx = "" if TAG == "D4" else f"_{TAG}"
+    pl.concat(hold).write_csv(OUT / f"holdout_2024{sfx}.csv"); pl.concat(subA).write_csv(OUT / f"submission_A{sfx}.csv"); pl.concat(subB).write_csv(OUT / f"submission_B{sfx}.csv")
+    (OUT / f"level_report{sfx}.json").write_text(json.dumps(report, indent=2))
+    print(f"written: holdout_2024{sfx}.csv, submission_A{sfx}.csv, submission_B{sfx}.csv")
 
 
 if __name__ == "__main__":

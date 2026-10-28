@@ -1,0 +1,53 @@
+[
+  {
+    "label": "motor holdout 2023->2024",
+    "cap_mult": 1.0816,
+    "train_level": 1.3147,
+    "explicit_factor": 0.7606,
+    "n_features": 40
+  },
+  {
+    "label": "motor final 2023+2024->2025",
+    "cap_mult": 1.0775,
+    "train_level": 1.3039,
+    "explicit_factor": 0.7669,
+    "n_features": 40,
+    "level_2025_A": 385.1,
+    "level_2025_B": 344.7,
+    "nb_share_rows": 0.76
+  },
+  {
+    "label": "buildings holdout 2023->2024",
+    "cap_mult": 1.1523,
+    "train_level": 1.2111,
+    "explicit_factor": 0.8257,
+    "n_features": 33
+  },
+  {
+    "label": "buildings final 2023+2024->2025",
+    "cap_mult": 1.1188,
+    "train_level": 1.1761,
+    "explicit_factor": 0.8503,
+    "n_features": 33,
+    "level_2025_A": 331.2,
+    "level_2025_B": 331.2,
+    "nb_share_rows": 0.759
+  },
+  {
+    "label": "contents holdout 2023->2024",
+    "cap_mult": 1.04,
+    "train_level": 1.0555,
+    "explicit_factor": 0.9474,
+    "n_features": 34
+  },
+  {
+    "label": "contents final 2023+2024->2025",
+    "cap_mult": 1.0526,
+    "train_level": 1.0937,
+    "explicit_factor": 0.9143,
+    "n_features": 34,
+    "level_2025_A": 82.6,
+    "level_2025_B": 82.6,
+    "nb_share_rows": 0.761
+  }
+]
