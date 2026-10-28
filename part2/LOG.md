@@ -148,3 +148,20 @@ customer): power 1.6 in the average +0.00018 (sd 0.00023, better in 78% of resam
   leaderboard-calibrated levels stay and only the relativities inside the cells change (row ratio to v7: 1st and 99th percentiles 0.947 and 1.051). Decision
   rule fixed before the score came back: keep v9 unless its public score is more than about 0.0003 below v7's (precision-weighted CV and public paired
   differences, public sd taken as 0.00023 x sqrt(109k / 70k)). Public 0.17303 against 0.17300, so v9 is the final candidate.
+
+## 2026-10-28, the teammate's cleaned emerging files (v10)
+
+- What the cleaning changes for this pipeline (diffed against the competition files): missing vehicle_age, engine_size_cc, overnight_parking, smoke_alarms,
+  security_level and high_value_items are filled from the same policy's other rows (90 to 100% agreement where both exist). The exposure, sum insured and
+  occupation fixes were already in `prep_emerging.py`, so the rebuilt tables match on those columns. The 36 claims it removes (reported more than a year late)
+  fall outside every training period, so y is unchanged.
+- The teammate's feature list against ours: renewal_count kept and vehicle details kept in the prior, compulsory_excess dropped (constant in both markets, so no
+  effect), gender not used. Columns that differ between markets (region, branch, campaign, history, premium) stay out of the transferred prior as before.
+- `e21_cleaned_data.py`, same folds as v9's CV on both data sets, paired bootstrap by customer against v9's recipe on the original files (D2 0.14155):
+  cleaned files alone +0.00009 (sd 0.00019); gender left out -0.0015 (sd 0.0008), so gender stays (the data guide allows it in the emerging market); the
+  teammate's features in the power 1.6 prior +0.00046, of which renewal_count is +0.00040; in all three priors +0.00098 (sd 0.00034, better in 99.8% of
+  resamples). Of that gain +0.00086 is on renewals (mostly buildings renewals, +0.00062) and +0.00012 on new business.
+- v10: that model on the cleaned files, rescaled to v7's twelve cell totals (`transplant_cells.py`; row ratio to v9 between 0.916 and 1.093 at the 1st and 99th
+  percentiles). Rule fixed before the score: keep v10 unless its public score is more than 0.0007 below v9's (precision-weighted CV and public paired
+  differences). Public 0.17247 against 0.17303 (-0.00056), so the rule keeps v10, but the combined estimate is only +0.0001. The rule treats the CV gain as an
+  unbiased estimate of the test gain, and v9's own CV gain (+0.00018) showed up as +0.00003 on the public rows, so the two files are a tie within noise.

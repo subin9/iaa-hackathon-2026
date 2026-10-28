@@ -41,4 +41,17 @@ P2_TAG=_x_p16 P2_POWER=1.6 $PY part2/devprior_peril.py
 $PY part2/average_priors.py _x_p16 _v_po _v_ex _x_avg16
 $PY part2/fit_final.py work/p2/sub_v4_p16.csv --tag _x_avg16
 $PY part2/transplant_cells.py work/p2/v7.csv work/p2/sub_v4_p16.csv work/p2/v9.csv
-echo "work/p2/v9.csv is the Part 2 final candidate; the choice is made in the Kaggle UI"
+
+# 8. v10 (submitted 2026-10-28, public 0.17247): the teammate's cleaned emerging files (unzipped to data/part2_cleaned) built in a separate tree, the teammate's
+#    feature list in all three priors (renewal_count and vehicle details kept), carried to v7's twelve cell totals (e21)
+R=work/clean; mkdir -p $R/work/p2 $R/data/part2
+ln -sfn ../../src $R/src; ln -sfn ../../part2 $R/part2; ln -sfn ../../.venv $R/.venv
+ln -sfn ../../../../data/part2/developed $R/data/part2/developed; ln -sfn ../../../../data/part2_cleaned $R/data/part2/emerging
+for l in motor buildings contents; do ln -sfn ../../../work/$l.parquet $R/work/$l.parquet; done
+(cd $R && $PY part2/prep_emerging.py && $PY part2/harmonize.py
+ for v in "_tm_p16 P2_POWER=1.6" "_tm_po P2_VARIANT=poisson" "_tm_ex P2_VARIANT=extra"; do set -- $v
+   env P2_KEEP=new_business,renewal_count P2_DROP=make_model,vehicle_colour,compulsory_excess P2_TAG=$1 $2 $PY part2/devprior_peril.py; done
+ $PY part2/average_priors.py _tm_p16 _tm_po _tm_ex _tm_avg
+ $PY part2/fit_final.py work/p2/sub_v4_tm.csv --tag _tm_avg)
+$PY part2/transplant_cells.py work/p2/v7.csv $R/work/p2/sub_v4_tm.csv work/p2/v10.csv
+echo "work/p2/v9.csv and work/p2/v10.csv are the Part 2 final candidates; the choice is made in the Kaggle UI"

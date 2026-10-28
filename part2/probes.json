@@ -45,6 +45,11 @@
    "name": "v9",
    "public": 0.17303,
    "what": "v7 cell totals on the prior average with the Tweedie 1.6 variant in place of 1.4 (transplant_cells.py)"
+  },
+  {
+   "name": "v10",
+   "public": 0.17247,
+   "what": "teammate's cleaned emerging files and feature list (renewal_count and vehicle details in all three priors), rescaled to v7's cell totals"
   }
  ],
  "probes_on_v1": [
