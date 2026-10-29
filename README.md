@@ -1,4 +1,4 @@
-# IAA AI-Assisted Actuarial Hackathon 2026: team SU² (Kaggle team HS)
+# IAA AI-Assisted Actuarial Hackathon 2026: team SU² (Kaggle team SU²)
 
 Risk premium models for three lines of personal insurance (private motor, home buildings, home contents), first for a developed market
 (Part 1) and then for an emerging market the insurer expands into (Part 2). The score is the Tweedie D² with power 1.5 on the expected
@@ -30,6 +30,7 @@ rest comes from levels measured with disclosed leaderboard probes.
 | Part 2 leaderboard record | `part2/probes.json` (every submission and probe with its public score) |
 | How AI was used and checked | `docs/AI_USAGE.md` |
 | Final choice | `part2/final.json` |
+| Data harness track (teammate): rule book, eval loop, four agent cycles with scorecards, signed actuarial decisions, data-effect ladder | `harness_track/` (own README, history and tags `harness-v1` … `harness-final`) |
 
 The prediction files themselves are submitted on Kaggle and through the final submission form. They are not stored here because they
 are keyed by the competition's row identifiers.
@@ -42,6 +43,8 @@ src/            Part 1 code: data preparation (prep.py), model runners (run.py, 
 eda/            Part 1 exploration scripts
 part2/          Part 2 pipeline, experiments e0 to e25, probes, tests, report and video (see part2/README.md)
 docs/           Part 1 log, AI use
+harness_track/  teammate's data-harness repository, merged with its history: harness/ (rule book handed to the agent), eval/ (loop, answer key, scorecards),
+                runs/cycle_1-4 (agent deliverables), runs/hs_model (fixed-recipe ladder), report/decisions_B.md, submissions/log.csv
 pyproject.toml, uv.lock     main environment (uv); groups "report" (weasyprint, matplotlib) and "dev" (pytest)
 requirements-ag.txt         second environment for AutoGluon, CatBoost, EBM and TabM (Part 1 only)
 ```
