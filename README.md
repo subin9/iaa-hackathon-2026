@@ -1,4 +1,4 @@
-# IAA AI Assisted Hackathon 2026 — Team repository
+# IAA AI Assisted Hackathon 2026 — Team SU² repository (Kaggle team SU²)
 
 Two-person team: an actuary (harness, validation, governance, report) and a
 data scientist (modelling pipeline). This README is organised by the four

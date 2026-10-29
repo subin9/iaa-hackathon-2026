@@ -54,9 +54,13 @@ Full procedure: `eval/LOOP.md` Part A.
   explicitly, harness files (charter, playbooks, registry, schema,
   templates, tools) are read-only to it, and web, Kaggle, `curl`, `wget`
   and `git push` are denied (`harness/.claude/settings.json`).
-- The agent never submits to Kaggle and never promotes a rule. It
+- The harness agent never submits to Kaggle and never promotes a rule. It
   proposes; humans decide and record provenance in
-  `harness/memory/registry.yaml`.
+  `harness/memory/registry.yaml`. In the modelling track the coding agent
+  may run the Kaggle CLI, but only within a submission budget a person has
+  set for that round, with the keep-or-drop rule written in the log before
+  the score returns; no file is submitted without a person's go-ahead and
+  the final selection is a person's decision.
 - Rules teach method, never market-specific answers (R-0408).
 
 ## Submission controls
