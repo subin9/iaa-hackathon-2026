@@ -1,1 +1,3 @@
 date_utc,part,file,commit,data_version,model_version,holdout_d2,local_scores,public_score,submitted_by,description
+2026-10-29 03:21,2,submission_A_raw_nocomp.csv,0735eed,raw,train_hs.py (fixed unoptimised recipe),0.0656,-,0.05891,HS,data-effect cell 4: raw competition files + fixed recipe; measurement only
+2026-10-29 03:22,2,submission_A.csv,0735eed,D4,train_hs.py (fixed unoptimised recipe) + pre-probe decisions,0.0995,-,0.13030,HS,data-effect cell 2: harness-cleaned D4 tables + fixed recipe; measurement only
