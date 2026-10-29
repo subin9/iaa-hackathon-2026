@@ -1,0 +1,13 @@
+The emerging-market data has arrived in ./data/emerging — two policy years
+(2023–2024) of private motor, home buildings and home contents business,
+with the 2025 test rows we must price. The developed-market data our Part 1
+work was built on is in ./data/developed, for reference only.
+
+Make the emerging data ready for pricing end to end — profile it, treat its
+data quality, map the schema, report what has shifted, construct targets and
+modelling tables, and record what of Part 1 carries over — then produce all
+deliverables specified in CLAUDE.md.
+
+Work autonomously; there is no one available to answer questions, so record
+anything you would ask the team as team-query items in findings.json or as
+open questions in the retrospective. Begin.

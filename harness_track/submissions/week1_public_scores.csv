@@ -1,0 +1,30 @@
+date_utc,file,public_score,description
+2026-10-17 15:22,blend_tw_po_fs.csv,0.12708,"blend tw0.5 po0.1 fs0.4, local v2024 0.1355 v2023 0.138"
+2026-10-17 17:39,blend4_both.csv,0.12717,"tw/po/fs/ag 0.2/0.2/0.3/0.3, weights on both folds"
+2026-10-17 21:30,eq8.csv,0.12746,"equal blend of 8 models incl seed-avg extra_trees and GLM, local v2024 0.1363 v2023 0.1397"
+2026-10-17 22:45,eq9.csv,0.12740,eq9: equal blend of 9 models incl CatBoost; level probe
+2026-10-17 22:45,eq9_x095.csv,0.12664,eq9_x095: equal blend of 9 models incl CatBoost; level probe
+2026-10-17 22:45,eq9_x105.csv,0.12745,eq9_x105: equal blend of 9 models incl CatBoost; level probe
+2026-10-17 23:01,eq10.csv,0.12753,"eq10: equal blend of 10 models incl CatBoost and MLP, local v2024 0.1362 v2023 0.1402"
+2026-10-18 17:00,eq11.csv,0.12761,"eq11: equal blend of 11 models incl EBM, local v2024 0.1363 v2023 0.1405"
+2026-10-18 20:22,eq12.csv,0.12766,"eq12: equal blend of 12 models incl TabM, local v2024 0.1364 v2023 0.1409"
+2026-10-18 23:11,eq13.csv,0.12794,"eq13: equal blend of 11 models plus 4-seed TabM at double weight, local v2024 0.1365 v2023 0.1412"
+2026-10-19 01:52,eq14.csv,0.12817,"eq14: 11 models plus 6-seed TabM at triple weight, local v2024 0.1365 v2023 0.1416"
+2026-10-19 11:34,eq14_x103.csv,0.12826,eq14_x103: eq14 scaled by 1.03; level probe
+2026-10-19 14:10,eq15_x103.csv,0.12835,"eq15_x103: eq14 with policy claim-count credibility (a=12), scaled 1.03; local v2024 0.1370 v2023 0.1417"
+2026-10-19 14:32,eq15_ib.csv,0.12807,"eq15_ib: eq15 with motor x1.0295 from IBNER-corrected 2024 bodily injury, no global scale"
+2026-10-19 17:12,eq16_x103.csv,0.12851,"eq14 + per-peril TabM x3 (line-level matched) + policy credibility, x1.03"
+2026-10-20 00:02,eq17_x103.csv,0.12852,"eq17: eq14 + per-peril TabM 4 seeds x3 (line-level matched) + policy credibility, x1.03"
+2026-10-20 18:14,eq17_motor110.csv,0.12776,"level probe: eq17 with motor x1.10, other lines x1.03"
+2026-10-20 18:14,eq17_buildings110.csv,0.12868,"level probe: eq17 with buildings x1.10, other lines x1.03"
+2026-10-20 18:14,eq17_contents110.csv,0.12852,"level probe: eq17 with contents x1.10, other lines x1.03"
+2026-10-20 18:17,eq17_lv.csv,0.12889,"eq17 with per-line levels from probes: motor 0.9764, buildings 1.0925, contents 1.0644 (predicted 0.1289)"
+2026-10-21 00:01,probe_m_young.csv,0.12891,segment level probe on eq17_lv: m_young
+2026-10-21 00:01,probe_m_rural.csv,0.12887,segment level probe on eq17_lv: m_rural
+2026-10-21 00:02,probe_m_tpft.csv,0.12887,segment level probe on eq17_lv: m_tpft
+2026-10-21 00:02,probe_b_retired.csv,0.12860,segment level probe on eq17_lv: b_retired
+2026-10-21 00:02,probe_b_wind.csv,0.12841,segment level probe on eq17_lv: b_wind
+2026-10-22 00:02,eq18.csv,0.12914,eq18: eq17 with line levels shrunk 30% toward x1.03 and segment factors combining local and probe evidence
+2026-10-22 01:49,eq19.csv,0.12919,eq19: eq18 levels on a blend whose tree models use three-leaf trees
+2026-10-22 08:02,D0_baseline_glm_conservative_20261022.csv,0.10925,"D0 baseline: conservative Tweedie GLM; no IBNR/IBNER adjustment. Historical development result, separate from W1-A/B/C."
+2026-10-22 13:07,eq20.csv,0.12956,eq20: lean three-leaf trees and lean fs3 on eq18 levels
