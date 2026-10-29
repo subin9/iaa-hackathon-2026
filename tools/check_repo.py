@@ -8,7 +8,8 @@ import re
 import subprocess
 import sys
 
-DATA_EXT = (".parquet", ".feather", ".pkl", ".pickle", ".h5")
+DATA_EXT = (".parquet", ".feather", ".pkl", ".pickle", ".h5",
+            ".zip", ".7z", ".tar", ".gz", ".tgz", ".rar")  # archives: a cleaned-data zip was once staged
 ALLOWED_CSV = {"submissions/log.csv", "submissions/week1_public_scores.csv", "week1_output/public_scores.csv"}
 TOKEN_PATTERNS = [
     re.compile(r'"key"\s*:\s*"[0-9a-f]{32}"'),           # kaggle.json

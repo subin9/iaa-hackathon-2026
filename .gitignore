@@ -13,6 +13,14 @@ harness/data/
 harness/work/
 harness/outputs/
 
+# --- archives (a cleaned-data zip was once tracked; never again) ---
+*.zip
+*.7z
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+
 # --- secrets ---
 .env
 kaggle.json
