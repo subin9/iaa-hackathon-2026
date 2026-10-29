@@ -21,8 +21,8 @@ Two people, roles by expertise, not symmetric.
 | Role | Who | Does |
 |---|---|---|
 | Architect / operator | Actuary (HS, 15 yrs) | Builds and maintains the harness; runs each cycle; extracts promotion candidates from the retrospective; makes and **signs the actuarial judgments** (adaptation decisions, borrowed IBNR tail, trend, line levels, office premium, uncertainty statements). |
-| Technical reviewer | Actuarial data scientist (Evan; formerly in the same actuarial department) | Owns the modelling pipeline and the prediction files. Reviews the agent's **technical** output at three gates (below). Reads the playbooks as their intended real-world reader. |
-| AI second reader | A separate AI session that did not do the work | Reviews the actuarial judgments the actuary signs, because no peer actuary is on the team. The report says so plainly: in practice this seat is a peer actuary. |
+| Modeller / technical reviewer | Actuarial data scientist (Evan; formerly in the same actuarial department) | Owns the modelling pipeline and the prediction files, and the actuarial judgments embedded in them (completion basis, trend, shrinkage, gender, probe calibration) as the **preparer**. Reviews the harness agent's technical output at the gates below. |
+| AI second reader | A separate AI session that did not do the work | Cold review of code and of the judgments each person signs (found a missing Tweedie constant and two tests that could not fail in the modelling track). Both humans are actuarially trained and from the same department, so they share priors; the AI reader is the one reviewer that does not. |
 
 ### Review gates
 
@@ -31,13 +31,13 @@ Two people, roles by expertise, not symmetric.
 | ① Ingest | Before any agent output (cleaned tables, modelling tables) enters `pipeline/` | Evan | Is the implementation correct? Leakage in the fold design? Columns, types, joins, completion offsets as documented? |
 | ② Promote | Before a rule enters a playbook (PR) | Evan **and** HS, different questions | Evan: is it general (would it apply to data we have never seen), implementable, free of conflict with existing rules? HS: is it actuarially right? |
 | ③ Release | Before any Kaggle submission | Evan (preparer ≠ releaser) | `check_sub` read; level reconciliation by line explained; logged with commit hash in `submissions/log.csv`. |
-| ④ Sign | Before adaptation decisions, target notes or the report are final | HS, with the AI second reader's notes attached | Are the judgments stated, justified, and their uncertainty quantified? |
+| ④ Sign | Before adaptation decisions, target notes or the report are final | The actuary who did **not** prepare the item signs it (HS signs the model's judgments; Evan reviews the harness's adaptation decisions), with the AI second reader's notes attached | Are the judgments stated, justified, and their uncertainty quantified? Preparer ≠ signer. |
 
-**Playbook usability read (once, ~30 min, Evan).** Read every playbook as a
-colleague who must implement it and mark each sentence that is unclear
-or not implementable. This is the test of whether the harness carries the
-actuary's judgment to its real reader; the marked sentences are rewritten
-(method clarified, never answers added) and the count goes in the report.
+**Playbook generality read (Evan, at gate ②).** Read each promoted rule as
+the implementer: is it general (would it apply to data we have never
+seen), implementable, free of conflict with existing rules? (The earlier
+the "usability read" was dropped: both team members are
+actuarially trained.)
 
 ### Per cycle
 

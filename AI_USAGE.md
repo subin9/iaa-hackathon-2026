@@ -24,9 +24,8 @@ version, trained with one frozen model.
 | M1 … | Model-track changes on the latest converged D_k | Data scientist | Pair programming | R-0202, holdout, leaderboard with noise floor |
 
 The harness is the actuary's judgment written down so that a fresh agent —
-and a colleague — can execute it. Its real-world reader is the
-data scientist, who reads every playbook once and marks sentences that are
-unclear or not implementable; the count and the fixes are reported.
+and a colleague — can execute it. Its promoted rules are read by the
+actuarial data scientist at gate ② for generality and implementability.
 
 Each operator documents their own AI use: the actuary in `runs/` and this
 file; the data scientist in `pipeline/README.md` (which prompts, which

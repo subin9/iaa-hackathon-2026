@@ -1,6 +1,6 @@
 # Actuarial decisions for the Part 2 submission (gate ④) — signed on the v10 basis
 
-**Signed: HyunSu Kim (actuary), 2026-10-29 SGT.** This supersedes the 2026-10-27 pre-probe signature, which is kept
+**Prepared in the model by Evan (actuarial data scientist); reviewed and signed by HyunSu Kim (actuary), 2026-10-29 SGT.** The decisions below were made inside the modelling pipeline by an actuarially trained preparer; the signature is the independent review. This supersedes the 2026-10-27 pre-probe signature, which is kept
 below as the record of what the actuary expected *before* the public-score probes. The final file is the data
 scientist's **v10** (pipeline on the harness-cleaned D4 files, with disclosed leaderboard-probe cell levels); v9 is the
 fallback with the best public score (within noise of v10; the keep rule was written before the score).

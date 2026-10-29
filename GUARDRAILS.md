@@ -2,20 +2,20 @@
 
 ## Roles and review gates (operating model)
 
-Two people, roles by expertise. The actuary (15 years) builds and runs the
-harness and signs the actuarial judgments; the data scientist (2 years, no
-actuarial background) owns the pipeline and reviews the agent's technical
-output. No peer actuary is on the team, so an AI second reader — a session
-that did not do the work — reviews the actuarial judgments; the report
-states this limitation. Preparer and reviewer are never the same person at
-any gate.
+Two people, both actuarially trained (same former department). The actuary
+(15 years) builds and runs the harness and signs the judgments embedded in
+the model; the actuarial data scientist owns the pipeline and the judgments
+he makes inside it as preparer, and reviews the harness agent's technical
+output. An AI second reader — a session that did not do the work — gives
+the cold review neither colleague can (shared priors). Preparer and signer
+are never the same person at any gate.
 
 | Gate | When | Reviewer | Question |
 |---|---|---|---|
 | ① Ingest | Agent output (cleaned tables, modelling tables) before it enters `pipeline/` | Data scientist | Implementation correct? Fold design leak-free? Columns, types, joins, offsets as documented? |
 | ② Promote | A rule enters a playbook (PR) | Data scientist and actuary, different questions | DS: general, implementable, no conflict with existing rules. Actuary: actuarially right. |
 | ③ Release | Before any Kaggle submission | Data scientist (preparer ≠ releaser) | `check_sub` read, level by line reconciled to history, logged with commit hash. |
-| ④ Sign | Adaptation decisions, target notes, report | Actuary, with AI second reader's notes | Judgments stated, justified, uncertainty quantified. |
+| ④ Sign | Adaptation decisions, target notes, model judgments, report | The actuary who did not prepare the item, with AI second reader's notes | Judgments stated, justified, uncertainty quantified; preparer ≠ signer. |
 
 Full procedure: `eval/LOOP.md` Part A.
 
