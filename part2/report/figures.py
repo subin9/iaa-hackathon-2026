@@ -67,10 +67,11 @@ def fig_ladder():
     fig.tight_layout(); fig.savefig(OUT + "ladder.png", dpi=220); plt.close(fig)
 
 
-MODEL_ONLY = {"v0", "v1", "v2", "v4"}   # versions that use no leaderboard information
+MODEL_ONLY = {"v0", "v1", "v2", "v4"}
+FINAL = json.load(open("part2/final.json"))["part2"]["name"]   # versions that use no leaderboard information
 # paired CV gain (e20, e21, e23) and public gain of each change inside the twelve cells, against the version it replaced (part2/LOG.md)
-CV_VS_PUBLIC = [("v9 vs v7\npower 1.6 prior", 0.00018, 0.00003), ("v10 vs v9\ncleaned files,\nteammate features", 0.00098, -0.00056),
-                ("v11 vs v10\nmotor residual\nbooster", 0.00075, -0.00063)]
+CV_VS_PUBLIC = [("v9 vs v7\npower 1.6\nprior", 0.00018, 0.00003), ("v10 vs v9\ncleaned files,\nfeatures", 0.00098, -0.00056),
+                ("v11 vs v10\nresidual\nbooster", 0.00075, -0.00063), ("v12c vs v10\nfire term (CV),\nv9 average", 0.00088, 0.00086)]
 
 
 def fig_leaderboard():
@@ -78,16 +79,16 @@ def fig_leaderboard():
     names = [v["name"] for v in p["versions"]]; sc = [v["public"] for v in p["versions"]]; x = np.arange(len(sc))
     ax[0].plot(x, sc, "-", color="#999999", lw=0.8)
     for i, (n, s) in enumerate(zip(names, sc)):
-        ax[0].scatter(i, s, color="#1d4e89" if n in MODEL_ONLY else "#d9822b", s=60 if n == "v10" else 18, marker="*" if n == "v10" else "o", zorder=3)
-        ax[0].text(i, s + (0.0009 if i % 2 == 0 else -0.0024), f"{s:.5f}", ha="center", fontsize=5.2)
+        ax[0].scatter(i, s, color="#1d4e89" if n in MODEL_ONLY else "#d9822b", s=60 if n == FINAL else 18, marker="*" if n == FINAL else "o", zorder=3)
+        ax[0].text(i, s + (0.0009 if (i % 2 == 0) != (n in ("v3_half", "v4")) else -0.0024), f"{s:.5f}", ha="center", fontsize=4.8)
     ax[0].scatter([], [], color="#1d4e89", s=14, label="model only"); ax[0].scatter([], [], color="#d9822b", s=14, label="levels from leaderboard probes")
     ax[0].legend(frameon=False, fontsize=6.3, loc="lower right"); ax[0].set_xticks(x); ax[0].set_xticklabels(names, fontsize=6.3, rotation=30)
-    ax[0].set_ylim(0.145, 0.176); ax[0].set_ylabel("public D2"); ax[0].set_title("Public score by version (star: final)")
+    ax[0].set_ylim(0.145, 0.178); ax[0].set_ylabel("public D2"); ax[0].set_title("Public score by version (star: final)")
     lab = [c[0] for c in CV_VS_PUBLIC]; y = np.arange(len(lab)); w = 0.38
     ax[1].bar(y - w / 2, [c[1] * 1e3 for c in CV_VS_PUBLIC], w, color="#5b8fc4", label="paired CV gain")
     ax[1].bar(y + w / 2, [c[2] * 1e3 for c in CV_VS_PUBLIC], w, color="#d9822b", label="public gain")
-    ax[1].axhline(0, color="k", lw=0.7); ax[1].set_xticks(y); ax[1].set_xticklabels(lab, fontsize=5.8); ax[1].set_ylabel("D2 change (x 1e-3)")
-    ax[1].legend(frameon=False, fontsize=6.3, loc="lower left"); ax[1].set_title("Changes inside the cells: CV vs public")
+    ax[1].axhline(0, color="k", lw=0.7); ax[1].set_xticks(y); ax[1].set_xticklabels(lab, fontsize=5.4); ax[1].set_ylabel("D2 change (x 1e-3)")
+    ax[1].legend(frameon=False, fontsize=6.3, loc="lower left"); ax[1].set_title("Late changes: CV vs public")
     fig.tight_layout(); fig.savefig(OUT + "leaderboard.png", dpi=220); plt.close(fig)
 
 

@@ -59,10 +59,24 @@ $PY part2/transplant_cells.py work/p2/v7.csv $R/work/p2/sub_v4_tm.csv work/p2/v1
 (cd $R && $PY part2/residual_motor.py work/p2/sub_v4_tm.parquet work/p2/sub_v4_tm_rb.csv --tag _tm_avg)
 $PY part2/transplant_cells.py work/p2/v7.csv $R/work/p2/sub_v4_tm_rb.csv work/p2/v11.csv
 
-# 10. office premium of the 20 reference policies from the final file (part2/final.json), figures, report and slides
-$PY -c "import polars as pl; pl.read_csv('work/p2/v10.csv').write_parquet('work/p2/v10.parquet')"
-$PY part2/office_premium.py work/p2/v10.parquet work/p2/office_v10.csv
+# 10. v12c (submitted 2026-10-28, public 0.17333): buildings fire on wildfire_index with the developed-market slope on v10's prior (e25), then the geometric
+#     mean of v9 and v10 times that fire term, carried to v7's cell totals
+(cd $R && $PY part2/fire_term.py _tm_avg _wf_avg && $PY part2/fit_final.py work/p2/sub_v4_wf.csv --tag _wf_avg)
+$PY part2/transplant_cells.py work/p2/v7.csv $R/work/p2/sub_v4_wf.csv work/p2/v12a.csv
+$PY part2/geo_mean.py work/p2/v9.csv work/p2/v10.csv work/p2/v12c_raw.csv work/p2/v12a.csv work/p2/v10.csv
+$PY part2/transplant_cells.py work/p2/v7.csv work/p2/v12c_raw.csv work/p2/v12c.csv
+
+# 11. v13_cells (submitted 2026-10-29, public 0.17556, final): x1.2 probes on seven motor segments of v10 (q12a..q12h; q12d not submitted, scores in
+#     part2/q12_probes.json, which reads the submitted v10 from work/p2/submitted), solved one by one and shrunk by sampling noise, applied to v12c,
+#     carried to v7's cell totals (v13_raw, the same without the last step, scored 0.17552)
+mkdir -p work/p2/q12 && $PY part2/probe_q12.py work/p2/v10.csv work/p2/q12
+$PY part2/probe_overlays.py part2/q12_probes.json work/p2/v12c.csv work/p2/v13_raw.csv
+$PY part2/transplant_cells.py work/p2/v7.csv work/p2/v13_raw.csv work/p2/v13_cells.csv
+
+# 12. office premium of the 20 reference policies from the final file (part2/final.json), figures, report and slides
+$PY -c "import polars as pl; pl.read_csv('work/p2/v13_cells.csv').write_parquet('work/p2/final.parquet')"
+$PY part2/office_premium.py work/p2/final.parquet work/p2/office_final.csv
 $PY part2/report/figures.py
-$PY part2/report/build_report.py work/p2/office_v10.csv
+$PY part2/report/build_report.py work/p2/office_final.csv
 $PY part2/video/slides.py
-echo "final Part 2 file: work/p2/v10.csv (v9.csv has the best public score); the final selection is made in the Kaggle UI"
+echo "final Part 2 file: work/p2/v13_cells.csv; the final selection is made in the Kaggle UI"

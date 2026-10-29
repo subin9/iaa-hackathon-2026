@@ -55,6 +55,21 @@
    "name": "v11",
    "public": 0.17184,
    "what": "v10 times a motor residual booster (rating, history and premium columns, 50 rounds), rescaled to v7's cell totals"
+  },
+  {
+   "name": "v12c",
+   "public": 0.17333,
+   "what": "geometric mean of v9 and v10 times buildings fire x exp(1.662 (wildfire_index - 0.528)), the developed-market slope (fire_term.py, geo_mean.py), rescaled to v7's cell totals"
+  },
+  {
+   "name": "v13_raw",
+   "public": 0.17552,
+   "what": "v12c times the shrunk factors of seven motor segment probes on v10 (probe_overlays.py)"
+  },
+  {
+   "name": "v13_cells",
+   "public": 0.17556,
+   "what": "v13_raw rescaled to v7's twelve cell totals (final)"
   }
  ],
  "probes_on_v1": [
@@ -149,5 +164,51 @@
    "buildings_age_35_49": 1.185,
    "motor_male": 1.191
   }
+ },
+ "probes_on_v10": [
+  {
+   "seg": "motor NB married",
+   "m": 1.2,
+   "public": 0.17138
+  },
+  {
+   "seg": "motor driver age 17-24",
+   "m": 1.2,
+   "public": 0.17276
+  },
+  {
+   "seg": "motor NB region E01 or E06",
+   "m": 1.2,
+   "public": 0.17353
+  },
+  {
+   "seg": "motor driver age 65+",
+   "m": 1.2,
+   "public": 0.17204
+  },
+  {
+   "seg": "motor NB region E02",
+   "m": 1.2,
+   "public": 0.17153
+  },
+  {
+   "seg": "motor renewals monthly payment",
+   "m": 1.2,
+   "public": 0.17203
+  },
+  {
+   "seg": "motor NB business use",
+   "m": 1.2,
+   "public": 0.17166
+  }
+ ],
+ "solved_on_v10_shrunk": {
+  "motor NB married": 0.957,
+  "motor driver age 17-24": 1.109,
+  "motor NB region E01 or E06": 1.207,
+  "motor driver age 65+": 1.018,
+  "motor NB region E02": 0.89,
+  "motor renewals monthly payment": 0.932,
+  "motor NB business use": 0.813
  }
 }

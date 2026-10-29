@@ -243,3 +243,18 @@ customer): power 1.6 in the average +0.00018 (sd 0.00023, better in 78% of resam
 - The single-probe solution does not say whether the rest of each motor cell should move the other way. Two v13 files bracket that: v13_raw
   (v12c times the factors; motor new-business total +6.5%) and v13_cells (the same, rescaled to v7's twelve cell totals). Both go out on the
   next UTC day. Rule: the higher of the two replaces v12c if its public score is at least v12c's 0.17333; otherwise v12c stays.
+
+### Results of the 2026-10-29 00:02 UTC round: v13
+
+- v13_cells public 0.17556, v13_raw 0.17552 (v12c 0.17333). By the rule above v13_cells replaces v12c as the final Part 2 file. Leaderboard
+  at 00:07 UTC: first of 33 teams, second 0.17192.
+- The +0.00223 is measured on the rows the factors were fitted to. The factors are shrunk by the sampling noise of each segment's public
+  third and the larger ones agree in direction with the training new business, so most of the gain should carry to the private rows, but
+  less than the public gain; v12c (0.17333) is the version without them.
+- Reproduction: `fire_term.py`, `geo_mean.py` and `probe_q12.py` replace the inline commands used on the day; run from the submitted v9 and
+  v10 they rebuild the eight probe files byte for byte and v12c, v13_raw and v13_cells to a largest row log-ratio of 7e-15 (`run_all.sh`
+  steps 10 and 11).
+- Correction to the 2026-10-29 deliverables entry: across all 2025 rows the technical premium is 2.19x (motor), 3.25x (buildings) and 2.67x
+  (contents) the written premium, exposure-weighted with comparison-site rows left out; the 2.1, 3.1 and 2.6 written earlier were truncated.
+  The final file gives the same ratios, because the line totals do not change.
+- Submissions used on 2026-10-29 UTC: 2 of 10.

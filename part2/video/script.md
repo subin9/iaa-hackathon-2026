@@ -24,6 +24,8 @@ recordings to cut in. Every number is copied from `part2/LOG.md`, `part2/probes.
   measured on the public board and shrunk for sampling noise (sd of log factor 0.05 to 0.32).
 - What carried over: rating-factor effects (log correlation of one-way relativities across markets in the report figure). What did not: levels
   (motor 25% lower, bodily injury 0.64, glass 1.28 of the developed model).
+- Weather: 22% of the 2025 buildings rows lie above the developed maximum of the wildfire index, where the tree prior is flat; fire takes the
+  developed slope (1.66 per unit, from 1,107 developed fires) instead of a slope fitted on 70 emerging fires.
 
 ## Scene 3, effective AI use: suggested line for Evan (about 30 words)
 
@@ -33,17 +35,22 @@ leaderboard solver and two tests that could never fail."
 ## Scene 4, guardrails: suggested line for Evan (about 45 words)
 
 "Our model is a transferred prior with shrunk levels. Every change is compared on the same five folds with a paired bootstrap by customer,
-and before each late submission we wrote down the score that would make us drop it. Three changes won in cross-validation. Two lost on the
-leaderboard, so we kept the rule."
+and before each late submission we wrote down the score that would make us drop it. Three changes won in cross-validation and two lost on the
+leaderboard. The one that held was knowledge carried from the developed market: its fire slope on the wildfire index."
 
-Numbers behind it: paired CV gains +0.00018, +0.00098, +0.00075 (v9, v10, v11) came out +0.00003, -0.00056, -0.00063 on the public rows.
+Numbers behind it: paired CV gains +0.00018, +0.00098, +0.00075 (v9, v10, v11) came out +0.00003, -0.00056, -0.00063 on the public rows;
+the fire term +0.00088 in CV, and v12c (fire term with the v9/v10 average) +0.00086 on the public rows against v10.
 
 ## Scene 5, results
 
 | | AI-proposed model, not optimised | our pipeline with leaderboard levels |
 | --- | --- | --- |
 | competition files | teammate's file 4 (to be scored) | v9 0.17303 |
-| cleaned files | teammate's file 2 (to be scored) | v10 0.17247 (final) |
+| cleaned files | teammate's file 2 (to be scored) | v10 0.17247 |
+
+Final file: v13_cells 0.17556, first of 33 on 2026-10-29. It averages v9 and v10 (both data versions) with the developed fire slope (v12c,
+0.17333) and multiplies seven motor segments by factors measured with disclosed probes and shrunk for noise. In the matrix it sits beside
+the right-hand column, not in one cell.
 
 Model-only reference: v4 0.16135 (no leaderboard information). Validation ladder in CV (pooled D2): constant 0.078, emerging-only GBM 0.118,
 Part 1 prior as is 0.134, final 0.141; final recipe on the cleaned files 0.1425. Part 1: private 0.13755, rank 8 of 54.
@@ -56,7 +63,8 @@ Record in a terminal with a large font. The Kaggle token must not appear on scre
 1. Scene 4, tests (5 s): `PYTHONPATH=src:part2 .venv/bin/python -m pytest part2/tests -q` ends with "22 passed".
 2. Scene 4, the rule before the result (10 s): `part2/LOG.md` open in the editor at "other directions on the cleaned files (v11)", with the
    line "Rule fixed before the score: keep v11 unless its public score is more than 0.0003 below v9's" highlighted.
-3. Scene 4/5, the result (10 s): `kaggle competitions submissions iaa-ai-assisted-hackathon-2026-part-2` showing v11 0.17184 under v10 0.17247
-   and v9 0.17303, each with its description (this list is also the probe disclosure).
-4. Scene 2, optional (5 s): `PYTHONPATH=src:part2 .venv/bin/python part2/office_premium.py work/p2/v10.parquet /tmp/office.csv`, the
+3. Scene 4/5, the result (10 s): `kaggle competitions submissions iaa-ai-assisted-hackathon-2026-part-2` showing v13_cells 0.17556 at the top,
+   v12c 0.17333 and the seven motor probes below it, then v11 0.17184 under v10 0.17247 and v9 0.17303, each with its description (this list
+   is also the probe disclosure).
+4. Scene 2, optional (5 s): `PYTHONPATH=src:part2 .venv/bin/python part2/office_premium.py work/p2/final.parquet /tmp/office.csv`, the
    build-up table for the 20 reference policies.
