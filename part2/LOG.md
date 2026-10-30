@@ -258,3 +258,16 @@ customer): power 1.6 in the average +0.00018 (sd 0.00023, better in 78% of resam
   (contents) the written premium, exposure-weighted with comparison-site rows left out; the 2.1, 3.1 and 2.6 written earlier were truncated.
   The final file gives the same ratios, because the line totals do not change.
 - Submissions used on 2026-10-29 UTC: 2 of 10.
+
+## 2026-10-30, second round of segment probes (rules fixed before the scores)
+
+The user asked to use the remaining submissions to raise the score. 0 of today's 10 UTC submissions were used at 02:41 UTC.
+- Seven x1.2 probes on v13_cells (`probe_q14.py`), new-business segments with the strongest out-of-fold evidence in the training new
+  business among those with at least 8,000 test rows (relative A/E, z with overdispersion 3): motor voluntary excess 0 (27,600 test rows,
+  z -3.5), voluntary excess 500 (13,658, +4.1), one prior claim (13,503, -3.6), ncb_years 11 or more (15,532, +3.0), ncb_years 0 (9,521,
+  -3.6), two lines held (14,221, +3.4); contents mean temperature below 14.1 (22,162, -2.2). Buildings new business had no segment with
+  real evidence (its full-year rows are 90% of the segment). The z values are optimistic (married motor new business had z +2.9 and the
+  board put it at 0.95), so the probe, not the scan, sets each factor.
+- Each probe is solved and shrunk as in the v13 round (`probe_overlays.py`, base v13_cells at 0.17556). The factors multiply v13_cells:
+  v14_raw, and v14_raw rescaled to v7's twelve cell totals: v14_cells. Both go out today. Rule: the higher of the two replaces v13_cells
+  if its public score is at least 0.17556; otherwise v13_cells stays. One submission is kept spare.
