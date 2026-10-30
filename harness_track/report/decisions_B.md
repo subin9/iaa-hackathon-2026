@@ -47,7 +47,7 @@ The table above is signed on the v10 basis. The final file has since changed und
   paired CV +0.00088. With the v9/v10 average this is v12c, public 0.17333.
 - **B3 new business:** fourteen further ×1.2 probes on single new-business segments (thirteen motor, one contents), each solved on its
   own and shrunk by sampling noise; applied factors 0.81 to 1.34. v13_cells 0.17556, then v14_cells 0.17993.
-- **B8 final submission:** v14_cells (a third round may replace it on 2026-10-31 under the same rule). The leaderboard probes now number
+- **B8 final submission:** v14_cells (a third round was prepared and not submitted). The leaderboard probes now number
   twenty-seven, all listed in `part2/probes.json`.
 - Added uncertainty: the segment factors are fitted on the public third, so part of their gain (+0.0066 public) will not carry to the
   private rows; stacked factors move individual motor rows by 0.69 to 1.56 at the 1st and 99th percentiles.

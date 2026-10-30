@@ -1,4 +1,4 @@
-"""x1.2 probe files on one segment each of a base submission (the 2026-10-31 round on v14_cells). Segments come from the out-of-fold residual scan
+"""x1.2 probe files on one segment each of a base submission (a third round on v14_cells, prepared for 2026-10-31 and not submitted). Segments come from the out-of-fold residual scan
 of the training new business after the v13 and v14 factors were applied to it, keeping levels that are off the same way in 2023 and 2024.
 Quintiles are those of the line's training new business (q0 lowest, q4 highest), as in the scan.
 usage: probe_q15.py BASE.csv OUT_DIR"""

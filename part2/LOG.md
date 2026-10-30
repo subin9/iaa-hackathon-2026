@@ -292,3 +292,11 @@ The user asked to use the remaining submissions to raise the score. 0 of today's
 - Same solver and shrinkage on base v14_cells (0.17993), giving v15_raw and v15_cells. Rule: the higher of the two replaces v14_cells if its
   public score is at least 0.17993; otherwise v14_cells stays. A detached job submits the probes at 00:01 UTC, builds and submits both v15
   files and writes `work/p2/q15/round3.log`; 9 of the 10 submissions of 2026-10-31 UTC, before the 03:59 UTC close.
+
+### Third round not run (2026-10-30 03:20 UTC)
+
+- The user chose to finish on v14_cells: the third round would have left about three hours between its result and the deliverables
+  deadline (2026-10-31 03:59 UTC). The detached job was stopped before it submitted anything; its probe files stay in `work/p2/q15/`
+  and `probe_q15.py` stays in the repository as the record of what was planned.
+- Final Part 2 file: v14_cells (public 0.17993). It rebuilds exactly from v13_cells with the commands of `run_all.sh` step 11b (largest
+  row log-ratio 0 against the submitted file).
