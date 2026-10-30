@@ -83,7 +83,7 @@ def fig_leaderboard():
         ax[0].text(i, s + (0.0009 if (i % 2 == 0) != (n in ("v3_half", "v4")) else -0.0024), f"{s:.5f}", ha="center", fontsize=4.8)
     ax[0].scatter([], [], color="#1d4e89", s=14, label="model only"); ax[0].scatter([], [], color="#d9822b", s=14, label="levels from leaderboard probes")
     ax[0].legend(frameon=False, fontsize=6.3, loc="lower right"); ax[0].set_xticks(x); ax[0].set_xticklabels(names, fontsize=6.3, rotation=30)
-    ax[0].set_ylim(0.145, 0.178); ax[0].set_ylabel("public D2"); ax[0].set_title("Public score by version (star: final)")
+    ax[0].set_ylim(0.145, 0.184); ax[0].set_ylabel("public D2"); ax[0].set_title("Public score by version (star: final)")
     lab = [c[0] for c in CV_VS_PUBLIC]; y = np.arange(len(lab)); w = 0.38
     ax[1].bar(y - w / 2, [c[1] * 1e3 for c in CV_VS_PUBLIC], w, color="#5b8fc4", label="paired CV gain")
     ax[1].bar(y + w / 2, [c[2] * 1e3 for c in CV_VS_PUBLIC], w, color="#d9822b", label="public gain")

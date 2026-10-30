@@ -12,11 +12,11 @@ ultimate claim cost of every 2025 policy row.
 | | final submission | public | private | notes |
 | --- | --- | --- | --- | --- |
 | Part 1, developed market | `eq20` | 0.12956 | 0.13755 (rank 8 of 54) | equal-weight blend of shallow GBMs, GLM, EBM, MLP, CatBoost, TabM; credibility factor; levels from the public board |
-| Part 2, emerging market | `v13_cells` | 0.17556 (first of 38 on 2026-10-30) | after close | transferred per-peril prior on the cleaned files, shrunk peril levels, screened corrections, developed-market fire slope, cell and motor segment levels from the public board |
+| Part 2, emerging market | `v14_cells` | 0.17993 (first of 38 on 2026-10-30) | after close | transferred per-peril prior on both data versions, shrunk peril levels, screened corrections, developed-market fire slope, cell and segment levels from the public board |
 
 Each late version replaced the previous one only under a rule written in `part2/LOG.md` before its score came back: `v12c` (0.17333, the
-`v9`/`v10` average with the fire term) replaced `v10` (0.17247), and `v13_cells` (`v12c` times seven shrunk motor segment factors) replaced
-`v12c`. The reasoning is in section 7 of the report. Without any leaderboard information the Part 2 model scored 0.16135 (`v4`); most of the
+`v9`/`v10` average with the fire term) replaced `v10` (0.17247), then two rounds of seven segment probes gave `v13_cells` (0.17556) and
+`v14_cells` (0.17993), each replacing the previous final. The reasoning is in section 7 of the report. Without any leaderboard information the Part 2 model scored 0.16135 (`v4`); most of the
 rest comes from levels measured with disclosed leaderboard probes.
 
 ## Deliverables in this repository
@@ -62,12 +62,12 @@ requirements-ag.txt         second environment for AutoGluon, CatBoost, EBM and 
 
 - Part 2, all submitted versions: `bash part2/run_all.sh` (about 40 minutes on 8 cores). It rebuilds the tables, the developed-market priors,
   the tests, every version from v4 to v13 and the office premium table. `v7` and `v11` rebuild byte for byte; `v10` rebuilds to a largest row difference of 3e-13 (floating-point order),
-  `v12c` and `v13_cells` to 1e-14 (relative).
+  `v12c` to `v14_cells` to 1e-14 (relative).
 - Part 1, `eq20`: the command chain is in `docs/part1_log.md`, section "Reproducing the final Part 1 submission".
 - Tests: `PYTHONPATH=src:part2 .venv/bin/python -m pytest part2/tests -q` (22 tests, a few seconds).
 - Report and slides: `part2/report/figures.py`, `part2/report/build_report.py`, `part2/video/slides.py`.
 
-Git tags mark the code behind the main submitted files: `p1-eq20` (Part 1 final), `p2-v7`, `p2-v9`, `p2-v10`, `p2-v11`, `p2-v13` (Part 2 final, with `v12c`).
+Git tags mark the code behind the main submitted files: `p1-eq20` (Part 1 final), `p2-v7`, `p2-v9`, `p2-v10`, `p2-v11`, `p2-v13` (`v12c` and `v13_cells`), `p2-v14` (Part 2 final).
 `final-submission` marks the state of the repository handed in with the deliverables.
 
 ## Data, credentials and rules

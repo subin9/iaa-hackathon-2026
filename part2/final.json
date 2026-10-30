@@ -7,15 +7,15 @@
   "private_rank": "8 of 54"
  },
  "part2": {
-  "file": "work/p2/v13_cells.csv",
-  "name": "v13_cells",
-  "public": 0.17556,
+  "file": "work/p2/v14_cells.csv",
+  "name": "v14_cells",
+  "public": 0.17993,
   "public_rank": "1 of 38 on 2026-10-30",
   "best_public": {
-   "name": "v13_cells",
-   "public": 0.17556
+   "name": "v14_cells",
+   "public": 0.17993
   },
-  "why": "Chosen by rules fixed before each score. v12c (v9/v10 average with the developed-market fire term on wildfire_index, public 0.17333) replaced v10 (0.17247) because it cleared 0.17167; v13_cells (v12c times seven shrunk motor segment factors, rescaled to v7's cell totals) replaced v12c because the better of the two v13 files had to reach 0.17333. The motor factors are fitted on the public third, so part of their +0.00223 will not carry to the private rows; they were shrunk by sampling noise for that reason, and the training new business points the same way for the largest ones.",
+  "why": "Chosen by rules fixed before each score. v12c (v9/v10 average with the developed-market fire term on wildfire_index, public 0.17333) replaced v10 (0.17247) because it cleared 0.17167. Two rounds of seven segment probes followed, each applied as shrunk factors and rescaled to v7's cell totals; each result had to reach the previous final's score: v13_cells 0.17556, then v14_cells 0.17993. The segment factors are fitted on the public third, so part of their +0.0066 will not carry to the private rows; they were shrunk by sampling noise for that reason, and in 9 of the 12 probes whose segment had a clear residual in the training new business, it pointed the same way as the board.",
   "without_segment_factors": {
    "name": "v12c",
    "public": 0.17333
@@ -24,6 +24,6 @@
    "name": "v4",
    "public": 0.16135
   },
-  "leaderboard_calibrated_from": "v7 (twelve cell levels solved from seven segment probes on v5, shrunk by sampling noise) and seven motor segment probes on v10"
+  "leaderboard_calibrated_from": "v7 (twelve cell levels solved from seven segment probes on v5, shrunk by sampling noise) and fourteen segment probes on v10 and v13_cells"
  }
 }

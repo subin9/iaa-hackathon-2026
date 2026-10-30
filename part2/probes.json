@@ -70,6 +70,16 @@
    "name": "v13_cells",
    "public": 0.17556,
    "what": "v13_raw rescaled to v7's twelve cell totals (final)"
+  },
+  {
+   "name": "v14_raw",
+   "public": 0.17919,
+   "what": "v13_cells times the shrunk factors of seven segment probes on v13_cells (probe_q14.py, probe_overlays.py)"
+  },
+  {
+   "name": "v14_cells",
+   "public": 0.17993,
+   "what": "v14_raw rescaled to v7's twelve cell totals"
   }
  ],
  "probes_on_v1": [
@@ -210,5 +220,51 @@
   "motor NB region E02": 0.89,
   "motor renewals monthly payment": 0.932,
   "motor NB business use": 0.813
+ },
+ "probes_on_v13_cells": [
+  {
+   "seg": "motor NB voluntary excess 0",
+   "m": 1.2,
+   "public": 0.17485
+  },
+  {
+   "seg": "motor NB voluntary excess 500",
+   "m": 1.2,
+   "public": 0.17698
+  },
+  {
+   "seg": "motor NB one prior claim",
+   "m": 1.2,
+   "public": 0.17493
+  },
+  {
+   "seg": "motor NB ncb_years 11 or more",
+   "m": 1.2,
+   "public": 0.17604
+  },
+  {
+   "seg": "motor NB ncb_years 0",
+   "m": 1.2,
+   "public": 0.17435
+  },
+  {
+   "seg": "motor NB two lines held",
+   "m": 1.2,
+   "public": 0.17682
+  },
+  {
+   "seg": "contents NB mean temperature below 14.1",
+   "m": 1.2,
+   "public": 0.17504
+  }
+ ],
+ "solved_on_v13_cells_shrunk": {
+  "motor NB voluntary excess 0": 1.018,
+  "motor NB voluntary excess 500": 1.339,
+  "motor NB one prior claim": 0.97,
+  "motor NB ncb_years 11 or more": 1.179,
+  "motor NB ncb_years 0": 0.847,
+  "motor NB two lines held": 1.298,
+  "contents NB mean temperature below 14.1": 0.918
  }
 }

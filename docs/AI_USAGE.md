@@ -36,7 +36,7 @@ How the output was checked:
 - **Rules before results.** For every late submission the keep-or-drop threshold was written into `part2/LOG.md` before the public score came
   back, and the rule decided. Three CV-validated changes (v9, v10, v11) were measured this way on the public rows; two lost, and the log
   records the lesson that cross-validation on 2023-24 does not predict the 2025 broker book at that margin. The fourth, a fire slope carried
-  from the developed market (v12c), won on both, and the last motor segment factors (v13) were kept by the same kind of rule.
+  from the developed market (v12c), won on both, and the segment factors measured on the board afterwards (v13, v14) were kept by the same kind of rule.
 - **Disclosure.** Every leaderboard probe is listed with its score in `part2/probes.json` and in the report.
 
 ## 2. Data track: a rule-driven data harness (teammate)

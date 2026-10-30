@@ -48,8 +48,9 @@ the fire term +0.00088 in CV, and v12c (fire term with the v9/v10 average) +0.00
 | competition files | teammate's file 4 (to be scored) | v9 0.17303 |
 | cleaned files | teammate's file 2 (to be scored) | v10 0.17247 |
 
-Final file: v13_cells 0.17556, first of 33 on 2026-10-29. It averages v9 and v10 (both data versions) with the developed fire slope (v12c,
-0.17333) and multiplies seven motor segments by factors measured with disclosed probes and shrunk for noise. In the matrix it sits beside
+Final file: v14_cells 0.17993, first of 38 on 2026-10-30. It averages v9 and v10 (both data versions) with the developed fire slope (v12c,
+0.17333) and multiplies fourteen new-business segments by factors measured with disclosed probes and shrunk for noise (v13_cells 0.17556
+after the first seven). In the matrix it sits beside
 the right-hand column, not in one cell.
 
 Model-only reference: v4 0.16135 (no leaderboard information). Validation ladder in CV (pooled D2): constant 0.078, emerging-only GBM 0.118,

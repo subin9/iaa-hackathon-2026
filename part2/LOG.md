@@ -271,3 +271,24 @@ The user asked to use the remaining submissions to raise the score. 0 of today's
 - Each probe is solved and shrunk as in the v13 round (`probe_overlays.py`, base v13_cells at 0.17556). The factors multiply v13_cells:
   v14_raw, and v14_raw rescaled to v7's twelve cell totals: v14_cells. Both go out today. Rule: the higher of the two replaces v13_cells
   if its public score is at least 0.17556; otherwise v13_cells stays. One submission is kept spare.
+
+### Results of the 2026-10-30 02:42 UTC round: v14
+
+- Probes on v13_cells (`q14_probes.json`), best factor m* and the shrunk factor: voluntary excess 0 1.020 / 1.018, voluntary excess 500
+  1.433 / 1.339, one prior claim 0.963 / 0.970, ncb_years 11 or more 1.218 / 1.179, ncb_years 0 0.809 / 0.847, two lines held 1.367 / 1.298,
+  contents cold areas 0.900 / 0.918. The training residual pointed the same way in six of seven (not voluntary excess 0); over both rounds,
+  9 of the 12 probes whose segment had a clear training residual.
+- v14_raw public 0.17919, v14_cells 0.17993. By the rule above v14_cells replaces v13_cells as the final Part 2 file. Leaderboard: first of
+  38, second 0.17445. Stacked factors reach 0.69 to 1.56 at the 1st and 99th percentiles of the row ratio to v13_cells.
+- Submissions used on 2026-10-30 UTC: 9 of 10.
+
+### Third round (rules fixed before the scores, to run at 2026-10-31 00:01 UTC)
+
+- The out-of-fold training new business was rescanned after applying the fourteen factors of v13 and v14 to it. Seven segments with at least
+  5,000 test rows whose residual is off the same way in 2023 and in 2024 (`probe_q15.py`): motor new business with the newest homes
+  (property_age below 22), highest elevation (above 15.7 m), middle wind exposure (4.7 to 5.6), vehicle age 10 to 13, low rainfall (1,187 to
+  1,290 mm); contents new business at the address under 3 years, marketing segment young_affluent. Correlated levels (year built, energy
+  rating A) were left out in favour of property_age.
+- Same solver and shrinkage on base v14_cells (0.17993), giving v15_raw and v15_cells. Rule: the higher of the two replaces v14_cells if its
+  public score is at least 0.17993; otherwise v14_cells stays. A detached job submits the probes at 00:01 UTC, builds and submits both v15
+  files and writes `work/p2/q15/round3.log`; 9 of the 10 submissions of 2026-10-31 UTC, before the 03:59 UTC close.

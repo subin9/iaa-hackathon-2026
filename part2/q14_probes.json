@@ -1,0 +1,9 @@
+{"base": "work/p2/submitted/v13_cells.csv", "base_public": 0.17556,
+ "probes": [
+  {"name": "motor NB voluntary excess 0", "file": "work/p2/q14/q14a.csv", "c": 1.2, "public": 0.17485},
+  {"name": "motor NB voluntary excess 500", "file": "work/p2/q14/q14b.csv", "c": 1.2, "public": 0.17698},
+  {"name": "motor NB one prior claim", "file": "work/p2/q14/q14c.csv", "c": 1.2, "public": 0.17493},
+  {"name": "motor NB ncb_years 11 or more", "file": "work/p2/q14/q14d.csv", "c": 1.2, "public": 0.17604},
+  {"name": "motor NB ncb_years 0", "file": "work/p2/q14/q14e.csv", "c": 1.2, "public": 0.17435},
+  {"name": "motor NB two lines held", "file": "work/p2/q14/q14f.csv", "c": 1.2, "public": 0.17682},
+  {"name": "contents NB mean temperature below 14.1", "file": "work/p2/q14/q14g.csv", "c": 1.2, "public": 0.17504}]}

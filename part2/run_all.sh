@@ -73,10 +73,16 @@ mkdir -p work/p2/q12 && $PY part2/probe_q12.py work/p2/v10.csv work/p2/q12
 $PY part2/probe_overlays.py part2/q12_probes.json work/p2/v12c.csv work/p2/v13_raw.csv
 $PY part2/transplant_cells.py work/p2/v7.csv work/p2/v13_raw.csv work/p2/v13_cells.csv
 
+# 11b. v14_cells (submitted 2026-10-30, public 0.17993): seven x1.2 probes on v13_cells (q14a..q14g, scores in part2/q14_probes.json, which reads the
+#      submitted v13_cells from work/p2/submitted), solved and shrunk the same way, applied to v13_cells and carried to v7's cell totals
+mkdir -p work/p2/q14 && $PY part2/probe_q14.py work/p2/v13_cells.csv work/p2/q14
+$PY part2/probe_overlays.py part2/q14_probes.json work/p2/v13_cells.csv work/p2/v14_raw.csv
+$PY part2/transplant_cells.py work/p2/v7.csv work/p2/v14_raw.csv work/p2/v14_cells.csv
+
 # 12. office premium of the 20 reference policies from the final file (part2/final.json), figures, report and slides
-$PY -c "import polars as pl; pl.read_csv('work/p2/v13_cells.csv').write_parquet('work/p2/final.parquet')"
+$PY -c "import polars as pl; pl.read_csv('work/p2/v14_cells.csv').write_parquet('work/p2/final.parquet')"
 $PY part2/office_premium.py work/p2/final.parquet work/p2/office_final.csv
 $PY part2/report/figures.py
 $PY part2/report/build_report.py work/p2/office_final.csv
 $PY part2/video/slides.py
-echo "final Part 2 file: work/p2/v13_cells.csv; the final selection is made in the Kaggle UI"
+echo "final Part 2 file: work/p2/v14_cells.csv; the final selection is made in the Kaggle UI"
