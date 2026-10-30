@@ -61,7 +61,8 @@ Part 1 prior as is 0.134, final 0.141; final recipe on the cleaned files 0.1425.
 Recorded 2026-10-30 with [VHS](https://github.com/charmbracelet/vhs) from the tapes in `tapes/` (real commands, real output, 1920x1080; the
 clips are in `deliverables/video_clips/`, not in the repository): `clip1_tests` (scene 4, 14 s), `clip2_rule` (scene 4, the rule commits
 before the v13 scores, 28 s), `clip5_code` (scene 2 or 6, the probe solver and its seven factors, 34 s), `clip3_board` (scene 4/5, every
-submission with its score, 16 s), `clip4_office` (scene 2, office premium build-up, 20 s), and `all_clips` in that order. Re-record with
+submission with its score, 16 s), `clip4_office` (scene 2, office premium build-up, 20 s), and `all_clips` in that order. `agent_ide` (scene 3 or 4, 1:08) shows the editor and a Claude Code agent side by side: the agent runs the tests, checks
+that the v14 keep rule was committed before its result, and walks through an office premium build-up (`tapes/ide/`). Re-record with
 `cd part2/video/tapes && vhs clipN.tape` (`head.tape` holds the checkout and Kaggle CLI paths of this machine); the Kaggle clips read the
 token from the environment, so it never appears on screen or in a tape.
 
