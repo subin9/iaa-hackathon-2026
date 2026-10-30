@@ -1,0 +1,741 @@
+# Rule registry — the authoritative register of approved decision rules.
+#
+# Every rule the harness contains has an entry here; the rule's prose lives
+# in the file named by `location`, anchored with <!-- rule: R-#### -->.
+# tools/lint_harness.py checks that anchors and entries match one-to-one.
+#
+# Entry schema
+#   id:            stable, never reused.  R-00xx data readiness · R-01xx target
+#                  · R-02xx validation · R-03xx modelling · R-04xx adaptation
+#                  · R-05xx submission
+#   statement:     the rule in one or two lines, imperative
+#   applies_to:    data_readiness | target | validation | modelling | adaptation | submission | process
+#   origin:        WEEK1_TEAM      — learned by the team in Part 1 (human + AI pair work)
+#                  ACTUARY         — method authored by the actuary for Part 2
+#                  AGENT_RETRO     — proposed by an agent in a retrospective (cycle ≥ 1)
+#                  STANDARD_PRACTICE
+#   evidence:      where the rule came from (Week 1 README section / experiment, or the
+#                  cycle scorecard), one line
+#   source_cycle:  0 = harness v1 (before any Part 2 agent run)
+#   approved_by:   actuary (HyunSu Kim) unless stated
+#   status:        ACTIVE | RETIRED
+#   location:      playbooks/<file>.md
+#
+# Harness v1 integrity note: every v1 rule is traceable to the Week 1 README
+# or to the actuary's adaptation protocol. Nothing learned from profiling the
+# emerging data is in v1; such findings may enter only from cycle 1 onward,
+# with origin AGENT_RETRO or ACTUARY and the cycle recorded.
+
+# ---------------------------------------------------------------- data readiness
+- id: R-0001
+  statement: Recompute exposure from period dates; repair stored exposure that disagrees (day counts are the typical symptom); apply to train and test.
+  applies_to: data_readiness
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 1, data problems table ("일 단위 값(365 등)이 노출에 들어간 행" → recomputed from dates).
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0002
+  statement: Test claims for exact duplicates on content keys ignoring claim_id; deduplicate; record a negative result if none.
+  applies_to: data_readiness
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 1 (604 duplicate claims removed; prep.py load_claims).
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0003
+  statement: Profile every amount column for mass at powers of ten; repair unit-scale errors by rescaling; apply the same repair to test files.
+  applies_to: data_readiness
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 1 (sum_insured ×1000 rows divided by 1000). Test-file clause added by actuary as the natural generalisation.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0004
+  statement: Link claims to the policy row whose period contains loss_date; report the match rate; investigate every unmatched claim before building targets.
+  applies_to: data_readiness
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 1 EDA ("policy_id와 loss_date가 계약 기간 안에 들어오는 행에 붙인다. 거의 전부 매칭").
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0005
+  statement: Exclude behavioural count variables whose upper tail exists only in training or that grow mechanically with the claims they predict.
+  applies_to: data_readiness
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 1 (customer_service_contacts excluded; ~2.5 contacts per claim; no tail in 2025) and common.py DROP list.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0006
+  statement: Run adversarial validation (latest train year vs test); exclude or transform features that act as time stamps; report residual separability.
+  applies_to: data_readiness
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 1 (customer_since_year gave AUC 1.0 train-2024 vs test-2025; replaced by tenure) and 01_eda/07_adversarial.py.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0007
+  statement: Confirm latest loss/report dates against the valuation date and that no claims fall in the test period; note how incomplete the latest year is.
+  applies_to: data_readiness
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 1 ("마지막 사고일 2024-12-29, 2025년 사고 0건, 누출 없음 확인").
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0008
+  statement: Identify claims that dominate a line-year early; do not delete them; hand them to capping and mention them in comparisons.
+  applies_to: data_readiness
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 1 EDA (one 2023 motor claim of 11.9M ≈ 10% of the year) and Day 5 (segment ratios pulled by large claims).
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0011
+  statement: Data-quality flag columns are kept for audit but never used as model features.
+  applies_to: data_readiness
+  origin: WEEK1_TEAM
+  evidence: common.py DROP list (exposure_bad, si_bad: "data-quality flags, training-only or meaningless as risk factors").
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0012
+  statement: Before leaving cleaning, reconcile row counts and claim totals before vs after, with every movement explained by a finding.
+  applies_to: data_readiness
+  origin: ACTUARY
+  evidence: Experience-study harness practice (mulberry CLAUDE.md "Verify your own work"); adopted unchanged.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+# ---------------------------------------------------------------- target
+- id: R-0101
+  statement: y = sum over linked claims of incurred_to_date − recoveries, repudiated = 0, at the valuation date; reconcile to the claims table.
+  applies_to: target
+  origin: WEEK1_TEAM
+  evidence: prep.py docstring and Week 1 README §4 Day 1.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/target_construction_playbook.md
+
+- id: R-0102
+  statement: Build a cost-weighted report-lag completion curve from the most mature years; use log(exposure × completion) as offset; state which ages are observed vs borrowed.
+  applies_to: target
+  origin: WEEK1_TEAM
+  evidence: prep.py completion_curve/row_completion (2021–2022 mature years, 99.5% cap, peril cost-share mix); Week 1 README §4 Day 1 "미경과 보정". Observed-vs-borrowed clause added by actuary for the two-year market.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/target_construction_playbook.md
+
+- id: R-0103
+  statement: Fit log-linear trend on mature years only and extrapolate; if too few mature years, borrow a range and show sensitivity.
+  applies_to: target
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 1 ("라인별 연도 추세는 성숙 연도만 써서 로그 선형으로 적합해 2025로 외삽"). Fallback clause by actuary.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/target_construction_playbook.md
+
+- id: R-0104
+  statement: Cap row targets at a high quantile of positives and redistribute the excess as a line-level multiplier.
+  applies_to: target
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 1 ("상위 1% 큰 손해는 cap하고 초과분은 라인별 일정 배수로 되돌린다"); common.py cap_target.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/target_construction_playbook.md
+
+- id: R-0105
+  statement: Quantify open-claim (IBNER) adequacy by year and peril but record it as uncertainty rather than adopting it without out-of-sample evidence.
+  applies_to: target
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 3 "IBNER 발견" (2024 BI open claims ~30% below trend; uplift 1.52 tested; public 0.12807 within noise; not adopted because validation years share the bias).
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  amendments: cycle 2 (AGENT_RETRO) — state the open-claim selection effect and compare like with like before reading an uplift
+  location: playbooks/target_construction_playbook.md
+
+- id: R-0106
+  statement: Let the completion curve carry last-month under-reporting; mention it in any month or season comparison.
+  applies_to: target
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 1 EDA ("12월 사고가 덜 접수되어 있다").
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/target_construction_playbook.md
+
+- id: R-0107
+  statement: Decompose deviance into zero-claim rows, ordinary claims and top-1% claims to prioritise effort.
+  applies_to: target
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 3 ("손해 0인 행 59%, 상위 1% 큰 손해 9~12% … 빈도 구분이 대부분 결정").
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/target_construction_playbook.md
+
+# ---------------------------------------------------------------- validation
+- id: R-0201
+  statement: Time-ordered folds only; never random K-fold across policy years; with one fold, add a labelled weaker policy-grouped check.
+  applies_to: validation
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §3 principle 1 (v2024, v2023 folds; same policy spans years). Single-fold fallback by actuary.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/validation_playbook.md
+
+- id: R-0202
+  statement: Adopt a change only if every fold improves in the same direction beyond the noise floor (~+0.0003 D² in Part 1).
+  applies_to: validation
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §3 principle 2 ("한 폴드만 오르는 변경은 거의 재현되지 않았다").
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/validation_playbook.md
+
+- id: R-0203
+  statement: Judge changes on ≥3-seed means; single-seed noise ≈ ±0.001 D².
+  applies_to: validation
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §3 principle 3 and Day 5 (row-type feature +0.0010 on one seed → +0.0001 on three).
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/validation_playbook.md
+
+- id: R-0204
+  statement: Estimate public-leaderboard pairwise noise before reading it (≈0.0009 on Part 1's public set); never tune to it.
+  applies_to: validation
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §3 principle 4 and §4 Day 2 ("쌍 비교 노이즈 0.0009").
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/validation_playbook.md
+
+- id: R-0205
+  statement: Equal-weight blends were most robust; treat weight optimisation as a change that must pass R-0202.
+  applies_to: validation
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §3 principle 5 and Day 2 (Caruana selection, optimised weights below equal mean).
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/validation_playbook.md
+
+- id: R-0206
+  statement: When a validation rule cannot be applied as written, record the rule, why, the substitute, and what evidence is weaker; escalate in the retrospective.
+  applies_to: validation
+  origin: ACTUARY
+  evidence: Part 2 has two training years, so the two-fold rule (R-0201/R-0202) cannot hold as written; the harness must make the agent surface this rather than silently adapt.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/validation_playbook.md
+
+- id: R-0207
+  statement: Fix the candidate set (segments, seeds, variants) on local evidence before looking at held-out or public evidence.
+  applies_to: validation
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 5 ("구간을 공개 점수를 보고 고르면 노이즈에 맞춰지므로, 구간은 로컬 근거로 미리 정했다").
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/validation_playbook.md
+
+- id: R-0208
+  statement: Before any submission, compare predicted cost per exposure-year by line with training-year history and explain the gap.
+  applies_to: validation
+  origin: WEEK1_TEAM
+  evidence: check_sub.py (prints 2025 predicted rate vs history by line) and Week 1 README §5 (level changes were the largest gains).
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/validation_playbook.md
+
+# ---------------------------------------------------------------- modelling
+- id: R-0301
+  statement: Start from the simplest winning configuration (3-leaf LightGBM Tweedie, lr≈0.02, ≈600 rounds, extra_trees, completion offset); add complexity only if R-0202 passes.
+  applies_to: modelling
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 6 "얕은 트리" (3 leaves 0.1378–0.1379 vs 7 leaves 0.1369 vs baseline 0.1362, 3-seed) and Day 1 extra_trees.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/modeling_playbook.md
+
+- id: R-0302
+  statement: Start with a lean feature set (drop weather, sales, marketing and calendar variables); top-K importance pruning loses; re-add groups one at a time.
+  applies_to: modelling
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 6 "변수 소거" (v2023 +0.0019; top-K all worse) and common.py LEAN list.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/modeling_playbook.md
+
+- id: R-0303
+  statement: Tweedie power 1.2–1.5 equivalent; ≥1.7 worse; do not tune.
+  applies_to: modelling
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 1 grid results.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/modeling_playbook.md
+
+- id: R-0304
+  statement: For offset-free learners use target y/e with weight e^(2−p).
+  applies_to: modelling
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 2 ("오프셋이 없는 모델에는 타깃 y/e, 샘플 가중치 e^(2-p) 트릭").
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/modeling_playbook.md
+
+- id: R-0305
+  statement: Blend diverse families with equal weights, seed-average each member; with small data prefer fewer, more regularised members.
+  applies_to: modelling
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §7 blend composition and §5 (seed averaging and family diversity were the Day-1/2 gains). Small-data clause by actuary.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/modeling_playbook.md
+
+- id: R-0306
+  statement: Policy-level claim-count credibility (k+N)/(k+L), k≈12, renormalised by line, was the only history gain; identity for new business.
+  applies_to: modelling
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 3 exprate.py (v2024 0.1365→0.1370, v2023 0.1416→0.1417; customer/address pooling worse) and Day 6 (k 6–25 unstable; amount-based worse).
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/modeling_playbook.md
+
+- id: R-0307
+  statement: Level matters more than shape; tabulate actual/predicted by line and pre-registered segments on every fold; shrink corrections toward 1 by noise.
+  applies_to: modelling
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §5 (line levels +0.00037 = largest gain), §6 level method, Day 5 (30% shrink toward prior; segments fixed on local evidence).
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/modeling_playbook.md
+
+- id: R-0308
+  statement: Do-not-retry list of Part 1 negative results (see playbook for the enumerated items).
+  applies_to: modelling
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §8 기각 목록 and 09_negative_results/ logs.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/modeling_playbook.md
+
+- id: R-0309
+  statement: Rows right after a mid-term change were over-predicted 11–15% on both folds; check the pattern in a new market.
+  applies_to: modelling
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 3 ("계약 중 변경 직후 행은 11~15% 과대 예측").
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/modeling_playbook.md
+
+- id: R-0310
+  statement: Compute hygiene — limit threads, fix seeds, distinct names for averaged files, record versions.
+  applies_to: process
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §4 Day 1 (OpenMP contention, 42 min → 67 s at 6 threads) and Day 3 (tmavg overwrite incident).
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/modeling_playbook.md
+
+# ---------------------------------------------------------------- adaptation
+- id: R-0401
+  statement: Schema diff first; deliver a mapping table to the coarsest common representation; never invent precision.
+  applies_to: adaptation
+  origin: ACTUARY
+  evidence: Part 2 data description lists market-specific columns (age bands, construction codes, missing credit/mileage/telematics, free-text occupation); method authored for the harness.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/adaptation_playbook.md
+
+- id: R-0402
+  statement: Shift report with two comparisons (train vs test; developed vs emerging); classify each shift as mix, definition or leakage.
+  applies_to: adaptation
+  origin: ACTUARY
+  evidence: Generalises Week 1's adversarial-validation finding (R-0006) into a standing report; Week 1 README §9 listed "공변량 이동 탐지 리포트" as a Part 2 idea.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  amendments: cycle 3 (AGENT_RETRO) — PSI on non-null values plus a separate null-rate delta; identical PSI across columns ⇒ null bin or join
+  location: playbooks/adaptation_playbook.md
+
+- id: R-0403
+  statement: Decompose market differences into frequency, severity and peril mix per line and exposure-year; label thin perils.
+  applies_to: adaptation
+  origin: ACTUARY
+  evidence: Standard pricing decomposition; Week 1 per-peril work (Day 3) showed perils have different drivers.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/adaptation_playbook.md
+
+- id: R-0404
+  statement: One carry-over decision per component with evidence and uncertainty; default shape from developed, level from emerging.
+  applies_to: adaptation
+  origin: ACTUARY
+  evidence: Week 1 README §5/§6 (level corrections outweighed model changes) and §9 ("Part 1 모델을 prior/offset으로 쓰고 신뢰도 가중으로 섞는 틀").
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/adaptation_playbook.md
+
+- id: R-0405
+  statement: Borrowed assumptions are listed with a sensitivity on predicted level by line.
+  applies_to: adaptation
+  origin: ACTUARY
+  evidence: Competition brief ("communicates any remaining uncertainty"); actuarial reporting standard.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/adaptation_playbook.md
+
+- id: R-0406
+  statement: When the test book is mostly new business, evaluate on the new-business subset of training data and report it next to the overall score.
+  applies_to: adaptation
+  origin: ACTUARY
+  evidence: Part 2 brief ("most 2025 policies are new business"); Week 1 R-0306 identity for policies without history.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/adaptation_playbook.md
+
+- id: R-0407
+  statement: Compare the acquired/new-business segment with the rest of the training book on frequency, severity and declared history before assuming it behaves like renewals.
+  applies_to: adaptation
+  origin: ACTUARY
+  evidence: Part 2 brief (broker portfolio transfer); selection-effect check is standard underwriting practice.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/adaptation_playbook.md
+
+- id: R-0408
+  statement: Rules describe method, never market-specific counts, thresholds or identifiers.
+  applies_to: process
+  origin: ACTUARY
+  evidence: Experience-study harness governing principle (AAC 2026, "method, never answers").
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/adaptation_playbook.md
+
+- id: R-0409
+  statement: Every report ends with remaining uncertainties ranked by effect on predicted level, and what would reduce each.
+  applies_to: adaptation
+  origin: ACTUARY
+  evidence: Competition evaluation criterion 1 ("clear treatment of … remaining uncertainties").
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/adaptation_playbook.md
+
+# ---------------------------------------------------------------- submission
+- id: R-0501
+  statement: Run check_sub before anyone looks at a score; read the level printout.
+  applies_to: submission
+  origin: WEEK1_TEAM
+  evidence: check_sub.py (Week 1) and README §9 (both final candidates passed check_sub).
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/submission_guardrails.md
+
+- id: R-0502
+  statement: Respect the stated submission limit (Rules §2.2a, ten per UTC day) and plan a team budget below it; never spend slots on differences the public score cannot resolve.
+  applies_to: submission
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §2 note 1 raised the limit as a concern (believed 5/day); Part 2 Rules page read 2026-10-25 states ten per day. Statement corrected by actuary.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/submission_guardrails.md
+
+- id: R-0503
+  statement: Log every submission with UTC time, file, commit hash, local scores, public score and description.
+  applies_to: submission
+  origin: WEEK1_TEAM
+  evidence: Week 1 public_scores.csv; commit hash column added for Part 2 reproducibility.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/submission_guardrails.md
+
+- id: R-0504
+  statement: Never commit or share data, prediction files with targets, or credentials; repository guard enforces on commit.
+  applies_to: submission
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §2 notes 2–3 (CC BY-NC; a token once appeared in a work log → rotate).
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/submission_guardrails.md
+
+- id: R-0505
+  statement: Prepare two candidates that differ in the main unvalidatable level assumption; select one (Rules §2.2b allow one Final Submission) and record why.
+  applies_to: submission
+  origin: WEEK1_TEAM
+  evidence: Week 1 README §1/§2 (eq20 vs eq20_lv split by level hypothesis); one-final-submission clause from Part 2 Rules §2.2b, read 2026-10-25.
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/submission_guardrails.md
+
+- id: R-0506
+  statement: A human reads check_sub and the level reconciliation before submitting and records who and why.
+  applies_to: submission
+  origin: ACTUARY
+  evidence: Competition criterion 3 (human review / escalation protocols); AAC 2026 principle "the agent conducts, the actuary signs".
+  source_cycle: 0
+  approved_by: actuary (HyunSu Kim)
+  status: ACTIVE
+  location: playbooks/submission_guardrails.md
+
+# ---------------------------------------------------------------- harness v2 (cycle 1 promotions)
+
+- id: R-0013
+  statement: Decide unit errors per row on a proportionality ratio between paired amount columns, never on a value threshold alone; same rule for train, test and reference tables.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 1; scorecard A2 (sum-insured ×1000 in train and test decided by premium/sum-insured ratio).
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  amendments: cycle 2 (AGENT_RETRO) — boundary placed in the widest empty log-ratio interval; second column if none
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0014
+  statement: Classify stored÷derived exposure ratios into clusters (day count, 360-day basis, exclusive end, rounding) and report each before repairing all rows from dates.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 2; F-02 (a second exposure convention the answer key missed).
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  amendments: cycle 2 (AGENT_RETRO) — re-run on the residual after the obvious cluster and on test files separately; cycle 3 (AGENT_RETRO) — determine the day-count convention from full-year rows before tabulating ratios
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0015
+  statement: For claims outside every policy period, compare report lags with the matched distribution; extreme lags mark a date defect — exclude with a query, state the share of incurred.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 3; F-07.
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0016
+  statement: Cross-tabulate every attribute's value and nullness against join year; deterministic functions of join year are time stamps — confirm with single-feature AUC and exclude before the multivariate adversarial check.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 4; campaign_code null ⇔ pre-launch cohort (verified).
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0017
+  statement: Write the reconciliation chain (exposure, claims, Σ target, model level) as one ladder table and refuse to proceed while any link is open.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 10; the ladder caught a level drift from a missing intercept.
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  amendments: cycle 3 (AGENT_RETRO) — ladder printed by the pipeline script
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0018
+  statement: Before treating nulls, test whether the null group differs on other covariates; if it does, keep null as its own level, if not treat as MCAR without indicator features.
+  applies_to: data_readiness
+  origin: ACTUARY
+  evidence: Actuary, from cycle 1 F-13 (flood_zone missing not at random) and F-12 (MCAR block).
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0108
+  statement: With fewer than three accident years, build the lag curve with a reverse-time product-limit (truncation-corrected) estimator, anchor at the oldest well-populated age, borrow only beyond the anchor, carry both variants.
+  applies_to: target
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 5; target_notes §3 (borrowed share 2.1% / 0.2% / 0.03%).
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  amendments: cycle 3 (AGENT_RETRO) — spliced and no-tail completion both required as table columns
+  location: playbooks/target_construction_playbook.md
+
+- id: R-0311
+  statement: Put log(Σ target ÷ Σ exposure basis) in the init score of offset-boosted models and check Σ prediction = Σ target on training rows before reading any score.
+  applies_to: modelling
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 6; first baseline level drifted with round count.
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  amendments: cycle 2 (AGENT_RETRO) — level check made a gate: stop and fix/apply explicit factor before reading scores; approved by actuary 2026-10-27; cycle 3 (AGENT_RETRO) — gate precedes capacity choice; leaf-step limit and categorical level-count guard named
+  location: playbooks/modeling_playbook.md
+
+- id: R-0312
+  statement: When volume changes by an order of magnitude, pre-register a small grid of round counts and an adoption rule before scoring; record the result even when the default wins.
+  applies_to: modelling
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 7; 600 rounds over-fit the small lines (motor/contents chose 300).
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  amendments: cycle 2 (AGENT_RETRO + ACTUARY) — pre-registered edge rule; floor ≈100 rounds; secondary check must agree (cycle-2 baseline regressed at 75 rounds)
+  location: playbooks/modeling_playbook.md
+
+- id: R-0410
+  statement: Before modelling a new-business-dominated year, compute the age-standardised new-business excess and first-year persistence in training; compare with the model's new-business relativity afterwards.
+  applies_to: adaptation
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 8; contents new business +30% in data, +3% in model.
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  amendments: cycle 3 (AGENT_RETRO) — identify the acquired book or its training analogue in a pre-registered table
+  location: playbooks/adaptation_playbook.md
+
+- id: R-0411
+  statement: Compare line levels across markets with every claim capped at the same fixed amount; percentile exclusions are not comparable across volumes.
+  applies_to: adaptation
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 9; three cut-offs gave three buildings stories.
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/adaptation_playbook.md
+
+- id: R-0412
+  statement: Every channel, segment or product in the book must have an entry in the expense/commission/loading tables; a gap is a premium-build finding and a team query.
+  applies_to: adaptation
+  origin: ACTUARY
+  evidence: Actuary, from cycle 1 F-19 (comparison-site commission undefined).
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  amendments: cycle 2 (AGENT_RETRO) — the coverage gap is recorded as a findings.json item with team_query
+  location: playbooks/adaptation_playbook.md
+
+- id: R-0507
+  statement: Run the submission level check against raw and cleaned history; the difference documents how much the repairs moved the history.
+  applies_to: submission
+  origin: AGENT_RETRO
+  evidence: Cycle 1 retrospective proposal 11.
+  source_cycle: 1
+  approved_by: actuary (HyunSu Kim), 2026-10-27; generality/implementability review by data scientist pending (gate 2)
+  status: ACTIVE
+  location: playbooks/submission_guardrails.md
+
+# ---------------------------------------------------------------- harness v3 (cycle 2 promotions)
+
+- id: R-0019
+  statement: A feature that separates years is a time stamp only if its meaning changes with the calendar; mix features (new business, tenure, age) are kept and evaluated on the shifted subset.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 2 retrospective proposal 2; new_business scored like a stamp on single-feature AUC.
+  source_cycle: 2
+  approved_by: actuary (HyunSu Kim), 2026-10-27; DS generality review pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0020
+  statement: Audit persistence of every training year (share reappearing next year, end-of-period decisions); complete persistence with no lapses = survivor sample, label it in shift report and validation design.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 2 F-SURVIVOR-2023 (verified: 100% of 2023 policies reappear in 2024; developed 2021 likewise).
+  source_cycle: 2
+  approved_by: actuary (HyunSu Kim), 2026-10-27; DS generality review pending (gate 2)
+  status: ACTIVE
+  amendments: cycle 3 (AGENT_RETRO) — label-does-not-terminate cross-tab added
+  location: playbooks/data_readiness_playbook.md
+
+- id: R-0109
+  statement: Compare the oldest accident year's cost at 12 months vs at the valuation date with the ratio the spliced/borrowed curve implies for those ages.
+  applies_to: target
+  origin: AGENT_RETRO
+  evidence: Cycle 2 retrospective proposal 7; the one direct completion test a two-year market allows.
+  source_cycle: 2
+  approved_by: actuary (HyunSu Kim), 2026-10-27; DS generality review pending (gate 2)
+  status: ACTIVE
+  location: playbooks/target_construction_playbook.md
+
+- id: R-0021
+  statement: After case/whitespace normalisation of free text, test whether a residual prefix/suffix variant occurs at the same rate in every base category; uniform = corruption to strip, non-uniform = attribute to keep as a flag.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 2 retrospective proposal 9; a "Self-employed" prefix attached at the same rate to retired and student records.
+  source_cycle: 2
+  approved_by: actuary (HyunSu Kim), 2026-10-27; DS generality review pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+# ---------------------------------------------------------------- harness v4 (cycle 3 promotions)
+- id: R-0022
+  statement: Prediction-year environmental data (weather, indices) is a calendar stamp by default; test each index alone against the train/test label and exclude or replace with a training-years address summary.
+  applies_to: data_readiness
+  origin: AGENT_RETRO
+  evidence: Cycle 3 retrospective proposal 5; every weather index separated 2024 from 2025 alone; Part 1 found weather hurt out-of-year (R-0302).
+  source_cycle: 3
+  approved_by: actuary (HyunSu Kim), 2026-10-27; DS generality review pending (gate 2)
+  status: ACTIVE
+  location: playbooks/data_readiness_playbook.md
+
+# ---------------------------------------------------------------- backlog (approved 2026-10-27, NOT deployed)
+# The data track stopped at cycle 4; harness-v4 is the final executed state.
+# Cycle-4 proposals approved by the actuary for the next market, kept out of
+# the playbooks so that the final harness is one that was actually run:
+#   B-01 sibling-stability test before imputing time-invariant policy attributes (R-0018)
+#   B-02 ratio bins beyond the named clusters after convention/clusters (R-0014)
+#   B-03 capacity secondary check must come from the same volume (R-0312)
+#   B-04 year-by-year segment relativities before trusting a model's segment effect (R-0410)
+#   B-05 level gate by line with a learner-fix order (R-0311)
+#   B-06 period-end / leap-year sanity line in the profile (new)
+# Full text and decisions: eval/promotion_cycle_4.md

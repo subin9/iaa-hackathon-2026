@@ -1,0 +1,52 @@
+# --- data: CC BY-NC, never redistribute ---
+week2_data/
+week1_data/
+harness/data/
+**/*.parquet
+**/*.csv
+!submissions/log.csv
+!submissions/week1_public_scores.csv
+!eval/**/*.csv
+!runs/**/*.csv
+
+# --- agent scratch (promoted copies live in runs/cycle_N) ---
+harness/work/
+harness/outputs/
+
+# --- archives (a cleaned-data zip was once tracked; never again) ---
+*.zip
+*.7z
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+
+# --- secrets ---
+.env
+kaggle.json
+*.token
+
+# --- reference material (not ours to redistribute) ---
+Reference/
+
+# --- python / editors ---
+__pycache__/
+*.pyc
+.venv*/
+.pytest_cache/
+.ipynb_checkpoints/
+~$*
+
+# week1 record (not data)
+!week1_output/public_scores.csv
+
+# generated control-arm workspace (eval/make_cycle0.py)
+harness_bare/
+
+# agent run artefacts that are large or may contain data rows
+runs/**/baseline/*.csv
+runs/**/*.jsonl
+runs/**/transcript*.txt
+runs/**/affected_ids.json
+runs/hs_model/*.csv
+runs/hs_model/*_tables/

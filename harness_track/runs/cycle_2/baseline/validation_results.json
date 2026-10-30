@@ -1,0 +1,1459 @@
+{
+ "params": {
+  "objective": "tweedie",
+  "tweedie_variance_power": 1.5,
+  "learning_rate": 0.02,
+  "num_leaves": 3,
+  "min_data_in_leaf": 100,
+  "extra_trees": true,
+  "feature_fraction": 0.8,
+  "bagging_fraction": 0.8,
+  "bagging_freq": 1,
+  "lambda_l2": 1.0,
+  "verbose": -1,
+  "num_threads": 6,
+  "max_cat_to_onehot": 4,
+  "cat_smooth": 20,
+  "min_data_per_group": 50
+ },
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "trend_B": {
+  "motor": 1.0428934359082993,
+  "buildings": 1.1258217273035083,
+  "contents": 1.1083865499020435
+ },
+ "cap_mult": {
+  "motor": 1.077459935081697,
+  "buildings": 1.1188067187717168,
+  "contents": 1.0526258937414
+ },
+ "lines": {
+  "motor": {
+   "n_train": 47283,
+   "n_2023": 21680,
+   "n_2024": 25603,
+   "n_test": 90521,
+   "lean_features": [
+    "new_business",
+    "renewal_count",
+    "channel",
+    "payment_method",
+    "voluntary_excess",
+    "occupation",
+    "marital_status",
+    "household_size",
+    "prior_claims_5y",
+    "licence_points",
+    "years_at_address",
+    "region",
+    "urban_density",
+    "driver_age_band",
+    "years_licensed",
+    "ncb_years",
+    "vehicle_value_group",
+    "vehicle_age",
+    "make_model",
+    "engine_size_cc",
+    "body_type",
+    "transmission",
+    "seats",
+    "vehicle_colour",
+    "fuel_type",
+    "driver_assist",
+    "cover_type",
+    "overnight_parking",
+    "vehicle_use",
+    "named_young_driver"
+   ],
+   "primary_fold": {
+    "lean_r300": {
+     "d2_per_seed": [
+      0.05267606073162312,
+      0.05288181368868339,
+      0.055005560042137525
+     ],
+     "d2_mean": 0.05352114482081468,
+     "d2_sd": 0.0012896511085584267,
+     "d2_seed_avg_pred": 0.05380864827195431,
+     "d2_newbusiness_mean": 0.09821942349170854,
+     "level_pred_over_actual": 0.9371753512421336,
+     "n_features": 30
+    },
+    "lean_r600": {
+     "d2_per_seed": [
+      0.041509517786644023,
+      0.04055780383339325,
+      0.0378376400202437
+     ],
+     "d2_mean": 0.039968320546760326,
+     "d2_sd": 0.0019055942621032734,
+     "d2_seed_avg_pred": 0.0402860299878659,
+     "d2_newbusiness_mean": 0.08874910217873178,
+     "level_pred_over_actual": 0.9346386526994923,
+     "n_features": 30
+    },
+    "lean_r1200": {
+     "d2_per_seed": [
+      0.02787606068736903,
+      0.02860521733394983,
+      0.029681254149622416
+     ],
+     "d2_mean": 0.028720844056980426,
+     "d2_sd": 0.0009081343586439654,
+     "d2_seed_avg_pred": 0.02917087797946627,
+     "d2_newbusiness_mean": 0.078390565691097,
+     "level_pred_over_actual": 0.9322401502009078,
+     "n_features": 30
+    },
+    "null_model": {
+     "d2_mean": 0.04987064113102013,
+     "level_pred_over_actual": 0.9577042772170591,
+     "note": "2023 level x exposure x completion, no features"
+    },
+    "lean_r150": {
+     "d2_per_seed": [
+      0.058991524294039976,
+      0.06265280627863135,
+      0.061481468529075656
+     ],
+     "d2_mean": 0.06104193303391566,
+     "d2_sd": 0.0018697967887721077,
+     "d2_seed_avg_pred": 0.0612864006680619,
+     "d2_newbusiness_mean": 0.0998529309359825,
+     "level_pred_over_actual": 0.9388357060728337,
+     "n_features": 30
+    },
+    "lean_r75": {
+     "d2_per_seed": [
+      0.063074129449325,
+      0.06382475387954778,
+      0.0628836777105557
+     ],
+     "d2_mean": 0.06326085367980949,
+     "d2_sd": 0.000497549537884142,
+     "d2_seed_avg_pred": 0.06341656646436766,
+     "d2_newbusiness_mean": 0.09800092361134922,
+     "level_pred_over_actual": 0.9427173545951998,
+     "n_features": 30
+    },
+    "lean_r50": {
+     "d2_per_seed": [
+      0.06173830917698864,
+      0.06319783379641553,
+      0.0619009430771289
+     ],
+     "d2_mean": 0.06227902868351102,
+     "d2_sd": 0.000799852844586617,
+     "d2_seed_avg_pred": 0.062370673051080905,
+     "d2_newbusiness_mean": 0.09603901298796924,
+     "level_pred_over_actual": 0.9455074418090502,
+     "n_features": 30
+    },
+    "lean+weather_r75": {
+     "d2_per_seed": [
+      0.06148350764990684,
+      0.06334364175980256,
+      0.06354960911225838
+     ],
+     "d2_mean": 0.06279225284065593,
+     "d2_sd": 0.001138075620642607,
+     "d2_seed_avg_pred": 0.0629476538825704,
+     "d2_newbusiness_mean": 0.09723131399346752,
+     "level_pred_over_actual": 0.94316679019121,
+     "n_features": 37
+    },
+    "lean+marketing_r75": {
+     "d2_per_seed": [
+      0.0643133089521225,
+      0.06281985585745531,
+      0.06462987847847113
+     ],
+     "d2_mean": 0.06392101442934965,
+     "d2_sd": 0.0009666781866761194,
+     "d2_seed_avg_pred": 0.06406726171271904,
+     "d2_newbusiness_mean": 0.09576403296809373,
+     "level_pred_over_actual": 0.9467615559070458,
+     "n_features": 36
+    },
+    "lean+premium_r75": {
+     "d2_per_seed": [
+      0.06515352035312871,
+      0.06339370505681596,
+      0.06501724975586898
+     ],
+     "d2_mean": 0.06452149172193788,
+     "d2_sd": 0.000979065621109995,
+     "d2_seed_avg_pred": 0.06467615890279332,
+     "d2_newbusiness_mean": 0.09707410295543224,
+     "level_pred_over_actual": 0.9472284778865946,
+     "n_features": 31
+    },
+    "lean+behaviour_r75": {
+     "d2_per_seed": [
+      0.0626166866842418,
+      0.0625565281823145,
+      0.06256658614050714
+     ],
+     "d2_mean": 0.06257993366902115,
+     "d2_sd": 3.222388441216721e-05,
+     "d2_seed_avg_pred": 0.06275492688718953,
+     "d2_newbusiness_mean": 0.09715323005148195,
+     "level_pred_over_actual": 0.941780123378959,
+     "n_features": 32
+    },
+    "lean+gender_r75": {
+     "d2_per_seed": [
+      0.06418650540651982,
+      0.062225251539856696,
+      0.06319680156704066
+     ],
+     "d2_mean": 0.06320285283780573,
+     "d2_sd": 0.0009806409362165492,
+     "d2_seed_avg_pred": 0.06334759206683205,
+     "d2_newbusiness_mean": 0.09657215204482043,
+     "level_pred_over_actual": 0.9437997071072111,
+     "n_features": 31
+    },
+    "chosen": {
+     "d2_seed_avg_pred": 0.06583978244562505,
+     "d2_newbusiness": 0.09648434566144715,
+     "d2_renewal": 0.05704309205511082,
+     "level_pred_over_actual": 0.9491316036790738,
+     "level_nb": 0.8297072395255388,
+     "level_renewal": 0.9629025193580771
+    }
+   },
+   "secondary_fold": {
+    "lean_r50": {
+     "d2_per_seed": [
+      0.04271912747860518,
+      0.04287930448934407
+     ],
+     "d2_mean": 0.042799215983974626
+    },
+    "lean_r75": {
+     "d2_per_seed": [
+      0.04508571544687501,
+      0.04560822562540734
+     ],
+     "d2_mean": 0.04534697053614117
+    },
+    "lean_r150": {
+     "d2_per_seed": [
+      0.04498721192440125,
+      0.04693421904988937
+     ],
+     "d2_mean": 0.04596071548714531
+    },
+    "lean_r300": {
+     "d2_per_seed": [
+      0.039109501094977794,
+      0.03990608736761925
+     ],
+     "d2_mean": 0.03950779423129852
+    },
+    "lean_r600": {
+     "d2_per_seed": [
+      0.02646405576452293,
+      0.029357054251613612
+     ],
+     "d2_mean": 0.027910555008068272
+    },
+    "lean_r1200": {
+     "d2_per_seed": [
+      0.019722495998757417,
+      0.02026175714330236
+     ],
+     "d2_mean": 0.01999212657102989
+    },
+    "lean+weather_r75": {
+     "d2_per_seed": [
+      0.044546211489254195,
+      0.04468580252592613
+     ],
+     "d2_mean": 0.044616007007590164
+    },
+    "lean+marketing_r75": {
+     "d2_per_seed": [
+      0.04589704237545256,
+      0.04543542870517869
+     ],
+     "d2_mean": 0.045666235540315625
+    },
+    "lean+premium_r75": {
+     "d2_per_seed": [
+      0.047350816444882704,
+      0.047299414776988735
+     ],
+     "d2_mean": 0.04732511561093572
+    },
+    "lean+behaviour_r75": {
+     "d2_per_seed": [
+      0.04494919200297731,
+      0.0444049186163491
+     ],
+     "d2_mean": 0.044677055309663205
+    },
+    "lean+gender_r75": {
+     "d2_per_seed": [
+      0.045937764354017974,
+      0.04609949822790027
+     ],
+     "d2_mean": 0.04601863129095912
+    }
+   },
+   "round_grid_tested": [
+    50,
+    75,
+    150,
+    300,
+    600,
+    1200
+   ],
+   "adoption": {
+    "lean_r50": {
+     "gain_primary": 0.022310708136750693,
+     "gain_secondary": 0.014888660975906354,
+     "noise_floor": 0.0019055942621032734,
+     "adopt": true
+    },
+    "lean_r75": {
+     "gain_primary": 0.023292533133049166,
+     "gain_secondary": 0.0174364155280729,
+     "noise_floor": 0.0019055942621032734,
+     "adopt": true
+    },
+    "lean_r150": {
+     "gain_primary": 0.021073612487155335,
+     "gain_secondary": 0.018050160479077038,
+     "noise_floor": 0.0019055942621032734,
+     "adopt": true
+    },
+    "lean_r300": {
+     "gain_primary": 0.013552824274054354,
+     "gain_secondary": 0.011597239223230249,
+     "noise_floor": 0.0019055942621032734,
+     "adopt": true
+    },
+    "lean_r1200": {
+     "gain_primary": -0.0112474764897799,
+     "gain_secondary": -0.007918428437038383,
+     "noise_floor": 0.0019055942621032734,
+     "adopt": false
+    },
+    "lean+weather_r75": {
+     "gain_primary": -0.00046860083915356565,
+     "gain_secondary": -0.0007309635285510097,
+     "noise_floor": 0.000497549537884142,
+     "adopt": false
+    },
+    "lean+marketing_r75": {
+     "gain_primary": 0.000660160749540159,
+     "gain_secondary": 0.0003192650041744516,
+     "noise_floor": 0.000497549537884142,
+     "adopt": true
+    },
+    "lean+premium_r75": {
+     "gain_primary": 0.0012606380421283925,
+     "gain_secondary": 0.001978145074794546,
+     "noise_floor": 0.000497549537884142,
+     "adopt": true
+    },
+    "lean+behaviour_r75": {
+     "gain_primary": -0.000680920010788344,
+     "gain_secondary": -0.0006699152264779684,
+     "noise_floor": 0.000497549537884142,
+     "adopt": false
+    },
+    "lean+gender_r75": {
+     "gain_primary": -5.800084200376088e-05,
+     "gain_secondary": 0.0006716607548179487,
+     "noise_floor": 0.000497549537884142,
+     "adopt": false
+    }
+   },
+   "chosen": {
+    "features": [
+     "new_business",
+     "renewal_count",
+     "channel",
+     "payment_method",
+     "voluntary_excess",
+     "occupation",
+     "marital_status",
+     "household_size",
+     "prior_claims_5y",
+     "licence_points",
+     "years_at_address",
+     "region",
+     "urban_density",
+     "driver_age_band",
+     "years_licensed",
+     "ncb_years",
+     "vehicle_value_group",
+     "vehicle_age",
+     "make_model",
+     "engine_size_cc",
+     "body_type",
+     "transmission",
+     "seats",
+     "vehicle_colour",
+     "fuel_type",
+     "driver_assist",
+     "cover_type",
+     "overnight_parking",
+     "vehicle_use",
+     "named_young_driver",
+     "email_domain",
+     "marketing_consent",
+     "document_preference",
+     "previous_insurer",
+     "branch_id",
+     "marketing_segment",
+     "written_premium"
+    ],
+    "rounds": 75
+   },
+   "mix_diagnostic_2023_model": {
+    "pred_ultimate_rate_2023_rows": 441.558691433575,
+    "pred_ultimate_rate_2024_rows": 440.16241347737133,
+    "observed_completed_rate_2023": 443.23938958000224,
+    "observed_completed_rate_2024": 462.81446175429807,
+    "level_factor_mean": 1.0492047280015864,
+    "level_factor_min": 1.0288849598539114,
+    "level_factor_max": 1.0851652853438485
+   },
+   "deviance_decomposition_2024": {
+    "zero_rows": {
+     "n": 22539,
+     "share_dev": 0.5965533008078067
+    },
+    "ordinary_claims": {
+     "n": 3033,
+     "share_dev": 0.3217148481389264
+    },
+    "top1pct_claims": {
+     "n": 31,
+     "share_dev": 0.08173185105326673
+    }
+   },
+   "holdout_2024": {
+    "d2_A": 0.06583978244562505,
+    "d2_B_devtrend": 0.06609728595387887,
+    "level_A": 0.9491316036790738,
+    "level_B": 0.9692736389701503
+   },
+   "top_gain_features_seed1": [
+    [
+     "make_model",
+     1978831.5068359375
+    ],
+    [
+     "written_premium",
+     838569.703125
+    ],
+    [
+     "marketing_segment",
+     571305.5029296875
+    ],
+    [
+     "ncb_years",
+     366194.3037109375
+    ],
+    [
+     "driver_age_band",
+     312481.197265625
+    ],
+    [
+     "previous_insurer",
+     47384.849609375
+    ],
+    [
+     "cover_type",
+     46420.6005859375
+    ],
+    [
+     "years_licensed",
+     20223.69921875
+    ],
+    [
+     "new_business",
+     7671.669921875
+    ],
+    [
+     "renewal_count",
+     0.0
+    ],
+    [
+     "channel",
+     0.0
+    ],
+    [
+     "payment_method",
+     0.0
+    ],
+    [
+     "voluntary_excess",
+     0.0
+    ],
+    [
+     "occupation",
+     0.0
+    ],
+    [
+     "marital_status",
+     0.0
+    ]
+   ],
+   "train_level_check_sum_pred_over_sum_y": 1.0,
+   "test_level": {
+    "exposure": 79007.0082191781,
+    "pred_A_per_exposure_year": 477.3078446795316,
+    "pred_B_per_exposure_year": 497.7812181238216,
+    "pred_A_newbusiness_per_ey": 484.7126535493981,
+    "pred_A_renewal_per_ey": 452.7233441972399,
+    "history_burn_completed_2023": 443.2393895800021,
+    "history_burn_completed_2024": 462.81446175429807,
+    "history_burn_raw_2023": 432.7046601170045,
+    "history_burn_raw_2024": 382.6660025069607,
+    "max_pred_A": 872.8368781152474
+   }
+  },
+  "buildings": {
+   "n_train": 27447,
+   "n_2023": 12580,
+   "n_2024": 14867,
+   "n_test": 52295,
+   "lean_features": [
+    "new_business",
+    "renewal_count",
+    "channel",
+    "payment_method",
+    "voluntary_excess",
+    "occupation",
+    "marital_status",
+    "household_size",
+    "prior_claims_5y",
+    "licence_points",
+    "years_at_address",
+    "region",
+    "urban_density",
+    "policyholder_age_band",
+    "sum_insured",
+    "construction_type",
+    "occupancy",
+    "days_unoccupied",
+    "smoke_alarms",
+    "accidental_damage_cover",
+    "mortgage",
+    "flood_zone",
+    "distance_to_river_km",
+    "elevation_m",
+    "soil_type",
+    "year_built",
+    "property_type",
+    "roof_type",
+    "basement",
+    "trees_within_5m",
+    "listed_building",
+    "bedrooms",
+    "energy_rating",
+    "solar_panels"
+   ],
+   "primary_fold": {
+    "lean_r300": {
+     "d2_per_seed": [
+      0.03770039130872915,
+      0.0350936642062184,
+      0.02997949430731428
+     ],
+     "d2_mean": 0.03425784994075395,
+     "d2_sd": 0.0039277222077661895,
+     "d2_seed_avg_pred": 0.03472433251212603,
+     "d2_newbusiness_mean": 0.018249125083429168,
+     "level_pred_over_actual": 1.5594676863039598,
+     "n_features": 34
+    },
+    "lean_r600": {
+     "d2_per_seed": [
+      0.03199015285806517,
+      0.03246920298329936,
+      0.02800372946276586
+     ],
+     "d2_mean": 0.03082102843471013,
+     "d2_sd": 0.0024515816075771184,
+     "d2_seed_avg_pred": 0.03185614565253603,
+     "d2_newbusiness_mean": -0.011278527760236337,
+     "level_pred_over_actual": 1.571611104433422,
+     "n_features": 34
+    },
+    "lean_r1200": {
+     "d2_per_seed": [
+      0.023550903152145364,
+      0.017706171202565013,
+      0.014156716445073658
+     ],
+     "d2_mean": 0.01847126359992801,
+     "d2_sd": 0.004743596816152031,
+     "d2_seed_avg_pred": 0.020196060575417563,
+     "d2_newbusiness_mean": -0.04695851028156054,
+     "level_pred_over_actual": 1.587821782771739,
+     "n_features": 34
+    },
+    "null_model": {
+     "d2_mean": -0.01948872923266176,
+     "level_pred_over_actual": 1.585517005534694,
+     "note": "2023 level x exposure x completion, no features"
+    },
+    "lean_r150": {
+     "d2_per_seed": [
+      0.027478956605009652,
+      0.028797852724880002,
+      0.025975655476599302
+     ],
+     "d2_mean": 0.027417488268829653,
+     "d2_sd": 0.001412102366797585,
+     "d2_seed_avg_pred": 0.027567672735957283,
+     "d2_newbusiness_mean": 0.0338342857555853,
+     "level_pred_over_actual": 1.5488374641797074,
+     "n_features": 34
+    },
+    "lean+weather_r300": {
+     "d2_per_seed": [
+      0.02930377274391982,
+      0.03272067229174869,
+      0.029966999755070445
+     ],
+     "d2_mean": 0.03066381493024632,
+     "d2_sd": 0.0018118951877122516,
+     "d2_seed_avg_pred": 0.031119698257100703,
+     "d2_newbusiness_mean": 0.01784341420619166,
+     "level_pred_over_actual": 1.5606299220841369,
+     "n_features": 41
+    },
+    "lean+marketing_r300": {
+     "d2_per_seed": [
+      0.010421145497169992,
+      0.006929105070709873,
+      0.006774341373757098
+     ],
+     "d2_mean": 0.008041530647212322,
+     "d2_sd": 0.0020622592165093906,
+     "d2_seed_avg_pred": 0.0085108557074548,
+     "d2_newbusiness_mean": -0.058939224253507616,
+     "level_pred_over_actual": 1.5466909617743139,
+     "n_features": 40
+    },
+    "lean+premium_r300": {
+     "d2_per_seed": [
+      0.03838682739028121,
+      0.03324751662752179,
+      0.03178659912459192
+     ],
+     "d2_mean": 0.03447364771413164,
+     "d2_sd": 0.0034667421840921847,
+     "d2_seed_avg_pred": 0.035032016112230724,
+     "d2_newbusiness_mean": 0.010497267248655925,
+     "level_pred_over_actual": 1.5816638302083408,
+     "n_features": 35
+    },
+    "lean+behaviour_r300": {
+     "d2_per_seed": [
+      0.03912058910771665,
+      0.033143894459246814,
+      0.032761349244469606
+     ],
+     "d2_mean": 0.03500861093714436,
+     "d2_sd": 0.0035662106733596855,
+     "d2_seed_avg_pred": 0.03543532338175148,
+     "d2_newbusiness_mean": 0.019758029051328767,
+     "level_pred_over_actual": 1.5613852060966147,
+     "n_features": 36
+    },
+    "lean+gender_r300": {
+     "d2_per_seed": [
+      0.03502269748495024,
+      0.03685685737771416,
+      0.026185694459164854
+     ],
+     "d2_mean": 0.03268841644060975,
+     "d2_sd": 0.005705705960179767,
+     "d2_seed_avg_pred": 0.03340112146155694,
+     "d2_newbusiness_mean": 0.01985601551663474,
+     "level_pred_over_actual": 1.5601716722307015,
+     "n_features": 35
+    },
+    "chosen": {
+     "d2_seed_avg_pred": 0.03472433251212603,
+     "d2_newbusiness": 0.018425507631855464,
+     "d2_renewal": 0.025012271540685638,
+     "level_pred_over_actual": 1.5594676863039598,
+     "level_nb": 2.026727207543319,
+     "level_renewal": 1.5246951488357583
+    }
+   },
+   "secondary_fold": {
+    "lean_r150": {
+     "d2_per_seed": [
+      0.0605044132426058,
+      0.061164001858545314
+     ],
+     "d2_mean": 0.06083420755057556
+    },
+    "lean_r300": {
+     "d2_per_seed": [
+      0.057349043459095195,
+      0.06037655829879818
+     ],
+     "d2_mean": 0.058862800878946686
+    },
+    "lean_r600": {
+     "d2_per_seed": [
+      0.0448954423279162,
+      0.04296438813482162
+     ],
+     "d2_mean": 0.04392991523136891
+    },
+    "lean_r1200": {
+     "d2_per_seed": [
+      0.022426455104179954,
+      0.02359147715833676
+     ],
+     "d2_mean": 0.023008966131258357
+    },
+    "lean+weather_r300": {
+     "d2_per_seed": [
+      0.0580095637560587,
+      0.056866846033782226
+     ],
+     "d2_mean": 0.057438204894920464
+    },
+    "lean+marketing_r300": {
+     "d2_per_seed": [
+      0.034536614002729116,
+      0.038068827762851365
+     ],
+     "d2_mean": 0.03630272088279024
+    },
+    "lean+premium_r300": {
+     "d2_per_seed": [
+      0.060282004614730766,
+      0.06235790645165995
+     ],
+     "d2_mean": 0.06131995553319536
+    },
+    "lean+behaviour_r300": {
+     "d2_per_seed": [
+      0.05698696978728557,
+      0.06318178984476042
+     ],
+     "d2_mean": 0.06008437981602299
+    },
+    "lean+gender_r300": {
+     "d2_per_seed": [
+      0.058518412804280606,
+      0.060573388263424954
+     ],
+     "d2_mean": 0.05954590053385278
+    }
+   },
+   "round_grid_tested": [
+    150,
+    300,
+    600,
+    1200
+   ],
+   "adoption": {
+    "lean_r150": {
+     "gain_primary": -0.003403540165880476,
+     "gain_secondary": 0.01690429231920665,
+     "noise_floor": 0.0024515816075771184,
+     "adopt": false
+    },
+    "lean_r300": {
+     "gain_primary": 0.0034368215060438176,
+     "gain_secondary": 0.014932885647577776,
+     "noise_floor": 0.0024515816075771184,
+     "adopt": true
+    },
+    "lean_r1200": {
+     "gain_primary": -0.012349764834782118,
+     "gain_secondary": -0.020920949100110553,
+     "noise_floor": 0.0024515816075771184,
+     "adopt": false
+    },
+    "lean+weather_r300": {
+     "gain_primary": -0.0035940350105076284,
+     "gain_secondary": -0.0014245959840262223,
+     "noise_floor": 0.0039277222077661895,
+     "adopt": false
+    },
+    "lean+marketing_r300": {
+     "gain_primary": -0.026216319293541623,
+     "gain_secondary": -0.022560079996156446,
+     "noise_floor": 0.0039277222077661895,
+     "adopt": false
+    },
+    "lean+premium_r300": {
+     "gain_primary": 0.00021579777337769196,
+     "gain_secondary": 0.002457154654248672,
+     "noise_floor": 0.0039277222077661895,
+     "adopt": false
+    },
+    "lean+behaviour_r300": {
+     "gain_primary": 0.0007507609963904108,
+     "gain_secondary": 0.0012215789370763064,
+     "noise_floor": 0.0039277222077661895,
+     "adopt": false
+    },
+    "lean+gender_r300": {
+     "gain_primary": -0.001569433500144199,
+     "gain_secondary": 0.0006830996549060941,
+     "noise_floor": 0.0039277222077661895,
+     "adopt": false
+    }
+   },
+   "chosen": {
+    "features": [
+     "new_business",
+     "renewal_count",
+     "channel",
+     "payment_method",
+     "voluntary_excess",
+     "occupation",
+     "marital_status",
+     "household_size",
+     "prior_claims_5y",
+     "licence_points",
+     "years_at_address",
+     "region",
+     "urban_density",
+     "policyholder_age_band",
+     "sum_insured",
+     "construction_type",
+     "occupancy",
+     "days_unoccupied",
+     "smoke_alarms",
+     "accidental_damage_cover",
+     "mortgage",
+     "flood_zone",
+     "distance_to_river_km",
+     "elevation_m",
+     "soil_type",
+     "year_built",
+     "property_type",
+     "roof_type",
+     "basement",
+     "trees_within_5m",
+     "listed_building",
+     "bedrooms",
+     "energy_rating",
+     "solar_panels"
+    ],
+    "rounds": 300
+   },
+   "mix_diagnostic_2023_model": {
+    "pred_ultimate_rate_2023_rows": 500.845193909655,
+    "pred_ultimate_rate_2024_rows": 507.42006934873496,
+    "observed_completed_rate_2023": 515.848299509081,
+    "observed_completed_rate_2024": 325.35021555011207,
+    "level_factor_mean": 1.1468408029057569,
+    "level_factor_min": 1.0288849598539114,
+    "level_factor_max": 1.5727329017143172
+   },
+   "deviance_decomposition_2024": {
+    "zero_rows": {
+     "n": 14353,
+     "share_dev": 0.6657558150563421
+    },
+    "ordinary_claims": {
+     "n": 508,
+     "share_dev": 0.24575875097749833
+    },
+    "top1pct_claims": {
+     "n": 6,
+     "share_dev": 0.0884854339661596
+    }
+   },
+   "holdout_2024": {
+    "d2_A": 0.03472433251212603,
+    "d2_B_devtrend": 0.027810715506385697,
+    "level_A": 1.5594676863039598,
+    "level_B": 1.6546692384773054
+   },
+   "top_gain_features_seed1": [
+    [
+     "occupation",
+     3491204.7758789062
+    ],
+    [
+     "flood_zone",
+     2808454.8266601562
+    ],
+    [
+     "energy_rating",
+     997996.6245117188
+    ],
+    [
+     "construction_type",
+     747702.7397460938
+    ],
+    [
+     "year_built",
+     606063.857421875
+    ],
+    [
+     "elevation_m",
+     515487.4912109375
+    ],
+    [
+     "policyholder_age_band",
+     467925.3271484375
+    ],
+    [
+     "distance_to_river_km",
+     460908.08984375
+    ],
+    [
+     "sum_insured",
+     321317.14794921875
+    ],
+    [
+     "soil_type",
+     315498.552734375
+    ],
+    [
+     "payment_method",
+     306147.64013671875
+    ],
+    [
+     "prior_claims_5y",
+     254969.2412109375
+    ],
+    [
+     "region",
+     208675.80859375
+    ],
+    [
+     "urban_density",
+     183848.380859375
+    ],
+    [
+     "trees_within_5m",
+     141097.8994140625
+    ]
+   ],
+   "train_level_check_sum_pred_over_sum_y": 0.9999999999999998,
+   "test_level": {
+    "exposure": 47376.38356164384,
+    "pred_A_per_exposure_year": 423.3629044644052,
+    "pred_B_per_exposure_year": 476.6311563803468,
+    "pred_A_newbusiness_per_ey": 423.51845166063674,
+    "pred_A_renewal_per_ey": 422.84909859815394,
+    "history_burn_completed_2023": 515.848299509081,
+    "history_burn_completed_2024": 325.35021555011207,
+    "history_burn_raw_2023": 514.2802524362875,
+    "history_burn_raw_2024": 306.732335043628,
+    "max_pred_A": 5797.3467862313255
+   }
+  },
+  "contents": {
+   "n_train": 34566,
+   "n_2023": 15834,
+   "n_2024": 18732,
+   "n_test": 66247,
+   "lean_features": [
+    "new_business",
+    "renewal_count",
+    "channel",
+    "payment_method",
+    "voluntary_excess",
+    "occupation",
+    "marital_status",
+    "household_size",
+    "prior_claims_5y",
+    "licence_points",
+    "years_at_address",
+    "region",
+    "urban_density",
+    "policyholder_age_band",
+    "sum_insured",
+    "tenure",
+    "security_level",
+    "high_value_items",
+    "accidental_damage_cover",
+    "works_from_home",
+    "lodgers",
+    "bicycle_cover",
+    "flood_zone",
+    "distance_to_river_km",
+    "elevation_m",
+    "soil_type",
+    "year_built",
+    "property_type",
+    "roof_type",
+    "basement",
+    "trees_within_5m",
+    "listed_building",
+    "bedrooms",
+    "energy_rating",
+    "solar_panels"
+   ],
+   "primary_fold": {
+    "lean_r300": {
+     "d2_per_seed": [
+      0.04883264040201096,
+      0.05513629073494741,
+      0.04723133260891299
+     ],
+     "d2_mean": 0.05040008791529046,
+     "d2_sd": 0.004179085967499827,
+     "d2_seed_avg_pred": 0.05094196648581406,
+     "d2_newbusiness_mean": 0.07033983774910846,
+     "level_pred_over_actual": 1.0397525686027485,
+     "n_features": 35
+    },
+    "lean_r600": {
+     "d2_per_seed": [
+      0.025110872585707766,
+      0.029646204320292524,
+      0.0170018961702304
+     ],
+     "d2_mean": 0.023919657692076896,
+     "d2_sd": 0.00640576902803542,
+     "d2_seed_avg_pred": 0.024849980691610707,
+     "d2_newbusiness_mean": 0.012336263469362415,
+     "level_pred_over_actual": 1.0403421508520985,
+     "n_features": 35
+    },
+    "lean_r1200": {
+     "d2_per_seed": [
+      -0.004377373206308821,
+      0.001485330137246832,
+      -0.0025290803833535325
+     ],
+     "d2_mean": -0.0018070411508051738,
+     "d2_sd": 0.0029973034737308343,
+     "d2_seed_avg_pred": -0.00018343659662800604,
+     "d2_newbusiness_mean": -0.06052434444530497,
+     "level_pred_over_actual": 1.03693671165916,
+     "n_features": 35
+    },
+    "null_model": {
+     "d2_mean": 0.045507598317481746,
+     "level_pred_over_actual": 1.0206945120430808,
+     "note": "2023 level x exposure x completion, no features"
+    },
+    "lean_r150": {
+     "d2_per_seed": [
+      0.06113219685738369,
+      0.06531027607775308,
+      0.059921149557323194
+     ],
+     "d2_mean": 0.062121207497486654,
+     "d2_sd": 0.002827415374149657,
+     "d2_seed_avg_pred": 0.0625223739373647,
+     "d2_newbusiness_mean": 0.10303400231033759,
+     "level_pred_over_actual": 1.0372463417146482,
+     "n_features": 35
+    },
+    "lean_r75": {
+     "d2_per_seed": [
+      0.0625975974423515,
+      0.06304452038842401,
+      0.06321525372227499
+     ],
+     "d2_mean": 0.06295245718435016,
+     "d2_sd": 0.0003189538292456912,
+     "d2_seed_avg_pred": 0.06319019882966759,
+     "d2_newbusiness_mean": 0.11923647895015337,
+     "level_pred_over_actual": 1.0353880184152282,
+     "n_features": 35
+    },
+    "lean_r50": {
+     "d2_per_seed": [
+      0.05808445696810871,
+      0.060291522897380156,
+      0.06111642842622311
+     ],
+     "d2_mean": 0.05983080276390399,
+     "d2_sd": 0.00156761283860136,
+     "d2_seed_avg_pred": 0.06005962134332954,
+     "d2_newbusiness_mean": 0.12194406861159472,
+     "level_pred_over_actual": 1.0342127960811205,
+     "n_features": 35
+    },
+    "lean+weather_r300": {
+     "d2_per_seed": [
+      0.050415029241464016,
+      0.046794507191426304,
+      0.05003571588046285
+     ],
+     "d2_mean": 0.049081750771117726,
+     "d2_sd": 0.0019898698578269414,
+     "d2_seed_avg_pred": 0.04961785488062742,
+     "d2_newbusiness_mean": 0.06755965736939713,
+     "level_pred_over_actual": 1.0428225515834846,
+     "n_features": 42
+    },
+    "lean+marketing_r300": {
+     "d2_per_seed": [
+      0.03681673674197217,
+      0.03385959367750524,
+      0.02627565693393452
+     ],
+     "d2_mean": 0.032317329117803974,
+     "d2_sd": 0.005437143170722805,
+     "d2_seed_avg_pred": 0.03330540662620107,
+     "d2_newbusiness_mean": 0.09466661795440993,
+     "level_pred_over_actual": 1.041612245615142,
+     "n_features": 41
+    },
+    "lean+premium_r300": {
+     "d2_per_seed": [
+      0.053367104201654025,
+      0.04480547878187047,
+      0.04946623408151518
+     ],
+     "d2_mean": 0.04921293902167989,
+     "d2_sd": 0.0042864293121050905,
+     "d2_seed_avg_pred": 0.0498291747845695,
+     "d2_newbusiness_mean": 0.06869659097068474,
+     "level_pred_over_actual": 1.0646112753244692,
+     "n_features": 36
+    },
+    "lean+behaviour_r300": {
+     "d2_per_seed": [
+      0.0468764826629019,
+      0.053637917542286306,
+      0.05000570353810607
+     ],
+     "d2_mean": 0.05017336791443142,
+     "d2_sd": 0.0033838342031422644,
+     "d2_seed_avg_pred": 0.05070477275022556,
+     "d2_newbusiness_mean": 0.06932522956150604,
+     "level_pred_over_actual": 1.0395084183088876,
+     "n_features": 37
+    },
+    "lean+gender_r300": {
+     "d2_per_seed": [
+      0.054624754672478515,
+      0.048672796164725196,
+      0.05180191721822025
+     ],
+     "d2_mean": 0.05169982268514132,
+     "d2_sd": 0.0029772923923873738,
+     "d2_seed_avg_pred": 0.052143404185109876,
+     "d2_newbusiness_mean": 0.07506644522295443,
+     "level_pred_over_actual": 1.0399800847635352,
+     "n_features": 36
+    },
+    "chosen": {
+     "d2_seed_avg_pred": 0.05094196648581406,
+     "d2_newbusiness": 0.07107371433510523,
+     "d2_renewal": 0.04684749419204759,
+     "level_pred_over_actual": 1.0397525686027485,
+     "level_nb": 0.6988995286728784,
+     "level_renewal": 1.0902911703196838
+    }
+   },
+   "secondary_fold": {
+    "lean_r50": {
+     "d2_per_seed": [
+      0.05731407441802405,
+      0.0564605837151847
+     ],
+     "d2_mean": 0.056887329066604375
+    },
+    "lean_r75": {
+     "d2_per_seed": [
+      0.0626970621455244,
+      0.06149029781160831
+     ],
+     "d2_mean": 0.06209367997856635
+    },
+    "lean_r150": {
+     "d2_per_seed": [
+      0.07214619073809803,
+      0.07130224266602547
+     ],
+     "d2_mean": 0.07172421670206175
+    },
+    "lean_r300": {
+     "d2_per_seed": [
+      0.07672898677278306,
+      0.0758428957444407
+     ],
+     "d2_mean": 0.07628594125861188
+    },
+    "lean_r600": {
+     "d2_per_seed": [
+      0.07546875253713303,
+      0.07319095911100348
+     ],
+     "d2_mean": 0.07432985582406826
+    },
+    "lean_r1200": {
+     "d2_per_seed": [
+      0.061650853542244644,
+      0.0619742830240001
+     ],
+     "d2_mean": 0.06181256828312237
+    },
+    "lean+weather_r300": {
+     "d2_per_seed": [
+      0.07669088008176128,
+      0.07463282244105707
+     ],
+     "d2_mean": 0.07566185126140917
+    },
+    "lean+marketing_r300": {
+     "d2_per_seed": [
+      0.06261479962605943,
+      0.06547092781409536
+     ],
+     "d2_mean": 0.06404286372007739
+    },
+    "lean+premium_r300": {
+     "d2_per_seed": [
+      0.07798813560088769,
+      0.0777247696993707
+     ],
+     "d2_mean": 0.0778564526501292
+    },
+    "lean+behaviour_r300": {
+     "d2_per_seed": [
+      0.07470962612617071,
+      0.07427949822033686
+     ],
+     "d2_mean": 0.07449456217325379
+    },
+    "lean+gender_r300": {
+     "d2_per_seed": [
+      0.07832552555450223,
+      0.076990590220263
+     ],
+     "d2_mean": 0.07765805788738261
+    }
+   },
+   "round_grid_tested": [
+    50,
+    75,
+    150,
+    300,
+    600,
+    1200
+   ],
+   "adoption": {
+    "lean_r50": {
+     "gain_primary": 0.03591114507182709,
+     "gain_secondary": -0.017442526757463883,
+     "noise_floor": 0.00640576902803542,
+     "adopt": false
+    },
+    "lean_r75": {
+     "gain_primary": 0.03903279949227327,
+     "gain_secondary": -0.012236175845501907,
+     "noise_floor": 0.00640576902803542,
+     "adopt": false
+    },
+    "lean_r150": {
+     "gain_primary": 0.038201549805409754,
+     "gain_secondary": -0.002605639122006509,
+     "noise_floor": 0.00640576902803542,
+     "adopt": false
+    },
+    "lean_r300": {
+     "gain_primary": 0.02648043022321356,
+     "gain_secondary": 0.0019560854345436196,
+     "noise_floor": 0.00640576902803542,
+     "adopt": true
+    },
+    "lean_r1200": {
+     "gain_primary": -0.02572669884288207,
+     "gain_secondary": -0.012517287540945887,
+     "noise_floor": 0.00640576902803542,
+     "adopt": false
+    },
+    "lean+weather_r300": {
+     "gain_primary": -0.001318337144172732,
+     "gain_secondary": -0.0006240899972027036,
+     "noise_floor": 0.004179085967499827,
+     "adopt": false
+    },
+    "lean+marketing_r300": {
+     "gain_primary": -0.018082758797486484,
+     "gain_secondary": -0.012243077538534486,
+     "noise_floor": 0.004179085967499827,
+     "adopt": false
+    },
+    "lean+premium_r300": {
+     "gain_primary": -0.0011871488936105665,
+     "gain_secondary": 0.0015705113915173152,
+     "noise_floor": 0.004179085967499827,
+     "adopt": false
+    },
+    "lean+behaviour_r300": {
+     "gain_primary": -0.00022672000085903476,
+     "gain_secondary": -0.0017913790853580913,
+     "noise_floor": 0.004179085967499827,
+     "adopt": false
+    },
+    "lean+gender_r300": {
+     "gain_primary": 0.0012997347698508604,
+     "gain_secondary": 0.0013721166287707365,
+     "noise_floor": 0.004179085967499827,
+     "adopt": false
+    }
+   },
+   "chosen": {
+    "features": [
+     "new_business",
+     "renewal_count",
+     "channel",
+     "payment_method",
+     "voluntary_excess",
+     "occupation",
+     "marital_status",
+     "household_size",
+     "prior_claims_5y",
+     "licence_points",
+     "years_at_address",
+     "region",
+     "urban_density",
+     "policyholder_age_band",
+     "sum_insured",
+     "tenure",
+     "security_level",
+     "high_value_items",
+     "accidental_damage_cover",
+     "works_from_home",
+     "lodgers",
+     "bicycle_cover",
+     "flood_zone",
+     "distance_to_river_km",
+     "elevation_m",
+     "soil_type",
+     "year_built",
+     "property_type",
+     "roof_type",
+     "basement",
+     "trees_within_5m",
+     "listed_building",
+     "bedrooms",
+     "energy_rating",
+     "solar_panels"
+    ],
+    "rounds": 300
+   },
+   "mix_diagnostic_2023_model": {
+    "pred_ultimate_rate_2023_rows": 92.4889286462602,
+    "pred_ultimate_rate_2024_rows": 93.19387102180417,
+    "observed_completed_rate_2023": 91.38210657643288,
+    "observed_completed_rate_2024": 89.52934056000478,
+    "level_factor_mean": 1.1602962509675145,
+    "level_factor_min": 1.0288849598539114,
+    "level_factor_max": 1.5727329017143172
+   },
+   "deviance_decomposition_2024": {
+    "zero_rows": {
+     "n": 18245,
+     "share_dev": 0.5502212505325668
+    },
+    "ordinary_claims": {
+     "n": 482,
+     "share_dev": 0.3960959275966157
+    },
+    "top1pct_claims": {
+     "n": 5,
+     "share_dev": 0.05368282187081765
+    }
+   },
+   "holdout_2024": {
+    "d2_A": 0.05094196648581406,
+    "d2_B_devtrend": 0.051133652831822474,
+    "level_A": 1.0397525686027485,
+    "level_B": 1.0946508671699515
+   },
+   "top_gain_features_seed1": [
+    [
+     "occupation",
+     1325834.6037597656
+    ],
+    [
+     "flood_zone",
+     798379.6745605469
+    ],
+    [
+     "sum_insured",
+     675897.8645019531
+    ],
+    [
+     "elevation_m",
+     477709.9016113281
+    ],
+    [
+     "urban_density",
+     261736.77172851562
+    ],
+    [
+     "energy_rating",
+     157459.0693359375
+    ],
+    [
+     "soil_type",
+     156609.650390625
+    ],
+    [
+     "voluntary_excess",
+     136659.67944335938
+    ],
+    [
+     "policyholder_age_band",
+     120661.09936523438
+    ],
+    [
+     "property_type",
+     95933.11987304688
+    ],
+    [
+     "distance_to_river_km",
+     81139.24169921875
+    ],
+    [
+     "high_value_items",
+     72655.11010742188
+    ],
+    [
+     "works_from_home",
+     58795.549560546875
+    ],
+    [
+     "payment_method",
+     44057.60009765625
+    ],
+    [
+     "region",
+     43567.370361328125
+    ]
+   ],
+   "train_level_check_sum_pred_over_sum_y": 1.0000000000000002,
+   "test_level": {
+    "exposure": 59016.465753424665,
+    "pred_A_per_exposure_year": 94.23936132940854,
+    "pred_B_per_exposure_year": 104.45364056887519,
+    "pred_A_newbusiness_per_ey": 95.14305971329705,
+    "pred_A_renewal_per_ey": 91.21055237378475,
+    "history_burn_completed_2023": 91.38210657643288,
+    "history_burn_completed_2024": 89.52934056000478,
+    "history_burn_raw_2023": 91.1314320911796,
+    "history_burn_raw_2024": 86.80100586345173,
+    "max_pred_A": 588.9862462395254
+   }
+  }
+ }
+}
