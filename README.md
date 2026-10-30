@@ -12,7 +12,7 @@ ultimate claim cost of every 2025 policy row.
 | | final submission | public | private | notes |
 | --- | --- | --- | --- | --- |
 | Part 1, developed market | `eq20` | 0.12956 | 0.13755 (rank 8 of 54) | equal-weight blend of shallow GBMs, GLM, EBM, MLP, CatBoost, TabM; credibility factor; levels from the public board |
-| Part 2, emerging market | `v13_cells` | 0.17556 (first of 33 on 2026-10-29) | after close | transferred per-peril prior on the cleaned files, shrunk peril levels, screened corrections, developed-market fire slope, cell and motor segment levels from the public board |
+| Part 2, emerging market | `v13_cells` | 0.17556 (first of 38 on 2026-10-30) | after close | transferred per-peril prior on the cleaned files, shrunk peril levels, screened corrections, developed-market fire slope, cell and motor segment levels from the public board |
 
 Each late version replaced the previous one only under a rule written in `part2/LOG.md` before its score came back: `v12c` (0.17333, the
 `v9`/`v10` average with the fire term) replaced `v10` (0.17247), and `v13_cells` (`v12c` times seven shrunk motor segment factors) replaced

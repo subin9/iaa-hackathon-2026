@@ -55,9 +55,16 @@ the right-hand column, not in one cell.
 Model-only reference: v4 0.16135 (no leaderboard information). Validation ladder in CV (pooled D2): constant 0.078, emerging-only GBM 0.118,
 Part 1 prior as is 0.134, final 0.141; final recipe on the cleaned files 0.1425. Part 1: private 0.13755, rank 8 of 54.
 
-## Screen recordings (about 30 seconds in total)
+## Screen recordings
 
-Record in a terminal with a large font. The Kaggle token must not appear on screen: set it in the shell before recording
+Recorded 2026-10-30 with [VHS](https://github.com/charmbracelet/vhs) from the tapes in `tapes/` (real commands, real output, 1920x1080; the
+clips are in `deliverables/video_clips/`, not in the repository): `clip1_tests` (scene 4, 14 s), `clip2_rule` (scene 4, the rule commits
+before the v13 scores, 28 s), `clip5_code` (scene 2 or 6, the probe solver and its seven factors, 34 s), `clip3_board` (scene 4/5, every
+submission with its score, 16 s), `clip4_office` (scene 2, office premium build-up, 20 s), and `all_clips` in that order. Re-record with
+`cd part2/video/tapes && vhs clipN.tape` (`head.tape` holds the checkout and Kaggle CLI paths of this machine); the Kaggle clips read the
+token from the environment, so it never appears on screen or in a tape.
+
+The list below was the original plan for recording by hand. Record in a terminal with a large font. The Kaggle token must not appear on screen: set it in the shell before recording
 (`export KAGGLE_API_TOKEN=...` in a window that is not recorded) and never type it while recording.
 
 1. Scene 4, tests (5 s): `PYTHONPATH=src:part2 .venv/bin/python -m pytest part2/tests -q` ends with "22 passed".

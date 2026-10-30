@@ -3,7 +3,7 @@
 Task: expected ultimate claim cost for every 2025 row of the emerging market (motor, buildings, contents), scored with the Tweedie D2 (power 1.5).
 Idea: keep the developed-market relativities, re-learn the levels on two emerging years, add only the corrections the data can prove, measure the
 new-business levels on the public leaderboard (disclosed) and shrink them for sampling noise. Everything is logged in `LOG.md`; the report is built by
-`report/build_report.py`, the video material is in `video/`, the final choice is in `final.json`.
+`report/build_report.py`, the video material is in `video/` (script, slides, VHS tapes for the screen recordings), the final choice is in `final.json`.
 
 | step | script |
 | --- | --- |

@@ -47,7 +47,7 @@ BODY = f"""
 <code>src/</code> Part 1, <code>part2/</code> Part 2, <code>docs/</code> logs and AI use. All scores are Tweedie D&sup2; with power 1.5.</p>
 
 <div class="box"><b>Results.</b> <b>Part 1</b> (developed market): private <b>{F1['private']}</b>, rank {F1['private_rank']} (public {F1['public']}). <b>Part 2</b> (emerging market, 209,063 test rows, 76% new business):
-final submission <b>{F2['name']}</b>, public <b>{F2['public']}</b>, rank {F2['public_rank']} (second 0.17192).
+final submission <b>{F2['name']}</b>, public <b>{F2['public']}</b>, rank {F2['public_rank']}.
 Without the last round of motor segment factors it scores {F2['without_segment_factors']['public']} ({F2['without_segment_factors']['name']}).
 Of the Part 2 public score, an earlier version of the model without any leaderboard information reaches {F2['modelling_only_public']['public']} ({F2['modelling_only_public']['name']}); most of the rest comes from new-business and segment levels measured with disclosed leaderboard probes (section 6).<br>
 <b>What carried us:</b> keep the developed-market relativities, re-learn the levels on two emerging years, add only the corrections the data can prove, and treat the 2025 new business as the main uncertainty.
