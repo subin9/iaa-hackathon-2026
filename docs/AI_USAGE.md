@@ -44,7 +44,7 @@ How the output was checked:
 The teammate wrote a rule book of method from the Part 1 experience (50 rules of method, not answers) and had an agent audit the emerging
 files against it. Each cycle's new findings were turned into rules (50, 63, 67, 68 rules after cycles 1 to 4) until a cycle found nothing
 new. The harness does not see evaluation data and does not submit; the actuary reviews every finding. Its output, the cleaned emerging
-files, was used for the final Part 2 submission. The harness itself, its scorecards, the four cycle records and the actuary's signed decisions are in `harness_track/` (merged with its own history; see `harness_track/README.md` and `harness_track/AI_USAGE.md`).
+files, feeds half of the final Part 2 submission (v10, averaged with v9 on the competition files). The harness itself, its scorecards, the four cycle records and the actuary's signed decisions are in `harness_track/` (merged with its own history; see `harness_track/README.md` and `harness_track/AI_USAGE.md`).
 
 What the modelling track checked about the cleaned files (`part2/e21_cleaned_data.py`): the change that reaches the model tables is the
 missing vehicle and property fields filled from the same policy's other rows (90 to 100% agreement where both exist); the 36 claims it

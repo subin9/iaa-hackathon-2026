@@ -27,6 +27,7 @@ Files for the leaderboard ladder (one UTC day, ≤10 slots): `submission_A_raw_n
 Data effect with the model held fixed, decomposed on the public board: raw 0.0589 → +exposure repair 0.1028 (**+0.044**) → +all other repairs (sum insured ×1000, occupation, sibling-filled nulls, 36 claims) 0.1230 (**+0.020**) → +IBNR completion, cap and harness features 0.1303 (**+0.007**); total +0.071. The raw cell sits *below* the host's line-average
 baseline (0.073): 114 day-count exposure rows push the level gate to ×0.77 and deflate every 2025 prediction by a
 quarter, so an unrepaired file is worse than knowing nothing but the line averages. Model effect with the data held
-fixed (D4): 0.130 (fixed recipe, emerging data only, pre-probe levels) → 0.176 (DS pipeline: developed-market prior,
-per-peril levels, corrections, probed cell levels; v13). Both effects are large and they are not additive: the DS
+fixed (D4): 0.130 (fixed recipe, emerging data only, pre-probe levels) → 0.172 (DS pipeline: developed-market prior,
+per-peril levels, corrections, probed cell levels; v10). The final file (v14_cells, 0.180) is not a D4-only number: it averages the
+pipeline on both data versions (v9 and v10) and adds a fire term and fourteen probed segment factors. Both effects are large and they are not additive: the DS
 pipeline already repairs the large defects itself, which is why cleaned files alone moved *it* by only +0.00009.

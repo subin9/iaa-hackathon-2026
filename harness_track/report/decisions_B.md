@@ -39,3 +39,15 @@ post-model multipliers was written for the actuary's own recipe (`runs/hs_model/
 motor new-business level (cost of a 15 % error on v5: −0.0024 public D²) · buildings small perils > 30 % · whether the
 gender-split cell levels hold on the private rows (shrunk for that reason) · completion basis ±2.5 % (motor) · 2025
 weather shift not modelled.
+
+## Changes after the signature (2026-10-30, prepared by Evan, not yet signed)
+The table above is signed on the v10 basis. The final file has since changed under keep rules written before each score
+(`part2/LOG.md`, entries of 2026-10-28 to 2026-10-30):
+- **B5 fire:** buildings fire now carries the developed-market slope on the wildfire index, log cost + 1.662 (wildfire − 0.528);
+  paired CV +0.00088. With the v9/v10 average this is v12c, public 0.17333.
+- **B3 new business:** fourteen further ×1.2 probes on single new-business segments (thirteen motor, one contents), each solved on its
+  own and shrunk by sampling noise; applied factors 0.81 to 1.34. v13_cells 0.17556, then v14_cells 0.17993.
+- **B8 final submission:** v14_cells (a third round may replace it on 2026-10-31 under the same rule). The leaderboard probes now number
+  twenty-seven, all listed in `part2/probes.json`.
+- Added uncertainty: the segment factors are fitted on the public third, so part of their gain (+0.0066 public) will not carry to the
+  private rows; stacked factors move individual motor rows by 0.69 to 1.56 at the 1st and 99th percentiles.
