@@ -53,4 +53,4 @@ removes fall outside every policy period, so the target is unchanged. Effect in 
 
 ## 3. Other AI use
 
-The video uses AI-generated narration and motion graphics (made by the teammate); the end card says so.
+The video uses an AI voice (ElevenLabs) for part of the narration and motion graphics made by the teammate; the end card says so.
